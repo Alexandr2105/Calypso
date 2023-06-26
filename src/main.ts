@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { createWriteStream } from 'fs';
 import { get } from 'http';
+import { HttpExceptionFilter } from './exception.filter';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { useContainer } from 'class-validator';
 
 const serverUrl = 'http://localhost:3000';
 
@@ -10,6 +13,29 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   const port = 3000;
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      forbidUnknownValues: false,
+      stopAtFirstError: true,
+      exceptionFactory: (errors) => {
+        const errorsForResponse = [];
+        errors.forEach((e) => {
+          const constraintsKeys = Object.keys(e.constraints);
+          constraintsKeys.forEach((c) => {
+            errorsForResponse.push({
+              message: e.constraints[c],
+              field: e.property,
+            });
+          });
+        });
+        throw new BadRequestException(errorsForResponse);
+      },
+    }),
+  );
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('Instagram')

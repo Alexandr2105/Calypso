@@ -45,7 +45,6 @@ export class AuthController {
     //     createConfirmationInfoAndReturnConfirmationCode,
     //   ),
     // );
-    return;
   }
 
   @HttpCode(200)
@@ -70,7 +69,9 @@ export class AuthController {
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
   async loginUser(@Body() body: LoginDto) {
-    return 'ok';
+    return {
+      accessToken: 'string',
+    };
   }
 
   @HttpCode(204)
@@ -101,7 +102,7 @@ export class AuthController {
       'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
   })
   async createNewPassword(@Body() body: NewPasswordDto) {
-    return 'ok';
+    return true;
   }
 
   @HttpCode(204)
