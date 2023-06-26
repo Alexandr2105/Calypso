@@ -1,4 +1,4 @@
-import * as nodemailer from 'nodemailer';
+import nodemailer from 'nodemailer';
 import { config } from 'dotenv';
 config();
 
@@ -12,7 +12,6 @@ export class EmailAdapter {
         pass: process.env.NODEMAILER_PASSWORD,
       },
     });
-
     const info = await transporter.sendMail({
       from: '"INSTAGRAM" <instagram@gmail.com>',
       to: email,
