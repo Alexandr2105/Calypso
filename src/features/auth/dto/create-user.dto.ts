@@ -7,14 +7,14 @@ import {
   minLengthPassword,
   minLengthUserName,
 } from '../../../common/constants/models.constants';
-import { CheckDuplicateLoginOrEmail } from '../../users/validation/check-login-or-email-in-db';
+import { CheckLoginOrEmailInDb } from '../../users/validation/check-login-or-email-in-db';
 
 export class CreateUserDto {
   @Length(minLengthUserName, maxLengthUserName, {
     message: 'Не верно заполнено поле',
   })
   @Transform(({ value }) => value.trim())
-  @Validate(CheckDuplicateLoginOrEmail)
+  @Validate(CheckLoginOrEmailInDb)
   @ApiProperty({
     type: 'string',
     minimum: minLengthUserName,
@@ -25,7 +25,7 @@ export class CreateUserDto {
   @IsEmail()
   @Transform(({ value }) => value.trim())
   @ApiProperty({ type: 'string' })
-  @Validate(CheckDuplicateLoginOrEmail)
+  @Validate(CheckLoginOrEmailInDb)
   email: string;
 
   @Transform(({ value }) => value.trim())
