@@ -74,7 +74,7 @@ window.onload = function() {
         }
       },
       "/auth/email-confirmation/{code}": {
-        "post": {
+        "get": {
           "operationId": "AuthController_registrationConfirmation",
           "summary": "Email confirmation",
           "parameters": [
@@ -116,6 +116,34 @@ window.onload = function() {
                   }
                 }
               }
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/auth/refresh-link": {
+        "post": {
+          "operationId": "AuthController_refreshConfirmationLink",
+          "summary": "Refresh confirmation link",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationEmailResendingDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Link updated"
+            },
+            "400": {
+              "description": "Bad request"
             }
           },
           "tags": [
@@ -306,6 +334,17 @@ window.onload = function() {
             "login",
             "email",
             "password"
+          ]
+        },
+        "RegistrationEmailResendingDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email"
           ]
         },
         "LoginDto": {
