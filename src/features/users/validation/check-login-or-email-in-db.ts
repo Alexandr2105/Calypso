@@ -11,7 +11,7 @@ export class CheckLoginOrEmailInDb implements ValidatorConstraintInterface {
   constructor(private readonly usersRepo: UsersRepository) {}
   async validate(loginOrEmail: string) {
     const user = await this.usersRepo.getUserByLoginOrEmail(loginOrEmail);
-    return !!user;
+    return !user;
   }
 
   defaultMessage(): string {
