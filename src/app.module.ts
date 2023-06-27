@@ -17,6 +17,7 @@ import { PrismaService } from './common/prisma-service/prisma-service';
 import { UsersRepository } from './features/users/infrastructure/users.repository';
 import { EmailAdapter } from './common/SMTP-adapter/email-adapter';
 import { CheckLoginOrEmailInDb } from './features/users/validation/check-login-or-email-in-db';
+import { TestingController } from './common/testing/testing.controller';
 config();
 
 const UseCases = [
@@ -34,7 +35,12 @@ const UseCases = [
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
     }),
   ],
-  controllers: [AppController, AuthController, UsersController],
+  controllers: [
+    AppController,
+    AuthController,
+    UsersController,
+    TestingController,
+  ],
   providers: [
     AppService,
     BcryptService,
