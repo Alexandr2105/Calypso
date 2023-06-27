@@ -12,10 +12,5 @@
       "src": "/(.*)",
       "dest": "src/main.ts"
     }
-  ], "env": {
-  "BRANCH": "create_user"
-},
-  "scripts": {
-    "vercel-deploy": "if [ \"$BRANCH\" != \"main\" ]; then echo \"Cannot deploy from $BRANCH branch\"; exit 1; fi"
-  }
+  ]
 }
