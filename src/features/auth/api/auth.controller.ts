@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -13,11 +14,18 @@ import { LoginDto } from '../dto/login.dto';
 import { EmailResendingDto } from '../dto/email-resending.dto';
 import { NewPasswordDto } from '../dto/new-password.dto';
 import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
+import { CommandBus } from '@nestjs/cqrs';
+import { RegistrationUserCommand } from '../application/use-cases/registration-user.use-case';
+import { CreateConfirmationInfoForUserCommand } from '../application/use-cases/create-confirmation-info.use-case';
+import { SendConfirmationLinkCommand } from '../application/use-cases/send-confirmation-link.use-case';
+import { ConfirmationEmailCommand } from '../application/use-cases/confirmation-email.use-case';
+import { RegistrationEmailResendingDto } from '../dto/registration-email-resending.dto';
+import { RefreshConfirmationLinkCommand } from '../application/use-cases/refresh-confirmation-link.use-case';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  // constructor(private commandBus: CommandBus) {}
+  constructor(private commandBus: CommandBus) {}
 
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -28,32 +36,55 @@ export class AuthController {
     'Validation error or user already registered',
   )
   async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
-    // const registrationUserAndReturnUserId = await this.commandBus.execute(
-    //   new RegistrationUserCommand(body),
-    // );
-    //
-    // const createConfirmationInfoAndReturnConfirmationCode =
-    //   await this.commandBus.execute(
-    //     new CreateConfirmationInfoForUserCommand(
-    //       registrationUserAndReturnUserId,
-    //     ),
-    //   );
-    //
-    // await this.commandBus.execute(
-    //   new SendConfirmationLinkCommand(
-    //     body.email,
-    //     createConfirmationInfoAndReturnConfirmationCode,
-    //   ),
-    // );
+    const registrationUserAndReturnUserId = await this.commandBus.execute(
+      new RegistrationUserCommand(body),
+    );
+
+    const createConfirmationInfoAndReturnConfirmationCode =
+      await this.commandBus.execute(
+        new CreateConfirmationInfoForUserCommand(
+          registrationUserAndReturnUserId,
+        ),
+      );
+
+    await this.commandBus.execute(
+      new SendConfirmationLinkCommand(
+        body.email,
+        createConfirmationInfoAndReturnConfirmationCode,
+      ),
+    );
+    return;
   }
 
-  @HttpCode(200)
-  @Post('email-confirmation/:code')
+  @Get('email-confirmation/:code')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Email confirmation' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email successfully verified')
   @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Link is invalid or expired')
-  async registrationConfirmation(@Param() code: RegistrationConformationDto) {
-    return code;
+  async registrationConfirmation(
+    @Param() params: RegistrationConformationDto,
+  ): Promise<void> {
+    await this.commandBus.execute(new ConfirmationEmailCommand(params.code));
+    return;
+  }
+
+  @Post('refresh-link')
+  // @UseGuards(IpRestrictionGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Refresh confirmation link' })
+  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Link updated')
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Bad request',
+  })
+  async refreshConfirmationLink(
+    @Body() inputModel: RegistrationEmailResendingDto,
+  ): Promise<HttpStatus> {
+    await this.commandBus.execute(
+      new RefreshConfirmationLinkCommand(inputModel.email),
+    );
+
+    return;
   }
 
   @HttpCode(200)
@@ -69,9 +100,7 @@ export class AuthController {
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
   async loginUser(@Body() body: LoginDto) {
-    return {
-      accessToken: 'string',
-    };
+    return 'ok';
   }
 
   @HttpCode(204)
@@ -102,7 +131,7 @@ export class AuthController {
       'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
   })
   async createNewPassword(@Body() body: NewPasswordDto) {
-    return true;
+    return 'ok';
   }
 
   @HttpCode(204)
