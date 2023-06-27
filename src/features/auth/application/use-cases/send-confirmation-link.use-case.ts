@@ -11,6 +11,9 @@ export class SendConfirmationLinkUseCase
 {
   constructor(private emailService: EmailAdapter) {}
   async execute(command: SendConfirmationLinkCommand): Promise<void> {
-    await this.emailService.sendEmailRecoveryCode(command.email, command.code);
+    await this.emailService.sendEmailConfirmationLink(
+      command.email,
+      command.code,
+    );
   }
 }

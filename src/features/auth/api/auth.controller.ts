@@ -21,6 +21,7 @@ import { SendConfirmationLinkCommand } from '../application/use-cases/send-confi
 import { ConfirmationEmailCommand } from '../application/use-cases/confirmation-email.use-case';
 import { RegistrationEmailResendingDto } from '../dto/registration-email-resending.dto';
 import { RefreshConfirmationLinkCommand } from '../application/use-cases/refresh-confirmation-link.use-case';
+import { SendPasswordRecoveryLinkCommand } from '../application/use-cases/send-password-recovery-link.use-case';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -115,7 +116,10 @@ export class AuthController {
     'If not valid email (for example, 222^gmail.com)',
   )
   async passwordRecovery(@Body() body: EmailResendingDto) {
-    return 'ok';
+    await this.commandBus.execute(
+      new SendPasswordRecoveryLinkCommand(body.email),
+    );
+    return;
   }
 
   @HttpCode(204)
