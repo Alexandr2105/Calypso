@@ -20,6 +20,7 @@ import { CheckLoginOrEmailInDb } from './features/users/validation/check-login-o
 import { TestingController } from './common/testing/testing.controller';
 import { SendPasswordRecoveryLinkUseCase } from './features/auth/application/use-cases/send-password-recovery-link.use-case';
 import { UsersService } from './features/users/application/users.service';
+import { ChangePasswordUseCase } from './features/auth/application/use-cases/change-password.use-case';
 
 config();
 
@@ -30,6 +31,7 @@ const UseCases = [
   ConfirmationEmailUseCase,
   RefreshConfirmationLinkUseCase,
   SendPasswordRecoveryLinkUseCase,
+  ChangePasswordUseCase,
 ];
 @Module({
   imports: [
