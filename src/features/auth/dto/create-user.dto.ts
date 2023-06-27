@@ -10,7 +10,7 @@ import {
 
 export class CreateUserDto {
   @Length(minLengthUserName, maxLengthUserName, {
-    message: 'Не верно заполнено поле',
+    message: 'Не верно заполнено поле  ',
   })
   @Transform(({ value }) => value.trim())
   // @Validate(CheckOriginalLogin)
