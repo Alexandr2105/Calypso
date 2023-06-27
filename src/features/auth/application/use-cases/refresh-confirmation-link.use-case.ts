@@ -4,6 +4,7 @@ import { UsersRepository } from '../../../users/infrastructure/users.repository'
 import { BadRequestException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { createExpirationDateForLink } from '../../../../common/helpers/create-expiration-date-for-link';
+import { createErrorMessage } from '../../../../common/helpers/create-error-message';
 
 export class RefreshConfirmationLinkCommand {
   constructor(public email: string) {}
@@ -21,7 +22,7 @@ export class RefreshConfirmationLinkUseCase
     const user = await this.usersRepo.getUserByEmail(command.email);
 
     if (!user || user.emailConfirmation.isConfirmed)
-      throw new BadRequestException();
+      throw new BadRequestException(createErrorMessage('email'));
 
     const newConfirmationCode = randomUUID();
 

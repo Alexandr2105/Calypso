@@ -301,6 +301,17 @@ window.onload = function() {
             "Auth"
           ]
         }
+      },
+      "/delete-all-data": {
+        "delete": {
+          "operationId": "TestingController_clearAllData",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          }
+        }
       }
     },
     "info": {
@@ -376,13 +387,17 @@ window.onload = function() {
         "NewPasswordDto": {
           "type": "object",
           "properties": {
-            "recoveryCode": {
+            "newPassword": {
               "type": "string",
               "minimum": 6,
               "maximum": 20
+            },
+            "recoveryCode": {
+              "type": "string"
             }
           },
           "required": [
+            "newPassword",
             "recoveryCode"
           ]
         }
