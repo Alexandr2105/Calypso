@@ -8,13 +8,13 @@ import {
 
 export class NewPasswordDto {
   @Transform(({ value }) => value.trim())
-  @Length(minLengthPassword, maxLengthPassword, {
-    message: 'Не верно заполнено поле',
-  })
   newPassword: string;
 
   @Transform(({ value }) => value.trim())
   @ApiProperty({ type: 'string', minimum: 6, maximum: 20 })
+  @Length(minLengthPassword, maxLengthPassword, {
+    message: 'Не верно заполнено поле',
+  })
   // @Validate(CheckRecoveryCode)
   recoveryCode: string;
 }

@@ -123,6 +123,34 @@ window.onload = function() {
           ]
         }
       },
+      "/auth/refresh-link": {
+        "post": {
+          "operationId": "AuthController_refreshConfirmationLink",
+          "summary": "Refresh confirmation link",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationEmailResendingDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Link updated"
+            },
+            "400": {
+              "description": "Bad request"
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
       "/auth/login": {
         "post": {
           "operationId": "AuthController_loginUser",
@@ -306,6 +334,17 @@ window.onload = function() {
             "login",
             "email",
             "password"
+          ]
+        },
+        "RegistrationEmailResendingDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "email"
           ]
         },
         "LoginDto": {

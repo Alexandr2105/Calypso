@@ -56,7 +56,7 @@ export class AuthController {
     return;
   }
 
-  @Get('email-confirmation/:code')
+  @Post('email-confirmation/:code')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Email confirmation' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email successfully verified')
