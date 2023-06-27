@@ -17,6 +17,11 @@ import { PrismaService } from './common/prisma-service/prisma-service';
 import { UsersRepository } from './features/users/infrastructure/users.repository';
 import { EmailAdapter } from './common/SMTP-adapter/email-adapter';
 import { CheckLoginOrEmailInDb } from './features/users/validation/check-login-or-email-in-db';
+import { TestingController } from './common/testing/testing.controller';
+import { SendPasswordRecoveryLinkUseCase } from './features/auth/application/use-cases/send-password-recovery-link.use-case';
+import { UsersService } from './features/users/application/users.service';
+import { ChangePasswordUseCase } from './features/auth/application/use-cases/change-password.use-case';
+
 config();
 
 const UseCases = [
@@ -25,6 +30,8 @@ const UseCases = [
   SendConfirmationLinkUseCase,
   ConfirmationEmailUseCase,
   RefreshConfirmationLinkUseCase,
+  SendPasswordRecoveryLinkUseCase,
+  ChangePasswordUseCase,
 ];
 @Module({
   imports: [
@@ -34,11 +41,17 @@ const UseCases = [
       serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
     }),
   ],
-  controllers: [AppController, AuthController, UsersController],
+  controllers: [
+    AppController,
+    AuthController,
+    UsersController,
+    TestingController,
+  ],
   providers: [
     AppService,
     BcryptService,
     PrismaService,
+    UsersService,
     UsersRepository,
     EmailAdapter,
     CheckLoginOrEmailInDb,

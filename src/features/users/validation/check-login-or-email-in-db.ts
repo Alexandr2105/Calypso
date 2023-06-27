@@ -18,32 +18,3 @@ export class CheckLoginOrEmailInDb implements ValidatorConstraintInterface {
     return 'Не верные данные';
   }
 }
-
-// export function CheckDuplicateLoginOrEmail(
-//   validationOptions?: ValidationOptions,
-// ) {
-//   return function (object, propertyName: string) {
-//     registerDecorator({
-//       target: object.constructor,
-//       propertyName: propertyName,
-//       options: validationOptions,
-//       constraints: [],
-//       validator: CheckLoginOrEmailInDb,
-//     });
-//   };
-// }
-
-// @ValidatorConstraint({ name: '', async: true })
-// @Injectable()
-// export class CheckOriginalEmail implements ValidatorConstraintInterface {
-//   constructor(private readonly usersRepository: IUsersRepository) {}
-//
-//   async validate(email: string): Promise<boolean> {
-//     const user = await this.usersRepository.findLoginOrEmail(email);
-//     return user === undefined || user === null;
-//   }
-//
-//   defaultMessage(): string {
-//     return 'Не верные данные';
-//   }
-// }

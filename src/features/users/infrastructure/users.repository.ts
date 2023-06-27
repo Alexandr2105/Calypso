@@ -22,27 +22,6 @@ export class UsersRepository {
     return user.id;
   }
 
-  // async refreshConfirmationCodeAndDate(
-  //   email: string,
-  //   newConfirmationData: { confirmationCode: string; expirationDate: Date },
-  // ) {
-  //   const account = await this.getAccountWithEmailConfirmationByEmail(email);
-  //
-  //   await this.emailRepo.save({
-  //     confirmationCode: newConfirmationData.confirmationCode,
-  //     expirationDate: newConfirmationData.expirationDate,
-  //     userId: account.id,
-  //   });
-  // }
-
-  // async changePassword(newPasswordHash: string, userId: string) {
-  //   await this.usersRepo
-  //     .createQueryBuilder()
-  //     .update(User)
-  //     .set({ passwordHash: newPasswordHash })
-  //     .where('id = :userId', { userId })
-  //     .execute();
-  // }
   async getConfirmationInfoByCode(
     code: string,
   ): Promise<ConfirmationInfoEntity> {
@@ -91,5 +70,19 @@ export class UsersRepository {
     });
 
     return user;
+  }
+
+  async getUserByRecoveryCode(recoveryCode: string) {
+    return this.prisma.user.findFirst({
+      where: { emailConfirmation: { confirmationCode: recoveryCode } },
+      include: { emailConfirmation: true },
+    });
+  }
+
+  async changePassword(userId: string, newPasswordHash: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash: newPasswordHash },
+    });
   }
 }
