@@ -89,7 +89,7 @@ export class AuthController {
     return;
   }
 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOperation({ summary: 'user authorization' })
   @ApiResponseForSwagger(
@@ -105,7 +105,7 @@ export class AuthController {
     return 'ok';
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('password-recovery')
   @ApiOperation({ summary: 'password recovery' })
   @ApiResponseForSwagger(
@@ -123,7 +123,7 @@ export class AuthController {
     return;
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('new-password')
   @ApiOperation({ summary: 'creating a new password' })
   @ApiResponseForSwagger(
@@ -131,7 +131,7 @@ export class AuthController {
     'If the code is valid and the new password is accepted',
   )
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description:
       'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
   })
@@ -142,14 +142,14 @@ export class AuthController {
     return;
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('logout')
   @ApiOperation({ summary: 'user logout' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description:
       'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
   })
