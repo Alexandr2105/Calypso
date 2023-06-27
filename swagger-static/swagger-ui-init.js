@@ -74,7 +74,7 @@ window.onload = function() {
         }
       },
       "/auth/email-confirmation/{code}": {
-        "post": {
+        "get": {
           "operationId": "AuthController_registrationConfirmation",
           "summary": "Email confirmation",
           "parameters": [

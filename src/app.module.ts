@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { config } from 'dotenv';
 import { RegistrationUserUseCase } from './features/auth/application/use-cases/registration-user.use-case';
 import { CreateConfirmationInfoForUserUseCase } from './features/auth/application/use-cases/create-confirmation-info.use-case';
 import { SendConfirmationLinkUseCase } from './features/auth/application/use-cases/send-confirmation-link.use-case';
@@ -21,8 +20,10 @@ import { TestingController } from './common/testing/testing.controller';
 import { SendPasswordRecoveryLinkUseCase } from './features/auth/application/use-cases/send-password-recovery-link.use-case';
 import { UsersService } from './features/users/application/users.service';
 import { ChangePasswordUseCase } from './features/auth/application/use-cases/change-password.use-case';
+import { settings } from './settings';
+import { LocalStrategy } from './common/strategies/local.strategy';
 
-config();
+const Strategies = [LocalStrategy];
 
 const UseCases = [
   RegistrationUserUseCase,
@@ -38,7 +39,7 @@ const UseCases = [
     CqrsModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'swagger-static'),
-      serveRoot: process.env.NODE_ENV === 'development' ? '/' : '/swagger',
+      serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
     }),
   ],
   controllers: [
@@ -56,6 +57,7 @@ const UseCases = [
     EmailAdapter,
     CheckLoginOrEmailInDb,
     ...UseCases,
+    ...Strategies,
   ],
 })
 export class AppModule {}
