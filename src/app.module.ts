@@ -18,6 +18,7 @@ import { UsersRepository } from './features/users/infrastructure/users.repositor
 import { EmailAdapter } from './common/SMTP-adapter/email-adapter';
 import { CheckLoginOrEmailInDb } from './features/users/validation/check-login-or-email-in-db';
 import { TestingController } from './common/testing/testing.controller';
+
 config();
 
 const UseCases = [
