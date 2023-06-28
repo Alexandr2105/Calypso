@@ -26,6 +26,9 @@ import { SendPasswordRecoveryLinkCommand } from '../application/use-cases/send-p
 import { ChangePasswordCommand } from '../application/use-cases/change-password.use-case';
 import { LocalAuthGuard } from '../../../common/guards/local.auth.guard';
 import { CreateAccessAndRefreshTokensCommand } from '../application/use-cases/create-access-and-refresh-tokens.use-case';
+import { RefreshAuthGuard } from '../../../common/guards/refresh.auth.guard';
+import { LogoutUserCommand } from '../../devices/application/use-cases/logout.user.use.case';
+import { SaveInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/save.info.about.devices.user.use.case';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -107,6 +110,13 @@ export class AuthController {
     const { accessToken, refreshToken } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(req.user.id),
     );
+    await this.commandBus.execute(
+      new SaveInfoAboutDevicesUserCommand(
+        refreshToken,
+        req.ip,
+        req.headers['user-agent'],
+      ),
+    );
     res.cookie('refreshToken', refreshToken, {
       httpOnly: false,
       secure: false,
@@ -162,7 +172,9 @@ export class AuthController {
     description:
       'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
   })
-  async logout() {
+  @UseGuards(RefreshAuthGuard)
+  async logout(@Req() req) {
+    await this.commandBus.execute(new LogoutUserCommand(req.user.deviceId));
     return true;
   }
 }

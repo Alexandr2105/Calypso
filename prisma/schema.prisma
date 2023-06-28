@@ -17,6 +17,7 @@ model User {
   passwordHash      String
   isDeleted         Boolean
   emailConfirmation EmailConfirmation?
+  refreshTokenData  RefreshTokenData?
 }
 
 model EmailConfirmation {
@@ -25,4 +26,14 @@ model EmailConfirmation {
   expirationDate   DateTime
   isConfirmed      Boolean  @default(false)
   user             User     @relation(fields: [userId], references: [id])
+}
+
+model RefreshTokenData{
+  iat        Int
+  exp        Int
+  deviceId   String @unique
+  ip         String
+  deviceName String
+  userId     String @id
+  user       User   @relation(fields: [userId],references: [id])
 }

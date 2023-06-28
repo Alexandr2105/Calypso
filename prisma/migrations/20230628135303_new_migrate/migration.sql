@@ -20,6 +20,18 @@ CREATE TABLE "EmailConfirmation" (
     CONSTRAINT "EmailConfirmation_pkey" PRIMARY KEY ("userId")
 );
 
+-- CreateTable
+CREATE TABLE "RefreshTokenData" (
+    "iat" INTEGER NOT NULL,
+    "exp" INTEGER NOT NULL,
+    "deviceId" TEXT NOT NULL,
+    "ip" TEXT NOT NULL,
+    "deviceName" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "RefreshTokenData_pkey" PRIMARY KEY ("userId")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_login_key" ON "User"("login");
 
@@ -29,5 +41,11 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "EmailConfirmation_confirmationCode_key" ON "EmailConfirmation"("confirmationCode");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "RefreshTokenData_deviceId_key" ON "RefreshTokenData"("deviceId");
+
 -- AddForeignKey
 ALTER TABLE "EmailConfirmation" ADD CONSTRAINT "EmailConfirmation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RefreshTokenData" ADD CONSTRAINT "RefreshTokenData_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

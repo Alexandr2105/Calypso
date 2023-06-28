@@ -27,8 +27,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { CreateAccessAndRefreshTokensUseCase } from './features/auth/application/use-cases/create-access-and-refresh-tokens.use-case';
 import { CheckConfirmationCode } from './features/auth/validation/check-confirmation-code';
+import { DevicesRepository } from './features/devices/infrastructure/devices.repository';
+import { RefreshStrategy } from './common/strategies/refresh.strategy';
+import { SaveInfoAboutDevicesUserUseCase } from './features/devices/application/use-cases/save.info.about.devices.user.use.case';
+import { LogoutUserUseCase } from './features/devices/application/use-cases/logout.user.use.case';
 
-const Strategies = [LocalStrategy];
+const Strategies = [LocalStrategy, RefreshStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
 const UseCases = [
   RegistrationUserUseCase,
@@ -39,6 +43,8 @@ const UseCases = [
   SendPasswordRecoveryLinkUseCase,
   ChangePasswordUseCase,
   CreateAccessAndRefreshTokensUseCase,
+  SaveInfoAboutDevicesUserUseCase,
+  LogoutUserUseCase,
 ];
 @Module({
   imports: [
@@ -62,6 +68,7 @@ const UseCases = [
     PrismaService,
     UsersService,
     UsersRepository,
+    DevicesRepository,
     EmailAdapter,
     ...Validators,
     ...UseCases,
