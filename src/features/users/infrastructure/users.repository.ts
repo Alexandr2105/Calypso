@@ -3,6 +3,8 @@ import { PrismaService } from '../../../common/prisma-service/prisma-service';
 import { UserEntity } from '../entities/user.entity';
 import { ConfirmationInfoEntity } from '../entities/confirmation-info.entity';
 
+//TODO:вот это надо обсудить
+
 @Injectable()
 export class UsersRepository {
   constructor(private prisma: PrismaService) {}
@@ -51,7 +53,11 @@ export class UsersRepository {
   ): Promise<void> {
     await this.prisma.emailConfirmation.update({
       where: { userId },
-      data: { confirmationCode: newConfirmationCode, expirationDate: expDate },
+      data: {
+        confirmationCode: newConfirmationCode,
+        expirationDate: expDate,
+        isConfirmed: false,
+      },
     });
   }
 

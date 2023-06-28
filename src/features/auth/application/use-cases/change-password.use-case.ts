@@ -31,6 +31,9 @@ export class ChangePasswordUseCase
       command.newPassword,
     );
 
+    await this.userRepo.updateConfirmationEmail(
+      infoEmailConfirmation.confirmationCode,
+    );
     await this.userRepo.changePassword(infoEmailConfirmation.userId, hash);
   }
 }

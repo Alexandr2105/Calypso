@@ -3,6 +3,7 @@ import { UsersRepository } from '../../../users/infrastructure/users.repository'
 import { BadRequestException } from '@nestjs/common';
 import { createErrorMessage } from '../../../../common/helpers/create-error-message';
 
+//TODO:вот это надо обсудить
 export class ConfirmationEmailCommand {
   constructor(public code: string) {}
 }
