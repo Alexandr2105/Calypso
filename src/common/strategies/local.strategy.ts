@@ -1,11 +1,15 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersRepository } from '../../features/users/infrastructure/users.repository';
+import { BcryptService } from '../bcript/bcript.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor(private userRepo: UsersRepository) {
+  constructor(
+    private userRepo: UsersRepository,
+    private genHash: BcryptService,
+  ) {
     super({
       usernameField: 'loginOrEmail',
     });
@@ -13,8 +17,14 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   async validate(loginOrEmail: string, password: string): Promise<any> {
     const user = await this.userRepo.getUserByLoginOrEmail(loginOrEmail);
     if (!user) return false;
-    // const user = await this.userRepo.getUserByLoginOrEmail(loginOrEmail);
-    // if (!user) throw new UnauthorizedException();
-    // return user;
+    const hashPassword = await this.genHash.generateHash(
+      password,
+      user.passwordHash,
+    );
+    if (user.passwordHash === hashPassword) {
+      return user;
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 }

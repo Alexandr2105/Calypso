@@ -18,7 +18,9 @@ export class RegistrationUserUseCase
     private userRepo: UsersRepository,
   ) {}
   async execute(command: RegistrationUserCommand): Promise<string> {
-    const hash = await this.bcryptService.generateHash(command.body.password);
+    const hash = await this.bcryptService.generateHashForNewUser(
+      command.body.password,
+    );
     const userId = randomUUID();
     const createdAt = new Date();
 

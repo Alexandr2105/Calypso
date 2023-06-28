@@ -22,6 +22,8 @@ import { UsersService } from './features/users/application/users.service';
 import { ChangePasswordUseCase } from './features/auth/application/use-cases/change-password.use-case';
 import { settings } from './settings';
 import { LocalStrategy } from './common/strategies/local.strategy';
+import { Jwt } from './common/jwt/jwt';
+import { JwtModule } from '@nestjs/jwt';
 
 const Strategies = [LocalStrategy];
 
@@ -37,6 +39,7 @@ const UseCases = [
 @Module({
   imports: [
     CqrsModule,
+    JwtModule.register({}),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'swagger-static'),
       serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
@@ -58,6 +61,7 @@ const UseCases = [
     CheckLoginOrEmailInDb,
     ...UseCases,
     ...Strategies,
+    Jwt,
   ],
 })
 export class AppModule {}

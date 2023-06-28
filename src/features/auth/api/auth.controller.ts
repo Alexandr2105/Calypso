@@ -6,6 +6,9 @@ import {
   HttpStatus,
   Param,
   Post,
+  Req,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -23,11 +26,14 @@ import { RegistrationEmailResendingDto } from '../dto/registration-email-resendi
 import { RefreshConfirmationLinkCommand } from '../application/use-cases/refresh-confirmation-link.use-case';
 import { SendPasswordRecoveryLinkCommand } from '../application/use-cases/send-password-recovery-link.use-case';
 import { ChangePasswordCommand } from '../application/use-cases/change-password.use-case';
+import { LocalAuthGuard } from '../../../common/guards/local.auth.guard';
+import { Jwt } from '../../../common/jwt/jwt';
+import { randomUUID } from 'crypto';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private commandBus: CommandBus) {}
+  constructor(private commandBus: CommandBus, private jwtService: Jwt) {}
 
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -89,6 +95,7 @@ export class AuthController {
     return;
   }
 
+  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOperation({ summary: 'user authorization' })
@@ -101,8 +108,17 @@ export class AuthController {
     'Validation error or user already registered',
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
-  async loginUser(@Body() body: LoginDto) {
-    return 'ok';
+  async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
+    const accessToken = this.jwtService.creatJWT(req.user.id);
+    const refreshToken = this.jwtService.creatRefreshJWT(
+      req.user.id,
+      randomUUID(),
+    );
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: false,
+      secure: false,
+    });
+    res.send(accessToken);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

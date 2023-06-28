@@ -56,7 +56,7 @@ export class UsersRepository {
   }
 
   async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserEntity> {
-    const user = await this.prisma.user.findFirst({
+    return this.prisma.user.findFirst({
       where: {
         OR: [
           {
@@ -68,8 +68,6 @@ export class UsersRepository {
         ],
       },
     });
-
-    return user;
   }
 
   async getUserByRecoveryCode(recoveryCode: string) {

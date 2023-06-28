@@ -24,7 +24,9 @@ export class ChangePasswordUseCase
     if (!user || user.emailConfirmation.expirationDate < new Date())
       throw new BadRequestException(createErrorMessage('code'));
 
-    const hash = await this.bcryptService.generateHash(command.newPassword);
+    const hash = await this.bcryptService.generateHashForNewUser(
+      command.newPassword,
+    );
 
     await this.userRepo.changePassword(user.id, hash);
   }

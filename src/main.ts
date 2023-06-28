@@ -6,6 +6,7 @@ import { get } from 'http';
 import { HttpExceptionFilter } from './exception.filter';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
+import * as cookieParser from 'cookie-parser';
 
 const serverUrl = 'http://localhost:3000';
 
@@ -14,6 +15,7 @@ async function bootstrap() {
   app.enableCors();
   const port = 3000;
 
+  app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({
       forbidUnknownValues: false,
