@@ -25,6 +25,7 @@ import { LocalStrategy } from './common/strategies/local.strategy';
 import { Jwt } from './common/jwt/jwt';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { CreateAccessAndRefreshTokensUseCase } from './features/auth/application/use-cases/create-access-and-refresh-tokens.use-case';
 
 const Strategies = [LocalStrategy];
 
@@ -36,6 +37,7 @@ const UseCases = [
   RefreshConfirmationLinkUseCase,
   SendPasswordRecoveryLinkUseCase,
   ChangePasswordUseCase,
+  CreateAccessAndRefreshTokensUseCase,
 ];
 @Module({
   imports: [

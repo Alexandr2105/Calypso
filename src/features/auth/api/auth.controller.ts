@@ -25,13 +25,12 @@ import { RefreshConfirmationLinkCommand } from '../application/use-cases/refresh
 import { SendPasswordRecoveryLinkCommand } from '../application/use-cases/send-password-recovery-link.use-case';
 import { ChangePasswordCommand } from '../application/use-cases/change-password.use-case';
 import { LocalAuthGuard } from '../../../common/guards/local.auth.guard';
-import { Jwt } from '../../../common/jwt/jwt';
-import { randomUUID } from 'crypto';
+import { CreateAccessAndRefreshTokensCommand } from '../application/use-cases/create-access-and-refresh-tokens.use-case';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private commandBus: CommandBus, private jwtService: Jwt) {}
+  constructor(private commandBus: CommandBus) {}
 
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -105,10 +104,8 @@ export class AuthController {
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
   async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
-    const accessToken = this.jwtService.creatJWT(req.user.id);
-    const refreshToken = this.jwtService.creatRefreshJWT(
-      req.user.id,
-      randomUUID(),
+    const { accessToken, refreshToken } = await this.commandBus.execute(
+      new CreateAccessAndRefreshTokensCommand(req.user.id),
     );
     res.cookie('refreshToken', refreshToken, {
       httpOnly: false,
