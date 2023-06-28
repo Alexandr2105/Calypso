@@ -30,7 +30,7 @@ export class UsersRepository {
     });
   }
 
-  async confirmationEmail(code: string): Promise<void> {
+  async updateConfirmationEmail(code: string): Promise<void> {
     await this.prisma.emailConfirmation.update({
       where: { confirmationCode: code },
       data: { isConfirmed: true },
@@ -70,12 +70,12 @@ export class UsersRepository {
     });
   }
 
-  async getUserByRecoveryCode(recoveryCode: string) {
-    return this.prisma.user.findFirst({
-      where: { emailConfirmation: { confirmationCode: recoveryCode } },
-      include: { emailConfirmation: true },
-    });
-  }
+  // async getUserByRecoveryCode(recoveryCode: string) {
+  //   return this.prisma.user.findFirst({
+  //     where: { emailConfirmation: { confirmationCode: recoveryCode } },
+  //     include: { emailConfirmation: true },
+  //   });
+  // }
 
   async changePassword(userId: string, newPasswordHash: string) {
     await this.prisma.user.update({

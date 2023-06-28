@@ -17,17 +17,20 @@ export class ChangePasswordUseCase
     private userRepo: UsersRepository,
   ) {}
   async execute(command: ChangePasswordCommand): Promise<void> {
-    const user = await this.userRepo.getUserByRecoveryCode(
+    const infoEmailConfirmation = await this.userRepo.getConfirmationInfoByCode(
       command.recoveryCode,
     );
 
-    if (!user || user.emailConfirmation.expirationDate < new Date())
+    if (
+      !infoEmailConfirmation ||
+      infoEmailConfirmation.expirationDate < new Date()
+    )
       throw new BadRequestException(createErrorMessage('code'));
 
     const hash = await this.bcryptService.generateHashForNewUser(
       command.newPassword,
     );
 
-    await this.userRepo.changePassword(user.id, hash);
+    await this.userRepo.changePassword(infoEmailConfirmation.userId, hash);
   }
 }

@@ -26,9 +26,10 @@ import { Jwt } from './common/jwt/jwt';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { CreateAccessAndRefreshTokensUseCase } from './features/auth/application/use-cases/create-access-and-refresh-tokens.use-case';
+import { CheckConfirmationCode } from './features/auth/validation/check-confirmation-code';
 
 const Strategies = [LocalStrategy];
-
+const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
 const UseCases = [
   RegistrationUserUseCase,
   CreateConfirmationInfoForUserUseCase,
@@ -62,7 +63,7 @@ const UseCases = [
     UsersService,
     UsersRepository,
     EmailAdapter,
-    CheckLoginOrEmailInDb,
+    ...Validators,
     ...UseCases,
     ...Strategies,
     Jwt,

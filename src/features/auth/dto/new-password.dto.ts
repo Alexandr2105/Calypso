@@ -1,10 +1,11 @@
 import { Transform } from 'class-transformer';
-import { Length } from 'class-validator';
+import { Length, Validate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   maxLengthPassword,
   minLengthPassword,
 } from '../../../common/constants/models.constants';
+import { CheckConfirmationCode } from '../validation/check-confirmation-code';
 
 export class NewPasswordDto {
   @Transform(({ value }) => value.trim())
@@ -20,6 +21,6 @@ export class NewPasswordDto {
 
   @Transform(({ value }) => value.trim())
   @ApiProperty({ type: 'string' })
-  // @Validate(CheckRecoveryCode)
+  @Validate(CheckConfirmationCode)
   recoveryCode: string;
 }

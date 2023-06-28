@@ -1,6 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
 import { BadRequestException } from '@nestjs/common';
+import { createErrorMessage } from '../../../../common/helpers/create-error-message';
 
 export class ConfirmationEmailCommand {
   constructor(public code: string) {}
@@ -21,8 +22,8 @@ export class ConfirmationEmailUseCase
       confirmationInfo.isConfirmed ||
       confirmationInfo.expirationDate < new Date()
     )
-      throw new BadRequestException();
+      throw new BadRequestException(createErrorMessage('code'));
 
-    await this.userRepo.confirmationEmail(command.code);
+    await this.userRepo.updateConfirmationEmail(command.code);
   }
 }
