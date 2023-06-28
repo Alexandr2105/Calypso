@@ -22,7 +22,7 @@ export class RefreshConfirmationLinkUseCase
     const user = await this.usersRepo.getUserByEmail(command.email);
 
     if (!user || user.emailConfirmation.isConfirmed)
-      throw new BadRequestException(createErrorMessage('email '));
+      throw new BadRequestException(createErrorMessage('email'));
 
     const refreshConfirmationCode =
       await this.usersService.refreshConfirmationInfo(user.id);
