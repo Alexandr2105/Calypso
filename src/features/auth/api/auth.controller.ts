@@ -105,7 +105,7 @@ export class AuthController {
   )
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
-    'Validation error or user already registered ',
+    'Validation error or user already registered',
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
   async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
