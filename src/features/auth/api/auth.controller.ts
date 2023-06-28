@@ -19,8 +19,6 @@ import { NewPasswordDto } from '../dto/new-password.dto';
 import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { RegistrationUserCommand } from '../application/use-cases/registration-user.use-case';
-import { CreateConfirmationInfoForUserCommand } from '../application/use-cases/create-confirmation-info.use-case';
-import { SendConfirmationLinkCommand } from '../application/use-cases/send-confirmation-link.use-case';
 import { ConfirmationEmailCommand } from '../application/use-cases/confirmation-email.use-case';
 import { RegistrationEmailResendingDto } from '../dto/registration-email-resending.dto';
 import { RefreshConfirmationLinkCommand } from '../application/use-cases/refresh-confirmation-link.use-case';
@@ -44,23 +42,21 @@ export class AuthController {
     'Validation error or user already registered',
   )
   async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
-    const registrationUserAndReturnUserId = await this.commandBus.execute(
-      new RegistrationUserCommand(body),
-    );
+    await this.commandBus.execute(new RegistrationUserCommand(body));
 
-    const createConfirmationInfoAndReturnConfirmationCode =
-      await this.commandBus.execute(
-        new CreateConfirmationInfoForUserCommand(
-          registrationUserAndReturnUserId,
-        ),
-      );
-
-    await this.commandBus.execute(
-      new SendConfirmationLinkCommand(
-        body.email,
-        createConfirmationInfoAndReturnConfirmationCode,
-      ),
-    );
+    // const createConfirmationInfoAndReturnConfirmationCode =
+    //   await this.commandBus.execute(
+    //     new CreateConfirmationInfoForUserCommand(
+    //       registrationUserAndReturnUserId,
+    //     ),
+    //   );
+    //
+    // await this.commandBus.execute(
+    //   new SendConfirmationLinkCommand(
+    //     body.email,
+    //     createConfirmationInfoAndReturnConfirmationCode,
+    //   ),
+    // );
     return;
   }
 
