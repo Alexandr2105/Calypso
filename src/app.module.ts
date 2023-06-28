@@ -24,6 +24,7 @@ import { settings } from './settings';
 import { LocalStrategy } from './common/strategies/local.strategy';
 import { Jwt } from './common/jwt/jwt';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 
 const Strategies = [LocalStrategy];
 
@@ -40,6 +41,7 @@ const UseCases = [
   imports: [
     CqrsModule,
     JwtModule.register({}),
+    PassportModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'swagger-static'),
       serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
