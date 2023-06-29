@@ -43,7 +43,7 @@ export class RegistrationUserUseCase
         new CreateConfirmationInfoForUserCommand(userId),
       );
 
-    await this.commandBus.execute(
+    this.commandBus.execute(
       new SendConfirmationLinkCommand(
         command.body.email,
         createConfirmationInfoAndReturnConfirmationCode,

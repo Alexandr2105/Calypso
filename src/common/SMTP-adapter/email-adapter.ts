@@ -6,7 +6,7 @@ export class EmailAdapter {
   async sendEmailConfirmationLink(email: string, code: string) {
     const transporter = this.createTransport();
     const info = await transporter.sendMail({
-      from: '"INSTAGRAM" <instagram@gmail.com>',
+      from: '"KUSTO" <kusto@gmail.com>',
       to: email,
       subject: 'Confirmation link',
       text: 'Для подтверждения регистрации пройдите по ссылке',
@@ -17,7 +17,7 @@ export class EmailAdapter {
   async sendEmailPasswordRecoveryLink(email: string, code: string) {
     const transporter = this.createTransport();
     const info = await transporter.sendMail({
-      from: '"INSTAGRAM" <instagram@gmail.com>',
+      from: '"KUSTO" <kusto@gmail.com>',
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
