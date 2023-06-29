@@ -171,7 +171,7 @@ window.onload = function() {
               "description": "Successful authorization. While without JWT"
             },
             "400": {
-              "description": "Validation error or user already registered ",
+              "description": "Validation error or user already registered",
               "content": {
                 "application/json": {
                   "schema": {

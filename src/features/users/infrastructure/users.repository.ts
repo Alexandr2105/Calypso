@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../common/prisma/prisma-service';
 import { UserEntity } from '../entities/user.entity';
 import { ConfirmationInfoEntity } from '../entities/confirmation-info.entity';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
   async saveEmailConfirmation(
     emailConfirmation: ConfirmationInfoEntity,
   ): Promise<string> {
