@@ -34,6 +34,7 @@ export class ChangePasswordUseCase
     await this.userRepo.updateConfirmationEmail(
       infoEmailConfirmation.confirmationCode,
     );
+
     await this.userRepo.changePassword(infoEmailConfirmation.userId, hash);
   }
 }

@@ -37,6 +37,7 @@ export class RegistrationUserUseCase
     );
 
     await this.userRepo.createUser(newUser);
+
     const createConfirmationInfoAndReturnConfirmationCode =
       await this.commandBus.execute(
         new CreateConfirmationInfoForUserCommand(userId),

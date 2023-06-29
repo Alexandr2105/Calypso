@@ -12,7 +12,6 @@ import { AuthController } from './features/auth/api/auth.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { UsersController } from './features/users/api/users.controller';
 import { BcryptService } from './common/bcript/bcript.service';
-import { PrismaService } from './common/prisma-service/prisma-service';
 import { UsersRepository } from './features/users/infrastructure/users.repository';
 import { EmailAdapter } from './common/SMTP-adapter/email-adapter';
 import { CheckLoginOrEmailInDb } from './features/users/validation/check-login-or-email-in-db';
@@ -24,13 +23,14 @@ import { settings } from './settings';
 import { LocalStrategy } from './common/strategies/local.strategy';
 import { Jwt } from './common/jwt/jwt';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
 import { CreateAccessAndRefreshTokensUseCase } from './features/auth/application/use-cases/create-access-and-refresh-tokens.use-case';
 import { CheckConfirmationCode } from './features/auth/validation/check-confirmation-code';
 import { DevicesRepository } from './features/devices/infrastructure/devices.repository';
 import { RefreshStrategy } from './common/strategies/refresh.strategy';
 import { SaveInfoAboutDevicesUserUseCase } from './features/devices/application/use-cases/save.info.about.devices.user.use.case';
 import { LogoutUserUseCase } from './features/devices/application/use-cases/logout.user.use.case';
+import { PassportModule } from '@nestjs/passport';
+import { PrismaModule } from './common/prisma/prisma.module';
 
 const Strategies = [LocalStrategy, RefreshStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
@@ -48,6 +48,7 @@ const UseCases = [
 ];
 @Module({
   imports: [
+    PrismaModule,
     CqrsModule,
     JwtModule.register({}),
     PassportModule,
@@ -65,7 +66,6 @@ const UseCases = [
   providers: [
     AppService,
     BcryptService,
-    PrismaService,
     UsersService,
     UsersRepository,
     DevicesRepository,

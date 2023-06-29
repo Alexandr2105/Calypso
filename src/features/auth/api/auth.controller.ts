@@ -46,19 +46,6 @@ export class AuthController {
   async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
     await this.commandBus.execute(new RegistrationUserCommand(body));
 
-    // const createConfirmationInfoAndReturnConfirmationCode =
-    //   await this.commandBus.execute(
-    //     new CreateConfirmationInfoForUserCommand(
-    //       registrationUserAndReturnUserId,
-    //     ),
-    //   );
-    //
-    // await this.commandBus.execute(
-    //   new SendConfirmationLinkCommand(
-    //     body.email,
-    //     createConfirmationInfoAndReturnConfirmationCode,
-    //   ),
-    // );
     return;
   }
 
@@ -71,6 +58,7 @@ export class AuthController {
     @Param() params: RegistrationConformationDto,
   ): Promise<void> {
     await this.commandBus.execute(new ConfirmationEmailCommand(params.code));
+
     return;
   }
 
@@ -110,6 +98,7 @@ export class AuthController {
     const { accessToken, refreshToken } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(req.user.id),
     );
+
     await this.commandBus.execute(
       new SaveInfoAboutDevicesUserCommand(
         refreshToken,
@@ -117,10 +106,12 @@ export class AuthController {
         req.headers['user-agent'],
       ),
     );
+
     res.cookie('refreshToken', refreshToken, {
       httpOnly: false,
       secure: false,
     });
+
     res.send(accessToken);
   }
 
@@ -139,6 +130,7 @@ export class AuthController {
     await this.commandBus.execute(
       new SendPasswordRecoveryLinkCommand(body.email),
     );
+
     return;
   }
 
@@ -158,6 +150,7 @@ export class AuthController {
     await this.commandBus.execute(
       new ChangePasswordCommand(body.recoveryCode, body.newPassword),
     );
+
     return;
   }
 
@@ -175,6 +168,7 @@ export class AuthController {
   @UseGuards(RefreshAuthGuard)
   async logout(@Req() req) {
     await this.commandBus.execute(new LogoutUserCommand(req.user.deviceId));
+
     return true;
   }
 }

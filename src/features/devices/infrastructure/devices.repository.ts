@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../common/prisma-service/prisma-service';
+import { Inject, Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../common/prisma/prisma-service';
 import { RefreshTokenDataEntity } from '../entities/refresh.token.data.entity';
 
 Injectable();
 export class DevicesRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
   async getInfoAboutDeviceUser(userId: string, deviceId: string) {
     const devicesInfo = await this.prisma.refreshTokenData.findFirst({

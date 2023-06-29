@@ -1,13 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../common/prisma-service/prisma-service';
+import { Inject, Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../common/prisma/prisma-service';
 import { UserEntity } from '../entities/user.entity';
 import { ConfirmationInfoEntity } from '../entities/confirmation-info.entity';
 
-//TODO:вот это надо обсудить
-
 @Injectable()
 export class UsersRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
   async saveEmailConfirmation(
     emailConfirmation: ConfirmationInfoEntity,
   ): Promise<string> {
@@ -75,13 +73,6 @@ export class UsersRepository {
       },
     });
   }
-
-  // async getUserByRecoveryCode(recoveryCode: string) {
-  //   return this.prisma.user.findFirst({
-  //     where: { emailConfirmation: { confirmationCode: recoveryCode } },
-  //     include: { emailConfirmation: true },
-  //   });
-  // }
 
   async changePassword(userId: string, newPasswordHash: string) {
     await this.prisma.user.update({

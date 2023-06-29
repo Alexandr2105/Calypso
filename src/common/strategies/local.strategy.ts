@@ -16,11 +16,14 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
   async validate(loginOrEmail: string, password: string): Promise<any> {
     const user = await this.userRepo.getUserByLoginOrEmail(loginOrEmail);
+
     if (!user) return false;
+
     const hashPassword = await this.genHash.generateHash(
       password,
       user.passwordHash,
     );
+
     if (user.passwordHash === hashPassword) {
       return user;
     } else {

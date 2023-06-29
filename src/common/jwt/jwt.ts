@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { settings } from '../../settings';
 
-//TODO:вот это надо обсудить
 @Injectable()
 export class Jwt {
   constructor(private jwt: JwtService, private refreshToken: JwtService) {}
