@@ -6,22 +6,22 @@ export class EmailAdapter {
   async sendEmailConfirmationLink(email: string, code: string) {
     const transporter = this.createTransport();
     const info = await transporter.sendMail({
-      from: '"INSTAGRAM" <instagram@gmail.com>',
+      from: '"KUSTO" <kusto@gmail.com>',
       to: email,
       subject: 'Confirmation link',
       text: 'Для подтверждения регистрации пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_CONFIRMATION}/auth/email-confirmation/${code}">ссылка для подтверждения почты</a></p>`,
+      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_CONFIRMATION}/auth/email-confirmation/${code}">ссылка</a> для подтверждения почты</p>`,
     });
   }
 
   async sendEmailPasswordRecoveryLink(email: string, code: string) {
     const transporter = this.createTransport();
     const info = await transporter.sendMail({
-      from: '"INSTAGRAM" <instagram@gmail.com>',
+      from: '"KUSTO" <kusto@gmail.com>',
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD}/password-recovery/${code}">ссылка для обновления пароля</a></p>`,
+      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD}?code=${code}">ссылка</a> для обновления пароля</p>`,
     });
   }
 

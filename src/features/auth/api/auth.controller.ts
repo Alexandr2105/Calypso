@@ -6,6 +6,10 @@ import {
   HttpStatus,
   Param,
   Post,
+  Redirect,
+  Req,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -16,13 +20,18 @@ import { NewPasswordDto } from '../dto/new-password.dto';
 import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { RegistrationUserCommand } from '../application/use-cases/registration-user.use-case';
-import { CreateConfirmationInfoForUserCommand } from '../application/use-cases/create-confirmation-info.use-case';
-import { SendConfirmationLinkCommand } from '../application/use-cases/send-confirmation-link.use-case';
 import { ConfirmationEmailCommand } from '../application/use-cases/confirmation-email.use-case';
 import { RegistrationEmailResendingDto } from '../dto/registration-email-resending.dto';
 import { RefreshConfirmationLinkCommand } from '../application/use-cases/refresh-confirmation-link.use-case';
 import { SendPasswordRecoveryLinkCommand } from '../application/use-cases/send-password-recovery-link.use-case';
 import { ChangePasswordCommand } from '../application/use-cases/change-password.use-case';
+import { LocalAuthGuard } from '../../../common/guards/local.auth.guard';
+import { CreateAccessAndRefreshTokensCommand } from '../application/use-cases/create-access-and-refresh-tokens.use-case';
+import { RefreshAuthGuard } from '../../../common/guards/refresh.auth.guard';
+import { LogoutUserCommand } from '../../devices/application/use-cases/logout.user.use.case';
+import { SaveInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/save.info.about.devices.user.use.case';
+import { UpdateInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/update.info.about.devices.user.use.case';
+import { randomUUID } from 'crypto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -38,27 +47,13 @@ export class AuthController {
     'Validation error or user already registered',
   )
   async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
-    const registrationUserAndReturnUserId = await this.commandBus.execute(
-      new RegistrationUserCommand(body),
-    );
+    await this.commandBus.execute(new RegistrationUserCommand(body));
 
-    const createConfirmationInfoAndReturnConfirmationCode =
-      await this.commandBus.execute(
-        new CreateConfirmationInfoForUserCommand(
-          registrationUserAndReturnUserId,
-        ),
-      );
-
-    await this.commandBus.execute(
-      new SendConfirmationLinkCommand(
-        body.email,
-        createConfirmationInfoAndReturnConfirmationCode,
-      ),
-    );
     return;
   }
 
   @Get('email-confirmation/:code')
+  @Redirect('https://kusto-gamma.vercel.app/login')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Email confirmation' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email successfully verified')
@@ -67,6 +62,7 @@ export class AuthController {
     @Param() params: RegistrationConformationDto,
   ): Promise<void> {
     await this.commandBus.execute(new ConfirmationEmailCommand(params.code));
+
     return;
   }
 
@@ -89,7 +85,8 @@ export class AuthController {
     return;
   }
 
-  @HttpCode(200)
+  @UseGuards(LocalAuthGuard)
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOperation({ summary: 'user authorization' })
   @ApiResponseForSwagger(
@@ -101,13 +98,30 @@ export class AuthController {
     'Validation error or user already registered',
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
-  async loginUser(@Body() body: LoginDto) {
-    return 'ok';
+  async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
+    const { accessToken, refreshToken } = await this.commandBus.execute(
+      new CreateAccessAndRefreshTokensCommand(req.user.id, randomUUID()),
+    );
+
+    await this.commandBus.execute(
+      new SaveInfoAboutDevicesUserCommand(
+        refreshToken,
+        req.ip,
+        req.headers['user-agent'],
+      ),
+    );
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: false,
+      secure: false,
+    });
+
+    res.send(accessToken);
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('password-recovery')
-  @ApiOperation({ summary: 'password recovery' })
+  @ApiOperation({ summary: 'Password recovery' })
   @ApiResponseForSwagger(
     HttpStatus.NO_CONTENT,
     "Even if the current email address is not registered (to prevent the user's email from being detected)",
@@ -120,18 +134,19 @@ export class AuthController {
     await this.commandBus.execute(
       new SendPasswordRecoveryLinkCommand(body.email),
     );
+
     return;
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.OK)
   @Post('new-password')
-  @ApiOperation({ summary: 'creating a new password' })
+  @ApiOperation({ summary: 'Creating a new password' })
   @ApiResponseForSwagger(
     HttpStatus.NO_CONTENT,
     'If the code is valid and the new password is accepted',
   )
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description:
       'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
   })
@@ -139,21 +154,60 @@ export class AuthController {
     await this.commandBus.execute(
       new ChangePasswordCommand(body.recoveryCode, body.newPassword),
     );
+
     return;
   }
 
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('logout')
-  @ApiOperation({ summary: 'user logout' })
+  @ApiOperation({ summary: 'User logout' })
   @ApiResponse({
-    status: 204,
+    status: HttpStatus.NO_CONTENT,
   })
   @ApiResponse({
-    status: 400,
+    status: HttpStatus.BAD_REQUEST,
     description:
       'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
   })
-  async logout() {
+  @UseGuards(RefreshAuthGuard)
+  async logout(@Req() req) {
+    await this.commandBus.execute(new LogoutUserCommand(req.user.deviceId));
+
     return true;
+  }
+
+  @ApiOperation({ summary: 'Generate new pair of access and refresh tokens' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description:
+      'Returns JWT accessToken in body and JWT refreshToken in cookie ',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description:
+      'If the JWT refreshToken inside cookie is missing, expired or incorrect',
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RefreshAuthGuard)
+  @Post('refresh-token')
+  async updateRefreshToken(@Req() req, @Res() res) {
+    const { accessToken, refreshToken } = await this.commandBus.execute(
+      new CreateAccessAndRefreshTokensCommand(
+        req.user.userId,
+        req.user.deviceId,
+      ),
+    );
+    await this.commandBus.execute(
+      new UpdateInfoAboutDevicesUserCommand(
+        refreshToken,
+        req.ip,
+        req.headers['user-agent'],
+      ),
+    );
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: false,
+      secure: false,
+    });
+    res.send(accessToken);
   }
 }

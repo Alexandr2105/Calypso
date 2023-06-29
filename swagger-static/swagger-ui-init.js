@@ -208,7 +208,7 @@ window.onload = function() {
       "/auth/password-recovery": {
         "post": {
           "operationId": "AuthController_passwordRecovery",
-          "summary": "password recovery",
+          "summary": "Password recovery",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -259,7 +259,7 @@ window.onload = function() {
       "/auth/new-password": {
         "post": {
           "operationId": "AuthController_createNewPassword",
-          "summary": "creating a new password",
+          "summary": "Creating a new password",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -287,7 +287,7 @@ window.onload = function() {
       "/auth/logout": {
         "post": {
           "operationId": "AuthController_logout",
-          "summary": "user logout",
+          "summary": "User logout",
           "parameters": [],
           "responses": {
             "204": {
@@ -295,6 +295,24 @@ window.onload = function() {
             },
             "400": {
               "description": "If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired"
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/auth/refresh-token": {
+        "post": {
+          "operationId": "AuthController_updateRefreshToken",
+          "summary": "Generate new pair of access and refresh tokens",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Returns JWT accessToken in body and JWT refreshToken in cookie "
+            },
+            "400": {
+              "description": "If the JWT refreshToken inside cookie is missing, expired or incorrect"
             }
           },
           "tags": [

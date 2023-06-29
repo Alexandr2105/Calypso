@@ -1,9 +1,11 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserDto } from '../../dto/create-user.dto';
 import { UserEntity } from '../../../users/entities/user.entity';
 import { BcryptService } from '../../../../common/bcript/bcript.service';
 import { randomUUID } from 'crypto';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
+import { CreateConfirmationInfoForUserCommand } from './create-confirmation-info.use-case';
+import { SendConfirmationLinkCommand } from './send-confirmation-link.use-case';
 
 export class RegistrationUserCommand {
   constructor(public body: CreateUserDto) {}
@@ -16,9 +18,12 @@ export class RegistrationUserUseCase
   constructor(
     private bcryptService: BcryptService,
     private userRepo: UsersRepository,
+    private commandBus: CommandBus,
   ) {}
-  async execute(command: RegistrationUserCommand): Promise<string> {
-    const hash = await this.bcryptService.generateHash(command.body.password);
+  async execute(command: RegistrationUserCommand): Promise<boolean> {
+    const hash = await this.bcryptService.generateHashForNewUser(
+      command.body.password,
+    );
     const userId = randomUUID();
     const createdAt = new Date();
 
@@ -32,6 +37,18 @@ export class RegistrationUserUseCase
     );
 
     await this.userRepo.createUser(newUser);
-    return userId;
+
+    const createConfirmationInfoAndReturnConfirmationCode =
+      await this.commandBus.execute(
+        new CreateConfirmationInfoForUserCommand(userId),
+      );
+
+    await this.commandBus.execute(
+      new SendConfirmationLinkCommand(
+        command.body.email,
+        createConfirmationInfoAndReturnConfirmationCode,
+      ),
+    );
+    return true;
   }
 }

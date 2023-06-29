@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../common/prisma-service/prisma-service';
+import { Inject, Injectable } from '@nestjs/common';
+import { PrismaService } from '../../../common/prisma/prisma-service';
 import { UserEntity } from '../entities/user.entity';
 import { ConfirmationInfoEntity } from '../entities/confirmation-info.entity';
 
 @Injectable()
 export class UsersRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
   async saveEmailConfirmation(
     emailConfirmation: ConfirmationInfoEntity,
   ): Promise<string> {
@@ -30,7 +30,7 @@ export class UsersRepository {
     });
   }
 
-  async confirmationEmail(code: string): Promise<void> {
+  async updateConfirmationEmail(code: string): Promise<void> {
     await this.prisma.emailConfirmation.update({
       where: { confirmationCode: code },
       data: { isConfirmed: true },
@@ -51,12 +51,16 @@ export class UsersRepository {
   ): Promise<void> {
     await this.prisma.emailConfirmation.update({
       where: { userId },
-      data: { confirmationCode: newConfirmationCode, expirationDate: expDate },
+      data: {
+        confirmationCode: newConfirmationCode,
+        expirationDate: expDate,
+        isConfirmed: false,
+      },
     });
   }
 
   async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserEntity> {
-    const user = await this.prisma.user.findFirst({
+    return this.prisma.user.findFirst({
       where: {
         OR: [
           {
@@ -67,15 +71,6 @@ export class UsersRepository {
           },
         ],
       },
-    });
-
-    return user;
-  }
-
-  async getUserByRecoveryCode(recoveryCode: string) {
-    return this.prisma.user.findFirst({
-      where: { emailConfirmation: { confirmationCode: recoveryCode } },
-      include: { emailConfirmation: true },
     });
   }
 

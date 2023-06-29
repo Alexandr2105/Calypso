@@ -11,7 +11,7 @@ import { CheckLoginOrEmailInDb } from '../../users/validation/check-login-or-ema
 
 export class CreateUserDto {
   @Length(minLengthUserName, maxLengthUserName, {
-    message: 'Не верно заполнено поле',
+    message: 'Не верно заполнено поле  ',
   })
   @Transform(({ value }) => value.trim())
   @Validate(CheckLoginOrEmailInDb)
