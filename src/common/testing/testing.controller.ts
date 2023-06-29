@@ -7,6 +7,8 @@ export class TestingController {
   @Delete()
   @HttpCode(204)
   async clearAllData(): Promise<HttpStatus> {
+    await this.prisma.refreshTokenData.deleteMany();
+
     await this.prisma.emailConfirmation.deleteMany();
 
     await this.prisma.user.deleteMany();

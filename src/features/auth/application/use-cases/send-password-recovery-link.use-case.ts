@@ -19,7 +19,7 @@ export class SendPasswordRecoveryLinkUseCase
   async execute(command: SendPasswordRecoveryLinkCommand): Promise<void> {
     const user = await this.usersRepo.getUserByEmail(command.email);
 
-    if (user && !user.emailConfirmation.isConfirmed) {
+    if (user) {
       const refreshConfirmationCode =
         await this.usersService.refreshConfirmationInfo(user.id);
 
