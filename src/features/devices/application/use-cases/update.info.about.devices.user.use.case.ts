@@ -3,7 +3,7 @@ import { Jwt } from '../../../../common/jwt/jwt';
 import { DevicesRepository } from '../../infrastructure/devices.repository';
 import { RefreshTokenDataEntity } from '../../entities/refresh.token.data.entity';
 
-export class SaveInfoAboutDevicesUserCommand {
+export class UpdateInfoAboutDevicesUserCommand {
   constructor(
     public refreshToken: string,
     public ip: string,
@@ -11,16 +11,14 @@ export class SaveInfoAboutDevicesUserCommand {
   ) {}
 }
 
-@CommandHandler(SaveInfoAboutDevicesUserCommand)
-export class SaveInfoAboutDevicesUserUseCase
-  implements ICommandHandler<SaveInfoAboutDevicesUserCommand>
-{
+@CommandHandler(UpdateInfoAboutDevicesUserCommand)
+export class UpdateInfoAboutDevicesUserUseCase implements ICommandHandler {
   constructor(
     private jwtService: Jwt,
     private devicesRepository: DevicesRepository,
   ) {}
 
-  async execute(command: SaveInfoAboutDevicesUserCommand): Promise<void> {
+  async execute(command: any): Promise<void> {
     const infoRefreshToken: any = await this.jwtService.getUserByRefreshToken(
       command.refreshToken,
     );
@@ -34,10 +32,6 @@ export class SaveInfoAboutDevicesUserUseCase
       infoRefreshToken.userId,
     );
 
-    await this.devicesRepository.saveInfoRefreshToken(data);
-
-    await this.devicesRepository.delOldRefreshTokenData(+new Date());
-
-    return;
+    await this.devicesRepository.updateInfoRefreshTokenData(data);
   }
 }
