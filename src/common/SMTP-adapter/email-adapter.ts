@@ -21,7 +21,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD}/registration/success/${code}">ссылка</a> для обновления пароля</p>`,
+      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD}?code=${code}">ссылка</a> для обновления пароля</p>`,
     });
   }
 
