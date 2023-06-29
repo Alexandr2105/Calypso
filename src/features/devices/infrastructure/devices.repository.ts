@@ -27,4 +27,11 @@ export class DevicesRepository {
       where: { exp: { lt: Math.floor(date / 1000) } },
     });
   }
+
+  async updateInfoRefreshTokenData(info: RefreshTokenDataEntity) {
+    await this.prisma.refreshTokenData.update({
+      where: { deviceId: info.deviceId },
+      data: { iat: info.iat, exp: info.exp },
+    });
+  }
 }

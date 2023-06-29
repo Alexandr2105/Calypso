@@ -29,6 +29,8 @@ import { CreateAccessAndRefreshTokensCommand } from '../application/use-cases/cr
 import { RefreshAuthGuard } from '../../../common/guards/refresh.auth.guard';
 import { LogoutUserCommand } from '../../devices/application/use-cases/logout.user.use.case';
 import { SaveInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/save.info.about.devices.user.use.case';
+import { UpdateInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/update.info.about.devices.user.use.case';
+import { randomUUID } from 'crypto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -96,7 +98,7 @@ export class AuthController {
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
   async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
     const { accessToken, refreshToken } = await this.commandBus.execute(
-      new CreateAccessAndRefreshTokensCommand(req.user.id),
+      new CreateAccessAndRefreshTokensCommand(req.user.id, randomUUID()),
     );
 
     await this.commandBus.execute(
@@ -117,7 +119,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('password-recovery')
-  @ApiOperation({ summary: 'password recovery' })
+  @ApiOperation({ summary: 'Password recovery' })
   @ApiResponseForSwagger(
     HttpStatus.NO_CONTENT,
     "Even if the current email address is not registered (to prevent the user's email from being detected)",
@@ -134,9 +136,9 @@ export class AuthController {
     return;
   }
 
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   @Post('new-password')
-  @ApiOperation({ summary: 'creating a new password' })
+  @ApiOperation({ summary: 'Creating a new password' })
   @ApiResponseForSwagger(
     HttpStatus.NO_CONTENT,
     'If the code is valid and the new password is accepted',
@@ -156,7 +158,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('logout')
-  @ApiOperation({ summary: 'user logout' })
+  @ApiOperation({ summary: 'User logout' })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
@@ -170,5 +172,40 @@ export class AuthController {
     await this.commandBus.execute(new LogoutUserCommand(req.user.deviceId));
 
     return true;
+  }
+
+  @ApiOperation({ summary: 'Generate new pair of access and refresh tokens' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description:
+      'Returns JWT accessToken in body and JWT refreshToken in cookie ',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description:
+      'If the JWT refreshToken inside cookie is missing, expired or incorrect',
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(RefreshAuthGuard)
+  @Post('refresh-token')
+  async updateRefreshToken(@Req() req, @Res() res) {
+    const { accessToken, refreshToken } = await this.commandBus.execute(
+      new CreateAccessAndRefreshTokensCommand(
+        req.user.userId,
+        req.user.deviceId,
+      ),
+    );
+    await this.commandBus.execute(
+      new UpdateInfoAboutDevicesUserCommand(
+        refreshToken,
+        req.ip,
+        req.headers['user-agent'],
+      ),
+    );
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: false,
+      secure: false,
+    });
+    res.send(accessToken);
   }
 }

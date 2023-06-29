@@ -31,6 +31,7 @@ import { SaveInfoAboutDevicesUserUseCase } from './features/devices/application/
 import { LogoutUserUseCase } from './features/devices/application/use-cases/logout.user.use.case';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from './common/prisma/prisma.module';
+import { UpdateInfoAboutDevicesUserUseCase } from './features/devices/application/use-cases/update.info.about.devices.user.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
@@ -45,6 +46,7 @@ const UseCases = [
   CreateAccessAndRefreshTokensUseCase,
   SaveInfoAboutDevicesUserUseCase,
   LogoutUserUseCase,
+  UpdateInfoAboutDevicesUserUseCase,
 ];
 @Module({
   imports: [

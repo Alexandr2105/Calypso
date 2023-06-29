@@ -1,9 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { randomUUID } from 'crypto';
 import { Jwt } from '../../../../common/jwt/jwt';
 
 export class CreateAccessAndRefreshTokensCommand {
-  constructor(public userId: string) {}
+  constructor(public userId: string, public deviceId: string) {}
 }
 @CommandHandler(CreateAccessAndRefreshTokensCommand)
 export class CreateAccessAndRefreshTokensUseCase
@@ -15,7 +14,7 @@ export class CreateAccessAndRefreshTokensUseCase
     const accessToken = this.jwtService.creatJWT(command.userId);
     const refreshToken = this.jwtService.creatRefreshJWT(
       command.userId,
-      randomUUID(),
+      command.deviceId,
     );
     return { accessToken, refreshToken };
   }
