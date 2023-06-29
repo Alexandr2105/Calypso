@@ -60,18 +60,23 @@ export class UsersRepository {
   }
 
   async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserEntity> {
-    return this.prisma.user.findFirst({
-      where: {
-        OR: [
-          {
-            login: loginOrEmail,
-          },
-          {
-            email: loginOrEmail,
-          },
-        ],
-      },
-    });
+    try {
+      return this.prisma.user.findFirst({
+        where: {
+          OR: [
+            {
+              login: loginOrEmail,
+            },
+            {
+              email: loginOrEmail,
+            },
+          ],
+        },
+      });
+    } catch (err) {
+      console.error();
+      return null;
+    }
   }
 
   async changePassword(userId: string, newPasswordHash: string) {
