@@ -27,9 +27,7 @@ CREATE TABLE "RefreshTokenData" (
     "deviceId" TEXT NOT NULL,
     "ip" TEXT NOT NULL,
     "deviceName" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-
-    CONSTRAINT "RefreshTokenData_pkey" PRIMARY KEY ("userId")
+    "userId" TEXT NOT NULL
 );
 
 -- CreateIndex
