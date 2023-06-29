@@ -10,7 +10,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Confirmation link',
       text: 'Для подтверждения регистрации пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_CONFIRMATION}/auth/email-confirmation/${code}">ссылка для подтверждения почты</a></p>`,
+      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_CONFIRMATION}/auth/email-confirmation/${code}">ссылка</a> для подтверждения почты</p>`,
     });
   }
 
@@ -21,7 +21,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD}/registration/success/${code}">ссылка для обновления пароля</a></p>`,
+      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD}/registration/success/${code}">ссылка</a> для обновления пароля</p>`,
     });
   }
 
