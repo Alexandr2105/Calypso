@@ -1,6 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import { config } from 'dotenv';
-config();
+import { settings } from '../../settings';
 
 export class EmailAdapter {
   async sendEmailConfirmationLink(email: string, code: string) {
@@ -10,7 +9,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Confirmation link',
       text: 'Для подтверждения регистрации пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_CONFIRMATION}/auth/email-confirmation/${code}">ссылка</a> для подтверждения почты</p>`,
+      html: `<p>Привет, вот <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}/auth/email-confirmation/${code}">ссылка</a> для подтверждения почты</p>`,
     });
   }
 
@@ -21,7 +20,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD}/auth/new_password?code=${code}">ссылка</a> для обновления пароля</p>`,
+      html: `<p>Привет, вот <a href="${settings.RECOVERY_PASSWORD}/auth/new_password?code=${code}">ссылка</a> для обновления пароля</p>`,
     });
   }
 
