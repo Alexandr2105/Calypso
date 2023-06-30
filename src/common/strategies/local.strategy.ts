@@ -20,7 +20,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!user) return false;
 
     const hashPassword = await this.genHash.generateHash(
-      password,
+      password.toString(),
       user.passwordHash,
     );
 
