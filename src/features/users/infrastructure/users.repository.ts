@@ -80,4 +80,10 @@ export class UsersRepository {
       data: { passwordHash: newPasswordHash },
     });
   }
+
+  async getAllUsers() {
+    return this.prisma.user.findMany({
+      select: { id: true, email: true, login: true },
+    });
+  }
 }
