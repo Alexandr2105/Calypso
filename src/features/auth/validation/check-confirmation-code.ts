@@ -20,6 +20,6 @@ export class CheckConfirmationCode implements ValidatorConstraintInterface {
   }
 
   defaultMessage(): string {
-    return 'Не верные данные';
+    return 'Incorrect confirmation code';
   }
 }

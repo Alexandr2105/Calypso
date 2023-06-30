@@ -15,7 +15,7 @@ export class NewPasswordDto {
     maximum: maxLengthPassword,
   })
   @Length(minLengthPassword, maxLengthPassword, {
-    message: 'Не верно заполнено поле',
+    message: 'Wrong length',
   })
   newPassword: string;
 

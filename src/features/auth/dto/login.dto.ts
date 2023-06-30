@@ -11,11 +11,13 @@ import {
 export class LoginDto {
   @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
-  @Length(minLengthLoginOrEmail, maxLengthLoginOrEmail)
+  @Length(minLengthLoginOrEmail, maxLengthLoginOrEmail, {
+    message: 'Wrong length',
+  })
   loginOrEmail: string;
 
   @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
-  @Length(minLengthPassword, maxLengthPassword)
+  @Length(minLengthPassword, maxLengthPassword, { message: 'Wrong length' })
   password: string;
 }

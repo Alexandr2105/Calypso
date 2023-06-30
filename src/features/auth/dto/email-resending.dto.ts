@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class EmailResendingDto {
   @Transform(({ value }) => String(value).trim())
-  @IsEmail()
+  @IsEmail({}, { message: 'Invalid email' })
   @ApiProperty({ type: 'string' })
   // @Validate(CheckEmailConfirmation)
   email: string;

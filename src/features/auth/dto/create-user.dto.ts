@@ -22,7 +22,7 @@ export class CreateUserDto {
   })
   login: string;
 
-  @IsEmail()
+  @IsEmail({}, { message: 'Invalid email' })
   @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
   @Validate(CheckLoginOrEmailInDb)
