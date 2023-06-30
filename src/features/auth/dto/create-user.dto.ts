@@ -13,7 +13,7 @@ export class CreateUserDto {
   @Length(minLengthUserName, maxLengthUserName, {
     message: 'Wrong length',
   })
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   // @Validate(CheckLoginOrEmailInDb)
   @ApiProperty({
     type: 'string',
@@ -23,12 +23,12 @@ export class CreateUserDto {
   login: string;
 
   @IsEmail()
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
   @Validate(CheckLoginOrEmailInDb)
   email: string;
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   @Length(minLengthPassword, maxLengthPassword, {
     message: 'Wrong length',
   })

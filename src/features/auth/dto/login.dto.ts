@@ -9,12 +9,12 @@ import {
 } from '../../../common/constants/models.constants';
 
 export class LoginDto {
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
   @Length(minLengthLoginOrEmail, maxLengthLoginOrEmail)
   loginOrEmail: string;
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
   @Length(minLengthPassword, maxLengthPassword)
   password: string;
