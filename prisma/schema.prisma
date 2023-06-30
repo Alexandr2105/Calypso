@@ -31,7 +31,7 @@ model EmailConfirmation {
 model RefreshTokenData{
   iat        Int
   exp        Int
-  deviceId   String @unique
+  deviceId   String @id
   ip         String
   deviceName String
   userId     String

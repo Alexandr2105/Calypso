@@ -46,11 +46,8 @@ export class AuthController {
     HttpStatus.BAD_REQUEST,
     'Validation error or user already registered',
   )
-  async registrationUsers(
-    @Body() body: CreateUserDto,
-    @Res() res,
-  ): Promise<void> {
-    res.status(204).json({});
+  async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
+    // res.status(204).json({});
     await this.commandBus.execute(new RegistrationUserCommand(body));
   }
 
