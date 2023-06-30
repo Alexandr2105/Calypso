@@ -11,10 +11,10 @@ import { CheckLoginOrEmailInDb } from '../../users/validation/check-login-or-ema
 
 export class CreateUserDto {
   @Length(minLengthUserName, maxLengthUserName, {
-    message: 'Не верно заполнено поле  ',
+    message: 'Wrong length',
   })
   @Transform(({ value }) => value.trim())
-  @Validate(CheckLoginOrEmailInDb)
+  // @Validate(CheckLoginOrEmailInDb)
   @ApiProperty({
     type: 'string',
     minimum: minLengthUserName,
@@ -30,7 +30,7 @@ export class CreateUserDto {
 
   @Transform(({ value }) => value.trim())
   @Length(minLengthPassword, maxLengthPassword, {
-    message: 'Не верно заполнено поле',
+    message: 'Wrong length',
   })
   @ApiProperty({
     type: 'string',

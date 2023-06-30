@@ -15,6 +15,6 @@ export class CheckLoginOrEmailInDb implements ValidatorConstraintInterface {
   }
 
   defaultMessage(): string {
-    return 'Не верные данные';
+    return 'User with this email is already registered';
   }
 }
