@@ -14,7 +14,9 @@ export class CreateUserDto {
     message: 'Wrong length',
   })
   @Transform(({ value }) => String(value).trim())
-  // @Validate(CheckLoginOrEmailInDb)
+  @Validate(CheckLoginOrEmailInDb, {
+    message: 'User with this username is already registered',
+  })
   @ApiProperty({
     type: 'string',
     minimum: minLengthUserName,
@@ -25,7 +27,9 @@ export class CreateUserDto {
   @IsEmail({}, { message: 'Invalid email' })
   @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
-  @Validate(CheckLoginOrEmailInDb)
+  @Validate(CheckLoginOrEmailInDb, {
+    message: 'User with this email is already registered',
+  })
   email: string;
 
   @Transform(({ value }) => String(value).trim())

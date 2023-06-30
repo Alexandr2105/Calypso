@@ -13,8 +13,4 @@ export class CheckLoginOrEmailInDb implements ValidatorConstraintInterface {
     const user = await this.usersRepo.getUserByLoginOrEmail(loginOrEmail);
     return !user;
   }
-
-  defaultMessage(): string {
-    return 'User with this email is already registered';
-  }
 }
