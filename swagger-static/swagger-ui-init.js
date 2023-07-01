@@ -168,7 +168,24 @@ window.onload = function() {
           },
           "responses": {
             "200": {
-              "description": "Successful authorization. While without JWT"
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string",
+                        "description": "Access token for authentication."
+                      },
+                      "profile": {
+                        "type": "boolean",
+                        "description": "Indicates if a profile exists."
+                      }
+                    }
+                  }
+                }
+              }
             },
             "400": {
               "description": "Validation error or user already registered",
@@ -349,6 +366,7 @@ window.onload = function() {
       "/users/profiles": {
         "post": {
           "operationId": "UsersProfilesController_saveUsersProfiles",
+          "summary": "Registration users",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -361,10 +379,39 @@ window.onload = function() {
             }
           },
           "responses": {
-            "201": {
-              "description": ""
+            "204": {
+              "description": "User saved"
+            },
+            "400": {
+              "description": "Validation error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
-          }
+          },
+          "tags": [
+            "Profile"
+          ]
         }
       }
     },
@@ -457,7 +504,40 @@ window.onload = function() {
         },
         "UsersProfilesDto": {
           "type": "object",
-          "properties": {}
+          "properties": {
+            "login": {
+              "type": "string",
+              "minimum": 6,
+              "maximum": 30
+            },
+            "firstName": {
+              "type": "string",
+              "maximum": 50
+            },
+            "lastName": {
+              "type": "string",
+              "maximum": 50
+            },
+            "dateOfBirthday": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string",
+              "maximum": 50
+            },
+            "userInfo": {
+              "type": "string",
+              "maximum": 200
+            }
+          },
+          "required": [
+            "login",
+            "firstName",
+            "lastName",
+            "dateOfBirthday",
+            "city",
+            "userInfo"
+          ]
         }
       }
     }

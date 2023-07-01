@@ -88,17 +88,29 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @ApiOperation({ summary: 'user authorization' })
-  @ApiResponseForSwagger(
-    HttpStatus.OK,
-    'Successful authorization. While without JWT',
-  )
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+          description: 'Access token for authentication.',
+        },
+        profile: {
+          type: 'boolean',
+          description: 'Indicates if a profile exists.',
+        },
+      },
+    },
+  })
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
     'Validation error or user already registered',
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
   async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
-    const { accessToken, refreshToken } = await this.commandBus.execute(
+    const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(req.user.id, randomUUID()),
     );
 
@@ -115,7 +127,7 @@ export class AuthController {
       secure: false,
     });
 
-    res.send(accessToken);
+    res.send({ ...accessToken, profile: info });
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
