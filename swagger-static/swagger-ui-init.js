@@ -345,6 +345,27 @@ window.onload = function() {
             }
           }
         }
+      },
+      "/users/profiles": {
+        "post": {
+          "operationId": "UsersProfilesController_saveUsersProfiles",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsersProfilesDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          }
+        }
       }
     },
     "info": {
@@ -433,6 +454,10 @@ window.onload = function() {
             "newPassword",
             "recoveryCode"
           ]
+        },
+        "UsersProfilesDto": {
+          "type": "object",
+          "properties": {}
         }
       }
     }

@@ -32,8 +32,12 @@ import { LogoutUserUseCase } from './features/devices/application/use-cases/logo
 import { PassportModule } from '@nestjs/passport';
 import { PrismaModule } from './common/prisma/prisma.module';
 import { UpdateInfoAboutDevicesUserUseCase } from './features/devices/application/use-cases/update.info.about.devices.user.use.case';
+import { UsersProfilesController } from './features/users-profiles/api/users.profiles.controller';
+import { SaveInfoAboutUsersProfilesUseCase } from './features/users-profiles/application/use-cases/save.info.about.users.profiles.use.case';
+import { UsersProfilesRepository } from './features/users-profiles/infrastructure/users.profiles.repository';
+import { JwtStrategy } from './common/strategies/jwt.strategy';
 
-const Strategies = [LocalStrategy, RefreshStrategy];
+const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
 const UseCases = [
   RegistrationUserUseCase,
@@ -47,7 +51,14 @@ const UseCases = [
   SaveInfoAboutDevicesUserUseCase,
   LogoutUserUseCase,
   UpdateInfoAboutDevicesUserUseCase,
+  SaveInfoAboutUsersProfilesUseCase,
 ];
+const Repositories = [
+  UsersRepository,
+  DevicesRepository,
+  UsersProfilesRepository,
+];
+
 @Module({
   imports: [
     PrismaModule,
@@ -64,17 +75,17 @@ const UseCases = [
     AuthController,
     UsersController,
     TestingController,
+    UsersProfilesController,
   ],
   providers: [
     AppService,
     BcryptService,
     UsersService,
-    UsersRepository,
-    DevicesRepository,
     EmailAdapter,
     ...Validators,
     ...UseCases,
     ...Strategies,
+    ...Repositories,
     Jwt,
   ],
 })

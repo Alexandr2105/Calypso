@@ -18,6 +18,7 @@ model User {
   isDeleted         Boolean
   emailConfirmation EmailConfirmation?
   refreshTokenData  RefreshTokenData[]
+  userPorfile       UserProfile?
 }
 
 model EmailConfirmation {
@@ -36,4 +37,16 @@ model RefreshTokenData{
   deviceName String
   userId     String
   user       User   @relation(fields: [userId],references: [id])
+}
+
+model UserProfile{
+  userId         String   @id
+  login          String   @unique
+  firstName      String?
+  lastName       String?
+  dateOfBirthday String?
+  city           String?
+  userInfo       String?
+  photo          String?
+  user           User    @relation(fields: [userId],references: [id])
 }

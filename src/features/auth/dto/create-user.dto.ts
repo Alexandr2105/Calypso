@@ -10,10 +10,10 @@ import {
 import { CheckLoginOrEmailInDb } from '../../users/validation/check-login-or-email-in-db';
 
 export class CreateUserDto {
+  @Transform(({ value }) => String(value).trim())
   @Length(minLengthUserName, maxLengthUserName, {
     message: 'Wrong length',
   })
-  @Transform(({ value }) => String(value).trim())
   @Validate(CheckLoginOrEmailInDb, {
     message: 'User with this username is already registered',
   })
