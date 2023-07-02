@@ -86,4 +86,11 @@ export class UsersRepository {
       select: { id: true, email: true, login: true },
     });
   }
+
+  async getUserById(userId: string) {
+    return this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, login: true },
+    });
+  }
 }

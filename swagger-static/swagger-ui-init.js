@@ -363,7 +363,7 @@ window.onload = function() {
           }
         }
       },
-      "/users/profiles": {
+      "/users/profiles/save-profileInfo": {
         "post": {
           "operationId": "UsersProfilesController_saveUsersProfiles",
           "summary": "Registration users",
@@ -407,6 +407,23 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "Profile"
+          ]
+        }
+      },
+      "/users/profiles/save-avatar": {
+        "post": {
+          "operationId": "UsersProfilesController_saveAvatar",
+          "parameters": [],
+          "responses": {
+            "201": {
+              "description": ""
             }
           },
           "tags": [

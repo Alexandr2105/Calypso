@@ -6,11 +6,11 @@ import { UsersProfilesEntity } from '../entities/users.profiles.entity';
 export class UsersProfilesRepository {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
-  async saveUsersProfiles({ userId, ...all }: UsersProfilesEntity) {
+  async saveUsersProfiles(info: UsersProfilesEntity) {
     await this.prisma.userProfile.upsert({
-      where: { userId: userId },
-      create: { userId, ...all },
-      update: { ...all },
+      where: { userId: info.userId },
+      create: info,
+      update: info,
     });
   }
 

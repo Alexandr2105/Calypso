@@ -36,6 +36,8 @@ import { UsersProfilesController } from './features/users-profiles/api/users.pro
 import { SaveInfoAboutUsersProfilesUseCase } from './features/users-profiles/application/use-cases/save.info.about.users.profiles.use.case';
 import { UsersProfilesRepository } from './features/users-profiles/infrastructure/users.profiles.repository';
 import { JwtStrategy } from './common/strategies/jwt.strategy';
+import { UploadAvatarUseCase } from './features/users-profiles/application/use-cases/upload.avatar.user.case';
+import { FileStorageAdapterS3 } from './common/adapters/file.storage.adapter.s3';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
@@ -52,6 +54,7 @@ const UseCases = [
   LogoutUserUseCase,
   UpdateInfoAboutDevicesUserUseCase,
   SaveInfoAboutUsersProfilesUseCase,
+  UploadAvatarUseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -82,6 +85,7 @@ const Repositories = [
     BcryptService,
     UsersService,
     EmailAdapter,
+    FileStorageAdapterS3,
     ...Validators,
     ...UseCases,
     ...Strategies,
