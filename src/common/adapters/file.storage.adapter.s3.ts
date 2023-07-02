@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { settings } from '../../settings';
 
 @Injectable()
 export class FileStorageAdapterS3 {
@@ -8,17 +9,17 @@ export class FileStorageAdapterS3 {
     const REGION = 'ru-central1';
     this.s3Client = new S3Client({
       region: REGION,
-      endpoint: 'https://storage.yandexcloud.net',
+      endpoint: settings.BASE_URL_AWS,
       credentials: {
-        accessKeyId: 'YCAJE0FJh8Ruav5UQGAFm8VQy',
-        secretAccessKey: 'YCMMe7NXFLImrmITDs_CWTSopEnXIeUB2Qls1cf6',
+        accessKeyId: settings.ACCESS_KEY_ID,
+        secretAccessKey: settings.SECRET_ACCESS_KEY,
       },
     });
   }
 
   async saveAvatar(userId: string, buffer: Buffer) {
     const command = new PutObjectCommand({
-      Bucket: 'shvs1510',
+      Bucket: settings.BACKET_NAME,
       Key: `${userId}/avatars/${userId}_avatar.png`,
       Body: buffer,
       ContentType: 'image/png',

@@ -3,6 +3,7 @@ import sharp from 'sharp';
 import { FileStorageAdapterS3 } from '../../../../common/adapters/file.storage.adapter.s3';
 import { UsersProfilesRepository } from '../../infrastructure/users.profiles.repository';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
+import { settings } from '../../../../settings';
 
 export class UploadAvatarCommand {
   constructor(public userId: string, public buffer: Buffer) {}
@@ -33,7 +34,7 @@ export class UploadAvatarUseCase
     await this.profilesRepository.saveUsersProfiles({
       userId: command.userId,
       login: user.login,
-      photo: `https://storage.yandexcloud.net/${key}`,
+      photo: `${settings.BASE_URL_AWS}/${key}`,
     });
   }
 }
