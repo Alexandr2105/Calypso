@@ -38,6 +38,7 @@ import { UsersProfilesRepository } from './features/users-profiles/infrastructur
 import { JwtStrategy } from './common/strategies/jwt.strategy';
 import { UploadAvatarUseCase } from './features/users-profiles/application/use-cases/upload.avatar.user.case';
 import { FileStorageAdapterS3 } from './common/adapters/file.storage.adapter.s3';
+import { GetUserProfileUseCase } from './features/users-profiles/application/use-cases/get.user.profile.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
@@ -55,6 +56,7 @@ const UseCases = [
   UpdateInfoAboutDevicesUserUseCase,
   SaveInfoAboutUsersProfilesUseCase,
   UploadAvatarUseCase,
+  GetUserProfileUseCase,
 ];
 const Repositories = [
   UsersRepository,

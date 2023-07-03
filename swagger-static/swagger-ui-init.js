@@ -363,10 +363,40 @@ window.onload = function() {
           }
         }
       },
+      "/users/profiles/profile": {
+        "get": {
+          "operationId": "UsersProfilesController_getUserProfile",
+          "summary": "Get user profile",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UsersProfilesDto"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "Profile"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
       "/users/profiles/save-profileInfo": {
         "post": {
           "operationId": "UsersProfilesController_saveUsersProfiles",
-          "summary": "Registration users",
+          "summary": "Create profile",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -414,20 +444,34 @@ window.onload = function() {
           },
           "tags": [
             "Profile"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
           ]
         }
       },
       "/users/profiles/save-avatar": {
         "post": {
           "operationId": "UsersProfilesController_saveAvatar",
+          "summary": "Upload avatar",
           "parameters": [],
           "responses": {
-            "201": {
-              "description": ""
+            "204": {
+              "description": "Avatar create"
+            },
+            "401": {
+              "description": "Unauthorized"
             }
           },
           "tags": [
             "Profile"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
           ]
         }
       }
