@@ -8,14 +8,14 @@ import {
 export class IsDateInFormat implements ValidatorConstraintInterface {
   validate(value: string, args: ValidationArguments) {
     // Регулярное выражение для соответствия формату dd-mm-yyyy
-    const regex = /^([0-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/;
+    const regex = /^([0-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).\d{4}$/;
 
     if (!regex.test(value)) {
       return false;
     }
 
     // Извлечение дня, месяца и года из строки даты
-    const [day, month, year] = value.split('-');
+    const [day, month, year] = value.split('.');
 
     // Преобразование дня, месяца и года в числа
     const dayNumber = parseInt(day, 10);

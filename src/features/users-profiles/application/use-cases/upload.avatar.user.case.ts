@@ -34,7 +34,7 @@ export class UploadAvatarUseCase
     await this.profilesRepository.saveUsersProfiles({
       userId: command.userId,
       login: user.login,
-      photo: `${settings.BASE_URL_AWS}/${key}`,
+      photo: `${settings.BASE_URL_AWS}/${settings.BACKET_NAME}/${key}`,
     });
   }
 }
