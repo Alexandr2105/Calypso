@@ -1,10 +1,11 @@
-import { Length } from 'class-validator';
+import { Length, Validate } from 'class-validator';
 import {
   maxLengthUserName,
   minLengthUserName,
 } from '../../../common/constants/models.constants';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDateInFormat } from '../validators/date-of-birthday.validator';
 
 export class UsersProfilesDto {
   @Transform(({ value }) => String(value).trim())
@@ -39,9 +40,11 @@ export class UsersProfilesDto {
   lastName: string;
 
   @Transform(({ value }) => String(value).trim())
-  // @IsDate({ message: 'Wrong date' })
   @ApiProperty({
     type: 'string',
+  })
+  @Validate(IsDateInFormat, {
+    message: 'Invalid date format. Please use the format dd-mm-yyyy.',
   })
   dateOfBirthday: string;
 
