@@ -25,7 +25,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.user.case';
 import { GetUserProfileCommand } from '../application/use-cases/get.user.profile.use.case';
 
-@ApiTags('Profile')
+@ApiTags('Profiles')
 @Controller('users/profiles')
 export class UsersProfilesController {
   constructor(private commandBus: CommandBus) {}
