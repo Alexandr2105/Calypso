@@ -59,7 +59,7 @@ export class UsersRepository {
     });
   }
 
-  async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserEntity> {
+  async getUserByLoginOrEmail(loginOrEmail: string) {
     return this.prisma.user.findFirst({
       where: {
         OR: [
@@ -70,6 +70,11 @@ export class UsersRepository {
             email: loginOrEmail,
           },
         ],
+      },
+      include: {
+        emailConfirmation: {
+          select: { isConfirmed: true, expirationDate: true },
+        },
       },
     });
   }
@@ -92,5 +97,21 @@ export class UsersRepository {
       where: { id: userId },
       select: { id: true, email: true, login: true },
     });
+  }
+
+  async deleteExpirationUser(userId: string) {
+    try {
+      await this.prisma.user.delete({
+        where: { id: userId },
+      });
+    } catch (error) {}
+  }
+
+  async deleteExpirationCode(userId: string) {
+    try {
+      await this.prisma.emailConfirmation.delete({
+        where: { userId: userId },
+      });
+    } catch (error) {}
   }
 }

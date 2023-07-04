@@ -18,7 +18,7 @@ model User {
   isDeleted         Boolean
   emailConfirmation EmailConfirmation?
   refreshTokenData  RefreshTokenData[]
-  userPorfile       UserProfile?
+  userProfile       UserProfile?
 }
 
 model EmailConfirmation {

@@ -7,7 +7,7 @@ import {
 @ValidatorConstraint({ name: 'isDateInFormat', async: false })
 export class IsDateInFormat implements ValidatorConstraintInterface {
   validate(value: string, args: ValidationArguments) {
-    // Регулярное выражение для соответствия формату dd-mm-yyyy
+    // Регулярное выражение для соответствия формату dd.mm.yyyy
     const regex = /^([0-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).\d{4}$/;
 
     if (!regex.test(value)) {

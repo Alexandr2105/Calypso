@@ -384,7 +384,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "Profile"
+            "Profiles"
           ],
           "security": [
             {
@@ -443,7 +443,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "Profile"
+            "Profiles"
           ],
           "security": [
             {
@@ -466,7 +466,7 @@ window.onload = function() {
             }
           },
           "tags": [
-            "Profile"
+            "Profiles"
           ],
           "security": [
             {
