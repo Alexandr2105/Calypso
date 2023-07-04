@@ -42,7 +42,7 @@ window.onload = function() {
               "description": "Email confirmation link sent"
             },
             "400": {
-              "description": "Validation error or user already registered",
+              "description": "List of possible errors:<br>1.User with this username is already registered <br>2.User with this email is already registered<br> 3.Wrong length\n",
               "content": {
                 "application/json": {
                   "schema": {
@@ -92,7 +92,7 @@ window.onload = function() {
               "description": "Email successfully verified"
             },
             "400": {
-              "description": "Link is invalid or expired",
+              "description": "Incorrect confirmation code",
               "content": {
                 "application/json": {
                   "schema": {
@@ -143,7 +143,7 @@ window.onload = function() {
               "description": "Link updated"
             },
             "400": {
-              "description": "Bad request"
+              "description": "List of possible errors:<br>1.Bad request<br>2.Invalid email"
             }
           },
           "tags": [
@@ -154,7 +154,7 @@ window.onload = function() {
       "/auth/login": {
         "post": {
           "operationId": "AuthController_loginUser",
-          "summary": "user authorization",
+          "summary": "User authorization",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -181,32 +181,6 @@ window.onload = function() {
                       "profile": {
                         "type": "boolean",
                         "description": "Indicates if a profile exists."
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Validation error or user already registered",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "errorsMessages": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "message": {
-                              "type": "string"
-                            },
-                            "field": {
-                              "type": "string"
-                            }
-                          }
-                        }
                       }
                     }
                   }
@@ -242,7 +216,7 @@ window.onload = function() {
               "description": "Even if the current email address is not registered (to prevent the user's email from being detected)"
             },
             "400": {
-              "description": "If not valid email (for example, 222^gmail.com)",
+              "description": "Invalid email address",
               "content": {
                 "application/json": {
                   "schema": {
@@ -293,7 +267,7 @@ window.onload = function() {
               "description": "If the code is valid and the new password is accepted"
             },
             "400": {
-              "description": "If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired"
+              "description": "List of possible errors:<br>1.Wrong length newPassword<br> 2.Incorrect confirmation code"
             }
           },
           "tags": [
@@ -310,8 +284,8 @@ window.onload = function() {
             "204": {
               "description": ""
             },
-            "400": {
-              "description": "If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired"
+            "401": {
+              "description": "The JWT refreshToken inside cookie is missing, expired or incorrect"
             }
           },
           "tags": [
@@ -328,8 +302,8 @@ window.onload = function() {
             "200": {
               "description": "Returns JWT accessToken in body and JWT refreshToken in cookie "
             },
-            "400": {
-              "description": "If the JWT refreshToken inside cookie is missing, expired or incorrect"
+            "401": {
+              "description": "The JWT refreshToken inside cookie is missing, expired or incorrect"
             }
           },
           "tags": [
@@ -522,18 +496,7 @@ window.onload = function() {
         },
         "LoginDto": {
           "type": "object",
-          "properties": {
-            "loginOrEmail": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "loginOrEmail",
-            "password"
-          ]
+          "properties": {}
         },
         "EmailResendingDto": {
           "type": "object",
