@@ -9,7 +9,7 @@ export class UsersService {
   async refreshConfirmationInfo(userId: string): Promise<string> {
     const newConfirmationCode = randomUUID();
 
-    const expDate = createExpirationDateForLink(10);
+    const expDate = createExpirationDateForLink(3600);
 
     await this.usersRepo.refreshConfirmationInfo(
       userId,
