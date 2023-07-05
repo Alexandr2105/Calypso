@@ -11,7 +11,12 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { RegistrationConformationDto } from '../dto/registration-confirmation.dto';
 import { LoginDto } from '../dto/login.dto';
@@ -221,6 +226,7 @@ export class AuthController {
     res.send(accessToken);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getInfoAboutMe(@Req() req) {
