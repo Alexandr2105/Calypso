@@ -322,6 +322,11 @@ window.onload = function() {
           },
           "tags": [
             "Auth"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
           ]
         }
       },
