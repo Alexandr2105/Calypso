@@ -448,6 +448,27 @@ window.onload = function() {
             }
           ]
         }
+      },
+      "/posts/create": {
+        "post": {
+          "operationId": "PostsController_createPosts",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DescriptionDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          }
+        }
       }
     },
     "info": {
@@ -562,6 +583,10 @@ window.onload = function() {
             "city",
             "userInfo"
           ]
+        },
+        "DescriptionDto": {
+          "type": "object",
+          "properties": {}
         }
       }
     }

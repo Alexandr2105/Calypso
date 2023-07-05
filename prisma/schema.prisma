@@ -19,6 +19,7 @@ model User {
   emailConfirmation EmailConfirmation?
   refreshTokenData  RefreshTokenData[]
   userProfile       UserProfile?
+  userPost          Post[]
 }
 
 model EmailConfirmation {
@@ -49,4 +50,25 @@ model UserProfile{
   userInfo       String?
   photo          String?
   user           User      @relation(fields: [userId],references: [id])
+}
+
+model Post{
+  id          String  @id
+  userId      String
+  description String?
+  user        User    @relation(fields: [userId],references: [id])
+  image       Image[]
+}
+
+model Image {
+  id         String   @id
+  url        String
+  bucket     String
+  postId     String
+  key        Int
+  width      Int
+  height     Int
+  fileSize   Int
+  folderName String
+  post       Post     @relation(fields: [postId],references: [id])
 }

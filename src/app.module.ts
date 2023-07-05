@@ -39,6 +39,8 @@ import { JwtStrategy } from './common/strategies/jwt.strategy';
 import { UploadAvatarUseCase } from './features/users-profiles/application/use-cases/upload.avatar.user.case';
 import { FileStorageAdapterS3 } from './common/adapters/file.storage.adapter.s3';
 import { GetUserProfileUseCase } from './features/users-profiles/application/use-cases/get.user.profile.use.case';
+import { PostsController } from './features/posts/api/posts.controller';
+import { CreatePostUseCase } from './features/posts/application/use-cases/create.post.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
@@ -57,6 +59,7 @@ const UseCases = [
   SaveInfoAboutUsersProfilesUseCase,
   UploadAvatarUseCase,
   GetUserProfileUseCase,
+  CreatePostUseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -81,6 +84,7 @@ const Repositories = [
     UsersController,
     TestingController,
     UsersProfilesController,
+    PostsController,
   ],
   providers: [
     AppService,
