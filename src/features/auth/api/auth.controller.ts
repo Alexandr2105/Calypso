@@ -11,7 +11,12 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { RegistrationConformationDto } from '../dto/registration-confirmation.dto';
 import { LoginDto } from '../dto/login.dto';
@@ -32,11 +37,16 @@ import { LogoutUserCommand } from '../../devices/application/use-cases/logout.us
 import { SaveInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/save.info.about.devices.user.use.case';
 import { UpdateInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/update.info.about.devices.user.use.case';
 import { randomUUID } from 'crypto';
+import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
+import { UsersRepository } from '../../users/infrastructure/users.repository';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private commandBus: CommandBus) {}
+  constructor(
+    private commandBus: CommandBus,
+    private userRepo: UsersRepository,
+  ) {}
 
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -53,7 +63,7 @@ export class AuthController {
   }
 
   @Get('email-confirmation/:code')
-  @Redirect('https://kusto-gamma.vercel.app/login')
+  @Redirect('https://kusto-gamma.vercel.app/auth/registration/success')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Email confirmation' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email successfully verified')
@@ -214,5 +224,13 @@ export class AuthController {
       secure: false,
     });
     res.send(accessToken);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getInfoAboutMe(@Req() req) {
+    const user = await this.userRepo.getUserById(req.user.id);
+    if (user) return user;
   }
 }
