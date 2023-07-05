@@ -32,11 +32,16 @@ import { LogoutUserCommand } from '../../devices/application/use-cases/logout.us
 import { SaveInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/save.info.about.devices.user.use.case';
 import { UpdateInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/update.info.about.devices.user.use.case';
 import { randomUUID } from 'crypto';
+import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
+import { UsersRepository } from '../../users/infrastructure/users.repository';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private commandBus: CommandBus) {}
+  constructor(
+    private commandBus: CommandBus,
+    private userRepo: UsersRepository,
+  ) {}
 
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -214,5 +219,12 @@ export class AuthController {
       secure: false,
     });
     res.send(accessToken);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getInfoAboutMe(@Req() req) {
+    const user = await this.userRepo.getUserById(req.user.id);
+    if (user) return user;
   }
 }

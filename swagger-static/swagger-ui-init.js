@@ -311,6 +311,20 @@ window.onload = function() {
           ]
         }
       },
+      "/auth/me": {
+        "get": {
+          "operationId": "AuthController_getInfoAboutMe",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
       "/users": {
         "get": {
           "operationId": "UsersController_getAllUsers",
