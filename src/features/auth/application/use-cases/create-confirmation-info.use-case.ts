@@ -16,7 +16,7 @@ export class CreateConfirmationInfoForUserUseCase
   async execute(
     command: CreateConfirmationInfoForUserCommand,
   ): Promise<string> {
-    const expDate = createExpirationDateForLink(10);
+    const expDate = createExpirationDateForLink(3600);
 
     const userId = command.userId;
 

@@ -1,5 +1,5 @@
-export const createExpirationDateForLink = (expTimeHours: number) => {
+export const createExpirationDateForLink = (expTimeSeconds: number) => {
   const date = new Date();
-  date.setHours(date.getHours() + expTimeHours);
+  date.setSeconds(date.getSeconds() + expTimeSeconds);
   return date;
 };

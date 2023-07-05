@@ -59,24 +59,24 @@ export class UsersRepository {
     });
   }
 
-  async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserEntity> {
-    try {
-      return this.prisma.user.findFirst({
-        where: {
-          OR: [
-            {
-              login: loginOrEmail,
-            },
-            {
-              email: loginOrEmail,
-            },
-          ],
+  async getUserByLoginOrEmail(loginOrEmail: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            login: loginOrEmail,
+          },
+          {
+            email: loginOrEmail,
+          },
+        ],
+      },
+      include: {
+        emailConfirmation: {
+          select: { isConfirmed: true, expirationDate: true },
         },
-      });
-    } catch (err) {
-      console.error();
-      return null;
-    }
+      },
+    });
   }
 
   async changePassword(userId: string, newPasswordHash: string) {
@@ -84,5 +84,34 @@ export class UsersRepository {
       where: { id: userId },
       data: { passwordHash: newPasswordHash },
     });
+  }
+
+  async getAllUsers() {
+    return this.prisma.user.findMany({
+      select: { id: true, email: true, login: true },
+    });
+  }
+
+  async getUserById(userId: string) {
+    return this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, login: true },
+    });
+  }
+
+  async deleteExpirationUser(userId: string) {
+    try {
+      await this.prisma.user.delete({
+        where: { id: userId },
+      });
+    } catch (error) {}
+  }
+
+  async deleteExpirationCode(userId: string) {
+    try {
+      await this.prisma.emailConfirmation.delete({
+        where: { userId: userId },
+      });
+    } catch (error) {}
   }
 }

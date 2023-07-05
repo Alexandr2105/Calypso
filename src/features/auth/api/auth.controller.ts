@@ -44,12 +44,12 @@ export class AuthController {
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email confirmation link sent')
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
-    'Validation error or user already registered',
+    'List of possible errors:<br>1.User with this username is already registered <br>' +
+      '2.User with this email is already registered<br> 3.Wrong length\n',
   )
   async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
+    // res.status(204).json({});
     await this.commandBus.execute(new RegistrationUserCommand(body));
-
-    return;
   }
 
   @Get('email-confirmation/:code')
@@ -57,7 +57,7 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Email confirmation' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email successfully verified')
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Link is invalid or expired')
+  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Incorrect confirmation code')
   async registrationConfirmation(
     @Param() params: RegistrationConformationDto,
   ): Promise<void> {
@@ -73,7 +73,7 @@ export class AuthController {
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Link updated')
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
-    description: 'Bad request',
+    description: 'List of possible errors:<br>1.Bad request<br>2.Invalid email',
   })
   async refreshConfirmationLink(
     @Body() inputModel: RegistrationEmailResendingDto,
@@ -88,18 +88,26 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  @ApiOperation({ summary: 'user authorization' })
-  @ApiResponseForSwagger(
-    HttpStatus.OK,
-    'Successful authorization. While without JWT',
-  )
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'Validation error or user already registered',
-  )
+  @ApiOperation({ summary: 'User authorization' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+          description: 'Access token for authentication.',
+        },
+        profile: {
+          type: 'boolean',
+          description: 'Indicates if a profile exists.',
+        },
+      },
+    },
+  })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
   async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
-    const { accessToken, refreshToken } = await this.commandBus.execute(
+    const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(req.user.id, randomUUID()),
     );
 
@@ -116,7 +124,7 @@ export class AuthController {
       secure: false,
     });
 
-    res.send(accessToken);
+    res.send({ ...accessToken, profile: info });
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -126,10 +134,7 @@ export class AuthController {
     HttpStatus.NO_CONTENT,
     "Even if the current email address is not registered (to prevent the user's email from being detected)",
   )
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'If not valid email (for example, 222^gmail.com)',
-  )
+  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Invalid email address')
   async passwordRecovery(@Body() body: EmailResendingDto) {
     await this.commandBus.execute(
       new SendPasswordRecoveryLinkCommand(body.email),
@@ -148,7 +153,7 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description:
-      'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
+      'List of possible errors:<br>1.Wrong length newPassword<br> 2.Incorrect confirmation code',
   })
   async createNewPassword(@Body() body: NewPasswordDto) {
     await this.commandBus.execute(
@@ -165,9 +170,9 @@ export class AuthController {
     status: HttpStatus.NO_CONTENT,
   })
   @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+    status: HttpStatus.UNAUTHORIZED,
     description:
-      'If the input data has incorrect values (due to incorrect password length) or the RecoveryCode is incorrect or expired',
+      'The JWT refreshToken inside cookie is missing, expired or incorrect',
   })
   @UseGuards(RefreshAuthGuard)
   async logout(@Req() req) {
@@ -183,9 +188,9 @@ export class AuthController {
       'Returns JWT accessToken in body and JWT refreshToken in cookie ',
   })
   @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
+    status: HttpStatus.UNAUTHORIZED,
     description:
-      'If the JWT refreshToken inside cookie is missing, expired or incorrect',
+      'The JWT refreshToken inside cookie is missing, expired or incorrect',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(RefreshAuthGuard)

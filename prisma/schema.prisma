@@ -17,7 +17,8 @@ model User {
   passwordHash      String
   isDeleted         Boolean
   emailConfirmation EmailConfirmation?
-  refreshTokenData  RefreshTokenData?
+  refreshTokenData  RefreshTokenData[]
+  userProfile       UserProfile?
 }
 
 model EmailConfirmation {
@@ -31,9 +32,21 @@ model EmailConfirmation {
 model RefreshTokenData{
   iat        Int
   exp        Int
-  deviceId   String @unique
+  deviceId   String @id
   ip         String
   deviceName String
-  userId     String @id
+  userId     String
   user       User   @relation(fields: [userId],references: [id])
+}
+
+model UserProfile{
+  userId         String    @id
+  login          String    @unique
+  firstName      String?
+  lastName       String?
+  dateOfBirthday String?
+  city           String?
+  userInfo       String?
+  photo          String?
+  user           User      @relation(fields: [userId],references: [id])
 }

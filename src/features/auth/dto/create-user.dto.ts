@@ -10,11 +10,13 @@ import {
 import { CheckLoginOrEmailInDb } from '../../users/validation/check-login-or-email-in-db';
 
 export class CreateUserDto {
+  @Transform(({ value }) => String(value).trim())
   @Length(minLengthUserName, maxLengthUserName, {
-    message: 'Не верно заполнено поле  ',
+    message: 'Wrong length',
   })
-  @Transform(({ value }) => value.trim())
-  @Validate(CheckLoginOrEmailInDb)
+  @Validate(CheckLoginOrEmailInDb, {
+    message: 'User with this username is already registered',
+  })
   @ApiProperty({
     type: 'string',
     minimum: minLengthUserName,
@@ -22,15 +24,17 @@ export class CreateUserDto {
   })
   login: string;
 
-  @IsEmail()
-  @Transform(({ value }) => value.trim())
+  @IsEmail({}, { message: 'Invalid email' })
+  @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
-  @Validate(CheckLoginOrEmailInDb)
+  @Validate(CheckLoginOrEmailInDb, {
+    message: 'User with this email is already registered',
+  })
   email: string;
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   @Length(minLengthPassword, maxLengthPassword, {
-    message: 'Не верно заполнено поле',
+    message: 'Wrong length',
   })
   @ApiProperty({
     type: 'string',

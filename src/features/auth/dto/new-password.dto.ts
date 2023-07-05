@@ -8,18 +8,18 @@ import {
 import { CheckConfirmationCode } from '../validation/check-confirmation-code';
 
 export class NewPasswordDto {
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   @ApiProperty({
     type: 'string',
     minimum: minLengthPassword,
     maximum: maxLengthPassword,
   })
   @Length(minLengthPassword, maxLengthPassword, {
-    message: 'Не верно заполнено поле',
+    message: 'Wrong length',
   })
   newPassword: string;
 
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
   @Validate(CheckConfirmationCode)
   recoveryCode: string;

@@ -17,10 +17,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   async validate(loginOrEmail: string, password: string): Promise<any> {
     const user = await this.userRepo.getUserByLoginOrEmail(loginOrEmail);
 
-    if (!user) return false;
+    if (!user || user.emailConfirmation.isConfirmed === false) return false;
 
     const hashPassword = await this.genHash.generateHash(
-      password,
+      password.toString(),
       user.passwordHash,
     );
 

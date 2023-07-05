@@ -20,7 +20,7 @@ export class RegistrationUserUseCase
     private userRepo: UsersRepository,
     private commandBus: CommandBus,
   ) {}
-  async execute(command: RegistrationUserCommand): Promise<boolean> {
+  async execute(command: RegistrationUserCommand): Promise<void> {
     const hash = await this.bcryptService.generateHashForNewUser(
       command.body.password,
     );
@@ -49,6 +49,5 @@ export class RegistrationUserUseCase
         createConfirmationInfoAndReturnConfirmationCode,
       ),
     );
-    return true;
   }
 }
