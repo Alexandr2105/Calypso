@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -26,10 +27,11 @@ export class PostsController {
   async createPosts(
     @UploadedFiles() posts: any[],
     @Body() body: DescriptionDto,
+    @Req() req,
   ) {
     validatePhoto(posts);
     await this.commandBus.execute(
-      new CreatePostCommandBus(posts, body.description),
+      new CreatePostCommandBus(posts, body.description, req.user.id),
     );
   }
 }

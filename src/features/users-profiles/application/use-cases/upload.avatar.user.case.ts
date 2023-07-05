@@ -1,9 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import sharp from 'sharp';
 import { FileStorageAdapterS3 } from '../../../../common/adapters/file.storage.adapter.s3';
 import { UsersProfilesRepository } from '../../infrastructure/users.profiles.repository';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
 import { settings } from '../../../../settings';
+import { resizePhoto } from '../../../../common/helpers/resize.photo';
 
 export class UploadAvatarCommand {
   constructor(public userId: string, public buffer: Buffer) {}
@@ -20,11 +20,7 @@ export class UploadAvatarUseCase
   ) {}
 
   async execute(command: UploadAvatarCommand): Promise<any> {
-    const avatar = await sharp(command.buffer)
-      .resize(300, 180, {
-        fit: 'contain',
-      })
-      .toBuffer();
+    const avatar = await resizePhoto(command.buffer);
 
     const key = await this.fileStorageAdapter.saveAvatar(
       command.userId,
