@@ -517,6 +517,7 @@ window.onload = function() {
       "/posts/create": {
         "post": {
           "operationId": "PostsController_createPosts",
+          "summary": "Create post. \"fieldName\" must be \"posts\"",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -529,10 +530,44 @@ window.onload = function() {
             }
           },
           "responses": {
-            "201": {
-              "description": ""
+            "204": {
+              "description": "Post created"
+            },
+            "400": {
+              "description": "List of possible errors:<br>1.Wrong length<br>2.More than 10 photos",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
-          }
+          },
+          "tags": [
+            "Posts"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
         }
       }
     },
@@ -669,7 +704,15 @@ window.onload = function() {
         },
         "DescriptionDto": {
           "type": "object",
-          "properties": {}
+          "properties": {
+            "description": {
+              "type": "string",
+              "maximum": 500
+            }
+          },
+          "required": [
+            "description"
+          ]
         }
       }
     }
