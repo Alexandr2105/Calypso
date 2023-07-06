@@ -80,7 +80,7 @@ export class AuthController {
   // @UseGuards(IpRestrictionGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Refresh confirmation link' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Link updated')
+  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Link updated ')
   @ApiResponse({
     status: HttpStatus.BAD_REQUEST,
     description: 'List of possible errors:<br>1.Bad request<br>2.Invalid email',
