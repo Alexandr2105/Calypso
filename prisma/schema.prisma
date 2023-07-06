@@ -56,19 +56,20 @@ model Post{
   id          String  @id
   userId      String
   description String?
+  createdAt   DateTime
   user        User    @relation(fields: [userId],references: [id])
-  image       Image[]
+  image       PostImage[]
 }
 
-model Image {
+model PostImage {
   id         String   @id
   url        String
   bucket     String
   postId     String
-  key        Int
+  key        String
   width      Int
   height     Int
   fileSize   Int
-  folderName String
+  createdAt  DateTime
   post       Post     @relation(fields: [postId],references: [id])
 }

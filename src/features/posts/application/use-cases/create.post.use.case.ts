@@ -4,6 +4,7 @@ import { FileStorageAdapterS3 } from '../../../../common/adapters/file.storage.a
 import { PostsRepository } from '../../infrastructure/posts.repository';
 import { randomUUID } from 'crypto';
 import { PostsEntity } from '../../entities/posts.entity';
+import sharp from 'sharp';
 
 export class CreatePostCommandBus {
   constructor(
@@ -27,17 +28,33 @@ export class CreatePostUseCase
       id: randomUUID(),
       userId: command.userId,
       description: command.description,
+      createdAt: new Date(),
     });
     const newPhotoArray: Buffer[] = [];
     for (const a of command.photos) {
       newPhotoArray.push(await resizePhoto(a));
     }
-    const key = await this.fileStorageAdapter.saveImagesForPost(
-      command.userId,
-      newPhotoArray,
-      post.id,
-    );
-    console.log(key);
+
+    for (const buffer of newPhotoArray) {
+      const image = await this.fileStorageAdapter.saveImagesForPost(
+        command.userId,
+        buffer,
+        post.id,
+      );
+      const imageInfo = await sharp(buffer).metadata();
+      await this.postsRepository.createNewImage({
+        id: image.id,
+        postId: image.postId,
+        createdAt: image.createdAt,
+        key: image.key,
+        bucket: image.bucket,
+        url: `https://storage.yandexcloud.net/${image.bucket}/${image.key}`,
+        height: imageInfo.height,
+        width: imageInfo.width,
+        fileSize: imageInfo.size,
+      });
+    }
+
     return true;
   }
 }

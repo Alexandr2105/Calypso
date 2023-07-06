@@ -35,24 +35,26 @@ export class FileStorageAdapterS3 {
 
   async saveImagesForPost(
     userId: string,
-    photos: Buffer[],
+    buffer: Buffer,
     postId: string,
   ): Promise<any> {
-    const arrayKeys = [];
-    for (const photo of photos) {
-      const command = new PutObjectCommand({
-        Bucket: settings.BACKET_NAME,
-        Key: `${userId}/posts/${postId}/${randomUUID()}_post.png`,
-        Body: photo,
-        ContentType: 'image/png',
-      });
-      try {
-        await this.s3Client.send(command);
-        arrayKeys.push(`${userId}/posts/${postId}/${randomUUID()}_post.png`);
-      } catch (err) {
-        console.error(err);
-      }
+    const command = new PutObjectCommand({
+      Bucket: settings.BACKET_NAME,
+      Key: `${userId}/posts/${postId}/${randomUUID()}_post.png`,
+      Body: buffer,
+      ContentType: 'image/png',
+    });
+    try {
+      await this.s3Client.send(command);
+      return {
+        id: randomUUID(),
+        key: `${userId}/posts/${postId}/${randomUUID()}_post.png`,
+        postId: postId,
+        createdAt: new Date(),
+        bucket: settings.BACKET_NAME,
+      };
+    } catch (err) {
+      console.error(err);
     }
-    return arrayKeys;
   }
 }

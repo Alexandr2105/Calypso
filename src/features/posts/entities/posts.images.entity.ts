@@ -1,22 +1,24 @@
-export class ImagesEntity {
+export class PostsImagesEntity {
   id: string;
   url: string;
   bucket: string;
   postId: string;
-  key: number;
+  key: string;
   width: number;
   height: number;
   fileSize: number;
+  createdAt: Date;
 
   constructor(
     id: string,
     url: string,
     bucket: string,
     postId: string,
-    key: number,
+    key: string,
     width: number,
     height: number,
     fileSize: number,
+    createdAt: Date,
   ) {
     this.id = id;
     this.url = url;
@@ -26,5 +28,6 @@ export class ImagesEntity {
     this.width = width;
     this.height = height;
     this.fileSize = fileSize;
+    this.createdAt = createdAt;
   }
 }
