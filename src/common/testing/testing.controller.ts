@@ -11,7 +11,7 @@ export class TestingController {
 
     await this.prisma.emailConfirmation.deleteMany();
 
-    await this.prisma.post.deleteMany();
+    // await this.prisma.post.deleteMany();
 
     await this.prisma.userProfile.deleteMany();
 

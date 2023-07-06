@@ -86,11 +86,11 @@ export class UsersRepository {
     });
   }
 
-  async getAllUsers() {
-    return this.prisma.user.findMany({
-      select: { id: true, email: true, login: true },
-    });
-  }
+  // async getAllUsers() {
+  //   return this.prisma.user.findMany({
+  //     select: { id: true, email: true, login: true },
+  //   });
+  // }
 
   async getUserById(userId: string) {
     return this.prisma.user.findUnique({

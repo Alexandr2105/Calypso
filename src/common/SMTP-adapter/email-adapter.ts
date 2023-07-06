@@ -9,7 +9,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Confirmation link',
       text: 'Для подтверждения регистрации пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}/auth/email-confirmation/${code}">ссылка</a> для подтверждения почты</p>`,
+      html: `<p>Привет, вот <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}/auth/registration/check?code=${code}">ссылка</a> для подтверждения почты</p>`,
     });
   }
 
