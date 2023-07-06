@@ -78,10 +78,10 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Refresh confirmation link' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Link updated')
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'List of possible errors:<br>1.Bad request<br>2.Invalid email',
-  })
+  @ApiResponseForSwagger(
+    HttpStatus.BAD_REQUEST,
+    'List of possible errors:<br>1.Bad request<br>2.Invalid email',
+  )
   async refreshConfirmationLink(
     @Body() inputModel: RegistrationEmailResendingDto,
   ): Promise<HttpStatus> {
@@ -112,7 +112,7 @@ export class AuthController {
       },
     },
   })
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Invalid credentials')
+  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(req.user.id, randomUUID()),
@@ -176,11 +176,10 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'The JWT refreshToken inside cookie is missing, expired or incorrect',
-  })
+  @ApiResponseForSwagger(
+    HttpStatus.UNAUTHORIZED,
+    'The JWT refreshToken inside cookie is missing, expired or incorrect',
+  )
   @UseGuards(RefreshAuthGuard)
   async logout(@Req() req) {
     await this.commandBus.execute(new LogoutUserCommand(req.user.deviceId));
@@ -193,6 +192,15 @@ export class AuthController {
     status: HttpStatus.OK,
     description:
       'Returns JWT accessToken in body and JWT refreshToken in cookie ',
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+          description: 'Access token for authentication.',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -223,6 +231,28 @@ export class AuthController {
     res.send(accessToken);
   }
 
+  @ApiOperation({ summary: 'Returns user data' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'user id',
+        },
+        email: {
+          type: 'string',
+          description: 'user email',
+        },
+        login: {
+          type: 'string',
+          description: 'user login',
+        },
+      },
+    },
+  })
+  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('me')
