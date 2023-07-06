@@ -330,21 +330,6 @@ window.onload = function() {
           ]
         }
       },
-      "/users": {
-        "get": {
-          "operationId": "UsersController_getAllUsers",
-          "summary": "Get all users",
-          "parameters": [],
-          "responses": {
-            "200": {
-              "description": "All users"
-            }
-          },
-          "tags": [
-            "Users"
-          ]
-        }
-      },
       "/delete-all-data": {
         "delete": {
           "operationId": "TestingController_clearAllData",

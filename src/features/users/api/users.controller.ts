@@ -1,17 +1,12 @@
-import { Controller, Get, HttpStatus } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UsersRepository } from '../infrastructure/users.repository';
-import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
+import { Controller } from '@nestjs/common';
 
-@ApiTags('Users')
+// @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(private userRepo: UsersRepository) {}
-
-  @ApiOperation({ summary: 'Get all users' })
-  @ApiResponseForSwagger(HttpStatus.OK, 'All users')
-  @Get()
-  async getAllUsers() {
-    return this.userRepo.getAllUsers();
-  }
+  // @ApiOperation({ summary: 'Get all users' })
+  // @ApiResponseForSwagger(HttpStatus.OK, 'All users')
+  // @Get()
+  // async getAllUsers() {
+  //   return this.userRepo.getAllUsers();
+  // }
 }

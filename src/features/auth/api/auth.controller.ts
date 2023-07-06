@@ -6,7 +6,6 @@ import {
   HttpStatus,
   Param,
   Post,
-  Redirect,
   Req,
   Res,
   UseGuards,
@@ -63,7 +62,6 @@ export class AuthController {
   }
 
   @Get('email-confirmation/:code')
-  @Redirect('https://kusto-gamma.vercel.app/auth/registration/success')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Email confirmation' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email successfully verified')
