@@ -5,6 +5,7 @@ import { PostsRepository } from '../../infrastructure/posts.repository';
 import { randomUUID } from 'crypto';
 import { PostsEntity } from '../../entities/posts.entity';
 import sharp from 'sharp';
+import { ImagesRepository } from '../../../images/images.repository';
 
 export class CreatePostCommandBus {
   constructor(
@@ -21,6 +22,7 @@ export class CreatePostUseCase
   constructor(
     private fileStorageAdapter: FileStorageAdapterS3,
     private postsRepository: PostsRepository,
+    private imageRepository: ImagesRepository,
   ) {}
 
   async execute(command: CreatePostCommandBus): Promise<boolean> {
@@ -42,7 +44,7 @@ export class CreatePostUseCase
         post.id,
       );
       const imageInfo = await sharp(buffer).metadata();
-      await this.postsRepository.createNewImage({
+      await this.imageRepository.createNewImage({
         id: image.id,
         postId: image.postId,
         createdAt: image.createdAt,

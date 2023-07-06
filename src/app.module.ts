@@ -42,6 +42,7 @@ import { GetUserProfileUseCase } from './features/users-profiles/application/use
 import { PostsController } from './features/posts/api/posts.controller';
 import { CreatePostUseCase } from './features/posts/application/use-cases/create.post.use.case';
 import { PostsRepository } from './features/posts/infrastructure/posts.repository';
+import { ImagesRepository } from './features/images/images.repository';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
@@ -67,6 +68,7 @@ const Repositories = [
   DevicesRepository,
   UsersProfilesRepository,
   PostsRepository,
+  ImagesRepository,
 ];
 
 @Module({
