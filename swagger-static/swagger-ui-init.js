@@ -143,7 +143,30 @@ window.onload = function() {
               "description": "Link updated"
             },
             "400": {
-              "description": "List of possible errors:<br>1.Bad request<br>2.Invalid email"
+              "description": "List of possible errors:<br>1.Bad request<br>2.Invalid email",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "tags": [
@@ -188,7 +211,7 @@ window.onload = function() {
               }
             },
             "401": {
-              "description": "Invalid credentials"
+              "description": "Unauthorized"
             }
           },
           "tags": [
@@ -300,7 +323,20 @@ window.onload = function() {
           "parameters": [],
           "responses": {
             "200": {
-              "description": "Returns JWT accessToken in body and JWT refreshToken in cookie "
+              "description": "Returns JWT accessToken in body and JWT refreshToken in cookie ",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string",
+                        "description": "Access token for authentication."
+                      }
+                    }
+                  }
+                }
+              }
             },
             "401": {
               "description": "The JWT refreshToken inside cookie is missing, expired or incorrect"
@@ -314,10 +350,35 @@ window.onload = function() {
       "/auth/me": {
         "get": {
           "operationId": "AuthController_getInfoAboutMe",
+          "summary": "Returns user data",
           "parameters": [],
           "responses": {
             "200": {
-              "description": ""
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "user id"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "user email"
+                      },
+                      "login": {
+                        "type": "string",
+                        "description": "user login"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
             }
           },
           "tags": [
@@ -391,7 +452,7 @@ window.onload = function() {
               "description": "User saved"
             },
             "400": {
-              "description": "Validation error",
+              "description": "List of possible errors:<br>1.Wrong length.<br>2.Invalid date format. Please use the format dd-mm-yyyy.",
               "content": {
                 "application/json": {
                   "schema": {
@@ -433,11 +494,11 @@ window.onload = function() {
       "/users/profiles/save-avatar": {
         "post": {
           "operationId": "UsersProfilesController_saveAvatar",
-          "summary": "Upload avatar",
+          "summary": "Upload avatar. \"fieldName\" must be \"avatar\"",
           "parameters": [],
           "responses": {
             "204": {
-              "description": "Avatar create"
+              "description": "Avatar created"
             },
             "401": {
               "description": "Unauthorized"
@@ -463,6 +524,13 @@ window.onload = function() {
     "tags": [],
     "servers": [],
     "components": {
+      "securitySchemes": {
+        "bearer": {
+          "scheme": "bearer",
+          "bearerFormat": "JWT",
+          "type": "http"
+        }
+      },
       "schemas": {
         "CreateUserDto": {
           "type": "object",
@@ -500,7 +568,18 @@ window.onload = function() {
         },
         "LoginDto": {
           "type": "object",
-          "properties": {}
+          "properties": {
+            "loginOrEmail": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "loginOrEmail",
+            "password"
+          ]
         },
         "EmailResendingDto": {
           "type": "object",

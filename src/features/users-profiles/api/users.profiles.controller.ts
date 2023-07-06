@@ -45,7 +45,10 @@ export class UsersProfilesController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create profile' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'User saved')
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Validation error')
+  @ApiResponseForSwagger(
+    HttpStatus.BAD_REQUEST,
+    'List of possible errors:<br>1.Wrong length.<br>2.Invalid date format. Please use the format dd-mm-yyyy.',
+  )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @Post('save-profileInfo')
   async saveUsersProfiles(@Body() body: UsersProfilesDto, @Req() req) {
@@ -57,8 +60,8 @@ export class UsersProfilesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Upload avatar' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Avatar create')
+  @ApiOperation({ summary: 'Upload avatar. "fieldName" must be "avatar"' })
+  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Avatar created')
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @Post('save-avatar')
   @UseInterceptors(FileInterceptor('avatar'))
