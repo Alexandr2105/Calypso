@@ -70,7 +70,6 @@ export class AuthController {
     @Param() params: RegistrationConformationDto,
   ): Promise<void> {
     await this.commandBus.execute(new ConfirmationEmailCommand(params.code));
-
     return;
   }
 
