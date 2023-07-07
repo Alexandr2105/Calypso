@@ -6,7 +6,10 @@ export class QueryRepository {
   constructor(@Inject(PrismaService) private prisma: PrismaService) {}
 
   async getPostsAndPhotos(userId: string) {
-    return this.prisma.post.findMany({
+    // const totalCount = await this.prisma.post.count({
+    //   where: { userId: userId },
+    // });
+    return this.prisma.post.findFirstOrThrow({
       where: { userId: userId },
       include: { image: { select: { url: true } } },
       take: 9,
