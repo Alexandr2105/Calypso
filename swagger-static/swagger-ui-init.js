@@ -710,11 +710,88 @@ window.onload = function() {
             "204": {
               "description": "Post deleted"
             },
+            "401": {
+              "description": "Unauthorized"
+            },
             "403": {
               "description": "Forbidden"
             },
             "404": {
               "description": "Not Found"
+            }
+          },
+          "tags": [
+            "Posts"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/posts/{userId}": {
+        "get": {
+          "operationId": "PostsController_getPostsCurrentUser",
+          "summary": "Get post for current user",
+          "parameters": [
+            {
+              "name": "userId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Post id"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "description": "UserId"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Description post"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Created Date"
+                        },
+                        "image": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
             }
           },
           "tags": [

@@ -2,12 +2,14 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
   Param,
   Post,
   Put,
+  Query,
   Req,
   UploadedFiles,
   UseGuards,
@@ -31,6 +33,7 @@ import { PostIdDto } from '../dto/post.id.dto';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostsEntity } from '../entities/posts.entity';
 import { DeletePostCommand } from '../application/use-cases/delete.post.use.case';
+import { QueryRepository } from '../../query.repository.ts/query.repository';
 
 @ApiTags('Posts')
 @Controller('/posts')
@@ -38,6 +41,7 @@ export class PostsController {
   constructor(
     private commandBus: CommandBus,
     private postsRepository: PostsRepository,
+    private queryRepository: QueryRepository,
   ) {}
 
   @HttpCode(HttpStatus.CREATED)
@@ -137,6 +141,7 @@ export class PostsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete post' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Post deleted')
+  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
   @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Delete('post/:postId')
@@ -144,5 +149,54 @@ export class PostsController {
     await this.commandBus.execute(
       new DeletePostCommand(param.postId, req.user.id),
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get post for current user' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'array',
+      items: {
+        properties: {
+          id: {
+            type: 'string',
+            description: 'Post id',
+          },
+          userId: {
+            type: 'string',
+            description: 'UserId',
+          },
+          description: {
+            type: 'string',
+            description: 'Description post',
+          },
+          createdAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'Created Date',
+          },
+          image: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: { url: { type: 'string' } },
+            },
+          },
+        },
+      },
+    },
+  })
+  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
+  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
+  @Get('/:userId')
+  async getPostsCurrentUser(
+    @Req() req,
+    @Param('userId') userId: string,
+    @Query() query,
+  ) {
+    if (req.user.id !== userId) throw new ForbiddenException();
+    return this.queryRepository.getPostsAndPhotos(req.user.id);
   }
 }
