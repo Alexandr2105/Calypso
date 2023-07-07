@@ -25,7 +25,7 @@ export class CreatePostUseCase
     private imageRepository: ImagesRepository,
   ) {}
 
-  async execute(command: CreatePostCommandBus): Promise<boolean> {
+  async execute(command: CreatePostCommandBus) {
     const post: PostsEntity = await this.postsRepository.createNewPost({
       id: randomUUID(),
       userId: command.userId,
@@ -57,6 +57,6 @@ export class CreatePostUseCase
       });
     }
 
-    return true;
+    return this.postsRepository.getPost(post.id);
   }
 }

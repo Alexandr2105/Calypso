@@ -9,4 +9,11 @@ export class PostsRepository {
   async createNewPost(post: PostsEntity): Promise<PostsEntity> {
     return this.prisma.post.create({ data: post });
   }
+
+  async getPost(postId: string) {
+    return this.prisma.post.findUnique({
+      where: { id: postId },
+      include: { image: { select: { url: true } } },
+    });
+  }
 }

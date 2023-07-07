@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma-service';
-import { PostsImagesEntity } from '../posts/entities/posts.images.entity';
+import { PostsImagesEntity } from './entities/posts.images.entity';
 
 @Injectable()
 export class ImagesRepository {

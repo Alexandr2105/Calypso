@@ -530,8 +530,45 @@ window.onload = function() {
             }
           },
           "responses": {
-            "204": {
-              "description": "Post created"
+            "201": {
+              "description": "Post created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Post id"
+                      },
+                      "userId": {
+                        "type": "string",
+                        "description": "UserId"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Description post"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Created Date"
+                      },
+                      "image": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "url": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             },
             "400": {
               "description": "List of possible errors:<br>1.Wrong length<br>2.More than 10 photos",
