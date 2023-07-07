@@ -9,6 +9,8 @@ export class TestingController {
   async clearAllData(): Promise<HttpStatus> {
     await this.prisma.refreshTokenData.deleteMany();
 
+    await this.prisma.postImage.deleteMany();
+
     await this.prisma.emailConfirmation.deleteMany();
 
     await this.prisma.post.deleteMany();

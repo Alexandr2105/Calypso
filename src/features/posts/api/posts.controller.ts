@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -29,6 +30,7 @@ import { UpdateDescriptionForPostCommand } from '../application/use-cases/update
 import { PostIdDto } from '../dto/post.id.dto';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostsEntity } from '../entities/posts.entity';
+import { DeletePostCommand } from '../application/use-cases/delete.post.use.case';
 
 @ApiTags('Posts')
 @Controller('/posts')
@@ -97,12 +99,10 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update description for post' })
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.Post not found<br>2.Wrong length',
-  )
+  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Wrong length')
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
+  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Put('post/:postId')
   async updatePost(
     @Body() body: DescriptionDto,
@@ -126,8 +126,23 @@ export class PostsController {
     type: PostsEntity,
   })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
+  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Get('post/:postId')
   async getPost(@Param() param: PostIdDto): Promise<PostsEntity> {
     return this.postsRepository.getPostById(param.postId);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete post' })
+  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Post deleted')
+  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
+  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
+  @Delete('post/:postId')
+  async deletePost(@Param() param: PostIdDto, @Req() req) {
+    await this.commandBus.execute(
+      new DeletePostCommand(param.postId, req.user.id),
+    );
   }
 }

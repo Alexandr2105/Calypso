@@ -9,4 +9,12 @@ export class ImagesRepository {
   async createNewImage(image: PostsImagesEntity): Promise<PostsImagesEntity> {
     return this.prisma.postImage.create({ data: image });
   }
+
+  async deleteImages(postId: string) {
+    await this.prisma.postImage.deleteMany({ where: { postId: postId } });
+  }
+
+  async getImages(postId: string) {
+    return this.prisma.postImage.findMany({ where: { postId: postId } });
+  }
 }

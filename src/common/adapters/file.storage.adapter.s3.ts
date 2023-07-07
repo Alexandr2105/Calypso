@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { settings } from '../../settings';
 import { randomUUID } from 'crypto';
 
@@ -38,9 +42,10 @@ export class FileStorageAdapterS3 {
     buffer: Buffer,
     postId: string,
   ): Promise<any> {
+    const randomName = randomUUID();
     const command = new PutObjectCommand({
       Bucket: settings.BACKET_NAME,
-      Key: `${userId}/posts/${postId}/${randomUUID()}_post.png`,
+      Key: `${userId}/posts/${postId}/${randomName}_post.png`,
       Body: buffer,
       ContentType: 'image/png',
     });
@@ -48,11 +53,20 @@ export class FileStorageAdapterS3 {
       await this.s3Client.send(command);
       return {
         id: randomUUID(),
-        key: `${userId}/posts/${postId}/${randomUUID()}_post.png`,
+        key: `${userId}/posts/${postId}/${randomName}_post.png`,
         postId: postId,
         createdAt: new Date(),
         bucket: settings.BACKET_NAME,
       };
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async deleteImage(bucket: string, key: string) {
+    const command = new DeleteObjectCommand({ Bucket: bucket, Key: key });
+    try {
+      await this.s3Client.send(command);
     } catch (err) {
       console.error(err);
     }

@@ -45,6 +45,7 @@ import { PostsRepository } from './features/posts/infrastructure/posts.repositor
 import { ImagesRepository } from './features/images/images.repository';
 import { CheckPostId } from './features/posts/validation/check.post.id';
 import { UpdateDescriptionForPostUseCase } from './features/posts/application/use-cases/update.description.for.post.use.case';
+import { DeletePostUseCase } from './features/posts/application/use-cases/delete.post.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -65,6 +66,7 @@ const UseCases = [
   GetUserProfileUseCase,
   CreatePostUseCase,
   UpdateDescriptionForPostUseCase,
+  DeletePostUseCase,
 ];
 const Repositories = [
   UsersRepository,

@@ -627,7 +627,7 @@ window.onload = function() {
           },
           "responses": {
             "400": {
-              "description": "List of possible errors:<br>1.Post not found<br>2.Wrong length",
+              "description": "Wrong length",
               "content": {
                 "application/json": {
                   "schema": {
@@ -657,6 +657,9 @@ window.onload = function() {
             },
             "403": {
               "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
             }
           },
           "tags": [
@@ -685,6 +688,33 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          },
+          "tags": [
+            "Posts"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "delete": {
+          "operationId": "PostsController_deletePost",
+          "summary": "Delete post",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": "Post deleted"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
             }
           },
           "tags": [

@@ -2,7 +2,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostsRepository } from '../infrastructure/posts.repository';
 
 @ValidatorConstraint({ name: 'checkPostId', async: true })
@@ -10,12 +10,12 @@ import { PostsRepository } from '../infrastructure/posts.repository';
 export class CheckPostId implements ValidatorConstraintInterface {
   constructor(private postsRepository: PostsRepository) {}
 
-  async validate(postId: string): Promise<boolean> {
+  async validate(postId: string) {
     const post = await this.postsRepository.getPostById(postId);
-    if (post) return true;
-  }
-
-  defaultMessage(): string {
-    return 'Post not found';
+    if (!post) {
+      throw new NotFoundException();
+    } else {
+      return true;
+    }
   }
 }
