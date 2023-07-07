@@ -28,7 +28,8 @@ export function ApiResponseForSwagger(status: number, description: string) {
   if (
     status === HttpStatus.OK ||
     status === HttpStatus.NO_CONTENT ||
-    status === HttpStatus.UNAUTHORIZED
+    status === HttpStatus.UNAUTHORIZED ||
+    status === HttpStatus.FORBIDDEN
   ) {
     response = ApiResponse({
       status,

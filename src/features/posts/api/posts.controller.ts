@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -26,11 +27,16 @@ import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-
 import { CreatePostCommand } from '../application/use-cases/create.post.use.case';
 import { UpdateDescriptionForPostCommand } from '../application/use-cases/update.description.for.post.use.case';
 import { PostIdDto } from '../dto/post.id.dto';
+import { PostsRepository } from '../infrastructure/posts.repository';
+import { PostsEntity } from '../entities/posts.entity';
 
 @ApiTags('Posts')
 @Controller('/posts')
 export class PostsController {
-  constructor(private commandBus: CommandBus) {}
+  constructor(
+    private commandBus: CommandBus,
+    private postsRepository: PostsRepository,
+  ) {}
 
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
@@ -96,10 +102,32 @@ export class PostsController {
     'List of possible errors:<br>1.Post not found<br>2.Wrong length',
   )
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
+  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
   @Put('post/:postId')
-  async updatePost(@Body() body: DescriptionDto, @Param() param: PostIdDto) {
+  async updatePost(
+    @Body() body: DescriptionDto,
+    @Param() param: PostIdDto,
+    @Req() req,
+  ) {
     await this.commandBus.execute(
-      new UpdateDescriptionForPostCommand(body.description, param.postId),
+      new UpdateDescriptionForPostCommand(
+        body.description,
+        param.postId,
+        req.user.id,
+      ),
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get info for post' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: PostsEntity,
+  })
+  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
+  @Get('post/:postId')
+  async getPost(@Param() param: PostIdDto): Promise<PostsEntity> {
+    return this.postsRepository.getPostById(param.postId);
   }
 }

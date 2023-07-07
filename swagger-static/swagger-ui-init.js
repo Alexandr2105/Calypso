@@ -654,6 +654,37 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            }
+          },
+          "tags": [
+            "Posts"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        },
+        "get": {
+          "operationId": "PostsController_getPost",
+          "summary": "Get info for post",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/PostsEntity"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
             }
           },
           "tags": [
@@ -808,6 +839,33 @@ window.onload = function() {
           },
           "required": [
             "description"
+          ]
+        },
+        "PostsEntity": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Post id"
+            },
+            "userId": {
+              "type": "string",
+              "description": "UserId"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description post"
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Created Date"
+            }
+          },
+          "required": [
+            "id",
+            "userId",
+            "description",
+            "createdAt"
           ]
         }
       }

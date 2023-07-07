@@ -10,7 +10,7 @@ export class PostsRepository {
     return this.prisma.post.create({ data: post });
   }
 
-  async getPostById(postId: string) {
+  async getPostById(postId: string): Promise<PostsEntity> {
     return this.prisma.post.findUnique({ where: { id: postId } });
   }
 
