@@ -43,9 +43,11 @@ import { PostsController } from './features/posts/api/posts.controller';
 import { CreatePostUseCase } from './features/posts/application/use-cases/create.post.use.case';
 import { PostsRepository } from './features/posts/infrastructure/posts.repository';
 import { ImagesRepository } from './features/images/images.repository';
+import { CheckPostId } from './features/posts/validation/check.post.id';
+import { UpdateDescriptionForPostUseCase } from './features/posts/application/use-cases/update.description.for.post.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
-const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode];
+const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
 const UseCases = [
   RegistrationUserUseCase,
   CreateConfirmationInfoForUserUseCase,
@@ -62,6 +64,7 @@ const UseCases = [
   UploadAvatarUseCase,
   GetUserProfileUseCase,
   CreatePostUseCase,
+  UpdateDescriptionForPostUseCase,
 ];
 const Repositories = [
   UsersRepository,

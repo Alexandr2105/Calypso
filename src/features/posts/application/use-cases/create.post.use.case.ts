@@ -7,7 +7,7 @@ import { PostsEntity } from '../../entities/posts.entity';
 import sharp from 'sharp';
 import { ImagesRepository } from '../../../images/images.repository';
 
-export class CreatePostCommandBus {
+export class CreatePostCommand {
   constructor(
     public photos: Buffer[],
     public description: string,
@@ -15,17 +15,15 @@ export class CreatePostCommandBus {
   ) {}
 }
 
-@CommandHandler(CreatePostCommandBus)
-export class CreatePostUseCase
-  implements ICommandHandler<CreatePostCommandBus>
-{
+@CommandHandler(CreatePostCommand)
+export class CreatePostUseCase implements ICommandHandler<CreatePostCommand> {
   constructor(
     private fileStorageAdapter: FileStorageAdapterS3,
     private postsRepository: PostsRepository,
     private imageRepository: ImagesRepository,
   ) {}
 
-  async execute(command: CreatePostCommandBus) {
+  async execute(command: CreatePostCommand) {
     const post: PostsEntity = await this.postsRepository.createNewPost({
       id: randomUUID(),
       userId: command.userId,
@@ -57,6 +55,6 @@ export class CreatePostUseCase
       });
     }
 
-    return this.postsRepository.getPost(post.id);
+    return this.postsRepository.getPostAndPhotos(post.id);
   }
 }

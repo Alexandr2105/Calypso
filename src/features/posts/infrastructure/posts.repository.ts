@@ -10,10 +10,21 @@ export class PostsRepository {
     return this.prisma.post.create({ data: post });
   }
 
-  async getPost(postId: string) {
+  async getPostById(postId: string) {
+    return this.prisma.post.findUnique({ where: { id: postId } });
+  }
+
+  async getPostAndPhotos(postId: string) {
     return this.prisma.post.findUnique({
       where: { id: postId },
       include: { image: { select: { url: true } } },
+    });
+  }
+
+  async updateDescription(description: string, postId: string) {
+    await this.prisma.post.update({
+      where: { id: postId },
+      data: { description: description },
     });
   }
 }

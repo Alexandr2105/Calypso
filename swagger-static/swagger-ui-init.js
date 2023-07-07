@@ -514,7 +514,7 @@ window.onload = function() {
           ]
         }
       },
-      "/posts/create": {
+      "/posts/post": {
         "post": {
           "operationId": "PostsController_createPosts",
           "summary": "Create post. \"fieldName\" must be \"posts\"",
@@ -595,6 +595,65 @@ window.onload = function() {
                   }
                 }
               }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          },
+          "tags": [
+            "Posts"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
+          ]
+        }
+      },
+      "/posts/post/{postId}": {
+        "put": {
+          "operationId": "PostsController_updatePost",
+          "summary": "Update description for post",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DescriptionDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "400": {
+              "description": "List of possible errors:<br>1.Post not found<br>2.Wrong length",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
             }
           },
           "tags": [
