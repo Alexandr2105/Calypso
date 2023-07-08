@@ -58,7 +58,7 @@ model Post{
   description String?
   createdAt   DateTime
   user        User    @relation(fields: [userId],references: [id])
-  image       PostImage[]
+  images      PostImage[]
 }
 
 model PostImage {

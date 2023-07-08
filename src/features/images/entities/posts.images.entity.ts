@@ -1,5 +1,8 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export class PostsImagesEntity {
   id: string;
+  @ApiProperty({ type: 'string', description: 'Url image' })
   url: string;
   bucket: string;
   postId: string;

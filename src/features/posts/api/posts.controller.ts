@@ -23,6 +23,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -34,6 +35,8 @@ import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostsEntity } from '../entities/posts.entity';
 import { DeletePostCommand } from '../application/use-cases/delete.post.use.case';
 import { QueryRepository } from '../../query.repository.ts/query.repository';
+import { PostQueryType } from '../../../common/query-types/post.query.type';
+import { PostEntityWithImage } from '../../../common/query-types/post.entity.with.image';
 
 @ApiTags('Posts')
 @Controller('/posts')
@@ -51,35 +54,7 @@ export class PostsController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Post created',
-    schema: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string',
-          description: 'Post id',
-        },
-        userId: {
-          type: 'string',
-          description: 'UserId',
-        },
-        description: {
-          type: 'string',
-          description: 'Description post',
-        },
-        createdAt: {
-          type: 'string',
-          format: 'date-time',
-          description: 'Created Date',
-        },
-        image: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: { url: { type: 'string' } },
-          },
-        },
-      },
-    },
+    type: PostEntityWithImage,
   })
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
@@ -154,39 +129,30 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get post for current user' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    schema: {
-      type: 'array',
-      items: {
-        properties: {
-          id: {
-            type: 'string',
-            description: 'Post id',
-          },
-          userId: {
-            type: 'string',
-            description: 'UserId',
-          },
-          description: {
-            type: 'string',
-            description: 'Description post',
-          },
-          createdAt: {
-            type: 'string',
-            format: 'date-time',
-            description: 'Created Date',
-          },
-          image: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: { url: { type: 'string' } },
-            },
-          },
-        },
-      },
-    },
+  @ApiResponse({ status: HttpStatus.CREATED, type: PostQueryType })
+  @ApiQuery({
+    name: 'pageSize',
+    description: 'Тumber of elements to return',
+    required: false,
+    schema: { default: 9, type: 'integer' },
+  })
+  @ApiQuery({
+    name: 'pageNumber',
+    description: 'Page number to return',
+    required: false,
+    schema: { default: 1, type: 'integer' },
+  })
+  @ApiQuery({
+    name: 'sortDirection',
+    required: false,
+    schema: { type: 'string', default: 'desc' },
+    enum: ['asc', 'desc'],
+  })
+  @ApiQuery({
+    name: 'sortBy',
+    description: 'What field to sort by',
+    required: false,
+    schema: { default: 'createdAt' },
   })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')

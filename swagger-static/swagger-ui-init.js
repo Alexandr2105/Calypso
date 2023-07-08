@@ -535,37 +535,7 @@ window.onload = function() {
               "content": {
                 "application/json": {
                   "schema": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "Post id"
-                      },
-                      "userId": {
-                        "type": "string",
-                        "description": "UserId"
-                      },
-                      "description": {
-                        "type": "string",
-                        "description": "Description post"
-                      },
-                      "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Created Date"
-                      },
-                      "image": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "url": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    }
+                    "$ref": "#/components/schemas/PostEntityWithImage"
                   }
                 }
               }
@@ -614,7 +584,16 @@ window.onload = function() {
         "put": {
           "operationId": "PostsController_updatePost",
           "summary": "Update description for post",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "postId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "requestBody": {
             "required": true,
             "content": {
@@ -674,7 +653,16 @@ window.onload = function() {
         "get": {
           "operationId": "PostsController_getPost",
           "summary": "Get info for post",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "postId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "200": {
               "description": "",
@@ -705,7 +693,16 @@ window.onload = function() {
         "delete": {
           "operationId": "PostsController_deletePost",
           "summary": "Delete post",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "postId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "204": {
               "description": "Post deleted"
@@ -742,47 +739,57 @@ window.onload = function() {
               "schema": {
                 "type": "string"
               }
+            },
+            {
+              "name": "sortBy",
+              "required": false,
+              "in": "query",
+              "description": "What field to sort by",
+              "schema": {
+                "default": "createdAt"
+              }
+            },
+            {
+              "name": "sortDirection",
+              "required": false,
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "default": "desc",
+                "enum": [
+                  "asc",
+                  "desc"
+                ]
+              }
+            },
+            {
+              "name": "pageNumber",
+              "required": false,
+              "in": "query",
+              "description": "Page number to return",
+              "schema": {
+                "default": 1,
+                "type": "integer"
+              }
+            },
+            {
+              "name": "pageSize",
+              "required": false,
+              "in": "query",
+              "description": "Тumber of elements to return",
+              "schema": {
+                "default": 9,
+                "type": "integer"
+              }
             }
           ],
           "responses": {
-            "200": {
+            "201": {
               "description": "",
               "content": {
                 "application/json": {
                   "schema": {
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "description": "Post id"
-                        },
-                        "userId": {
-                          "type": "string",
-                          "description": "UserId"
-                        },
-                        "description": {
-                          "type": "string",
-                          "description": "Description post"
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "description": "Created Date"
-                        },
-                        "image": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "url": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
+                    "$ref": "#/components/schemas/PostQueryType"
                   }
                 }
               }
@@ -948,6 +955,52 @@ window.onload = function() {
             "description"
           ]
         },
+        "PostsImagesEntity": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "Url image"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        },
+        "PostEntityWithImage": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Post id"
+            },
+            "userId": {
+              "type": "string",
+              "description": "UserId"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description post"
+            },
+            "createdAt": {
+              "type": "string",
+              "description": "Created Date"
+            },
+            "images": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PostsImagesEntity"
+              }
+            }
+          },
+          "required": [
+            "id",
+            "userId",
+            "description",
+            "createdAt",
+            "images"
+          ]
+        },
         "PostsEntity": {
           "type": "object",
           "properties": {
@@ -973,6 +1026,40 @@ window.onload = function() {
             "userId",
             "description",
             "createdAt"
+          ]
+        },
+        "PostQueryType": {
+          "type": "object",
+          "properties": {
+            "pagesCount": {
+              "type": "number",
+              "description": "Number of items sorted"
+            },
+            "page": {
+              "type": "number",
+              "description": "Number of pages"
+            },
+            "pageSize": {
+              "type": "number",
+              "description": "Page Size"
+            },
+            "totalCount": {
+              "type": "number",
+              "description": "Total items"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PostEntityWithImage"
+              }
+            }
+          },
+          "required": [
+            "pagesCount",
+            "page",
+            "pageSize",
+            "totalCount",
+            "items"
           ]
         }
       }

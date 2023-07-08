@@ -11,7 +11,7 @@ export class QueryRepository {
     // });
     return this.prisma.post.findFirstOrThrow({
       where: { userId: userId },
-      include: { image: { select: { url: true } } },
+      include: { images: { select: { url: true } } },
       take: 9,
       skip: 0,
       orderBy: { createdAt: 'desc' },

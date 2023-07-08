@@ -17,7 +17,7 @@ export class PostsRepository {
   async getPostAndPhotos(postId: string) {
     return this.prisma.post.findUnique({
       where: { id: postId },
-      include: { image: { select: { url: true } } },
+      include: { images: { select: { url: true } } },
     });
   }
 
