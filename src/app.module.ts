@@ -47,6 +47,7 @@ import { CheckPostId } from './features/posts/validation/check.post.id';
 import { UpdateDescriptionForPostUseCase } from './features/posts/application/use-cases/update.description.for.post.use.case';
 import { DeletePostUseCase } from './features/posts/application/use-cases/delete.post.use.case';
 import { QueryRepository } from './features/query.repository.ts/query.repository';
+import { QueryHelper } from './common/helpers/query.helper';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -108,6 +109,7 @@ const Repositories = [
     ...Strategies,
     ...Repositories,
     Jwt,
+    QueryHelper,
   ],
 })
 export class AppModule {}
