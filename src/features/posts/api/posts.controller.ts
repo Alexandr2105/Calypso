@@ -37,6 +37,7 @@ import { DeletePostCommand } from '../application/use-cases/delete.post.use.case
 import { QueryRepository } from '../../query.repository.ts/query.repository';
 import { PostQueryType } from '../../../common/query-types/post.query.type';
 import { PostEntityWithImage } from '../../../common/query-types/post.entity.with.image';
+import { QueryHelper } from '../../../common/helpers/query.helper';
 
 @ApiTags('Posts')
 @Controller('/posts')
@@ -45,6 +46,7 @@ export class PostsController {
     private commandBus: CommandBus,
     private postsRepository: PostsRepository,
     private queryRepository: QueryRepository,
+    private queryHelper: QueryHelper,
   ) {}
 
   @HttpCode(HttpStatus.CREATED)
@@ -163,6 +165,7 @@ export class PostsController {
     @Query() query,
   ) {
     if (req.user.id !== userId) throw new ForbiddenException();
-    return this.queryRepository.getPostsAndPhotos(req.user.id);
+    const queryParam = this.queryHelper.queryParamHelper(query);
+    return this.queryRepository.getPostsAndPhotos(req.user.id, queryParam);
   }
 }
