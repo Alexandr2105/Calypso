@@ -24,7 +24,13 @@ export class CreateUserDto {
   })
   login: string;
 
-  @IsEmail({}, { message: 'Invalid email' })
+  @IsEmail(
+    {
+      require_tld: true,
+      allow_utf8_local_part: false,
+    },
+    { message: 'Invalid email' },
+  )
   @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
   @Validate(CheckLoginOrEmailInDb, {
