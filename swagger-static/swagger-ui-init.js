@@ -25,7 +25,6 @@ window.onload = function() {
       "/auth/registration": {
         "post": {
           "operationId": "AuthController_registrationUsers",
-          "summary": "Registration users",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -39,33 +38,7 @@ window.onload = function() {
           },
           "responses": {
             "204": {
-              "description": "Email confirmation link sent"
-            },
-            "400": {
-              "description": "List of possible errors:<br>1.User with this username is already registered <br>2.User with this email is already registered<br> 3.Wrong length\n",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "errorsMessages": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "message": {
-                              "type": "string"
-                            },
-                            "field": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+              "description": ""
             }
           },
           "tags": [
@@ -831,26 +804,7 @@ window.onload = function() {
       "schemas": {
         "CreateUserDto": {
           "type": "object",
-          "properties": {
-            "login": {
-              "type": "string",
-              "minimum": 6,
-              "maximum": 30
-            },
-            "email": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string",
-              "minimum": 6,
-              "maximum": 20
-            }
-          },
-          "required": [
-            "login",
-            "email",
-            "password"
-          ]
+          "properties": {}
         },
         "RegistrationEmailResendingDto": {
           "type": "object",

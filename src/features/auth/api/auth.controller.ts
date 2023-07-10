@@ -150,7 +150,7 @@ export class AuthController {
     return;
   }
 
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('new-password')
   @ApiOperation({ summary: 'Creating a new password' })
   @ApiResponseForSwagger(
