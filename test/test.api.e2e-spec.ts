@@ -350,4 +350,44 @@ describe('Create test for profiles', () => {
       ],
     });
   });
+
+  it('Проверка на возвращение токена и profile = true,', async () => {
+    const refreshToken = token.headers['set-cookie'];
+    await test.post('/auth/logout').set('Cookie', refreshToken).expect(204);
+    token = await test
+      .post('/auth/login')
+      .send({
+        loginOrEmail: user.login,
+        password: user.password,
+      })
+      .set('user-agent', 'Chrome')
+      .expect(200);
+    expect(token.body).toEqual({
+      accessToken: expect.any(String),
+      profile: true,
+    });
+  });
+
+  it('Проверяем сохранение аватара и его получение', async () => {
+    await test.post('/users/profiles/save-avatar').expect(401);
+    await test
+      .post('/users/profiles/save-avatar')
+      .auth(token.body.accessToken, { type: 'bearer' })
+      .attach('avatar', 'D:/blogWalpaper.jpg')
+      .expect(204);
+    const profile = await test
+      .get('/users/profiles/profile')
+      .auth(token.body.accessToken, { type: 'bearer' })
+      .expect(200);
+    expect(profile.body).toEqual({
+      userId: expect.any(String),
+      login: 'Alex11',
+      firstName: 'string',
+      lastName: '',
+      dateOfBirthday: '21-05-1988',
+      city: 'string',
+      userInfo: '',
+      photo: `https://storage.yandexcloud.net/my1bucket/${profile.body.userId}/avatars/${profile.body.userId}_avatar.png`,
+    });
+  });
 });
