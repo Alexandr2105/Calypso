@@ -38,7 +38,6 @@ import { UpdateInfoAboutDevicesUserCommand } from '../../devices/application/use
 import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
-import { Recaptcha } from '../../../common/recaptcha/decorator/recaptcha.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -165,7 +164,7 @@ export class AuthController {
   })
   async createNewPassword(
     @Body() body: NewPasswordDto,
-    @Recaptcha() recaptchaToken: string,
+    // @Recaptcha() recaptchaToken: string,
   ) {
     await this.commandBus.execute(
       new ChangePasswordCommand(body.recoveryCode, body.newPassword),

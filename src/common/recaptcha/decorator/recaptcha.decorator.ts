@@ -13,7 +13,7 @@ export const Recaptcha = createParamDecorator(
 
     if (!recaptchaToken) {
       throw new HttpException(
-        'RECAPTCHA token is missing',
+        { message: 'RECAPTCHA token is missing' },
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -33,7 +33,7 @@ export const Recaptcha = createParamDecorator(
 
     if (!response.data.success) {
       throw new HttpException(
-        'Invalid RECAPTCHA token',
+        { message: 'Invalid RECAPTCHA token' },
         HttpStatus.BAD_REQUEST,
       );
     }
