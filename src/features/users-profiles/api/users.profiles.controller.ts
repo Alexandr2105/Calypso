@@ -24,6 +24,7 @@ import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.user.case';
 import { GetUserProfileCommand } from '../application/use-cases/get.user.profile.use.case';
+import { UsersProfilesEntity } from '../entities/users.profiles.entity';
 
 @ApiTags('Profiles')
 @Controller('users/profiles')
@@ -33,7 +34,10 @@ export class UsersProfilesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user profile' })
-  @ApiResponse({ status: HttpStatus.OK, type: UsersProfilesDto })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: UsersProfilesEntity,
+  })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @Get('profile')
   async getUserProfile(@Req() req) {

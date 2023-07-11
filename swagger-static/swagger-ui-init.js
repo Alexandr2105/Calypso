@@ -358,21 +358,7 @@ window.onload = function() {
               "content": {
                 "application/json": {
                   "schema": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "description": "user id"
-                      },
-                      "email": {
-                        "type": "string",
-                        "description": "user email"
-                      },
-                      "login": {
-                        "type": "string",
-                        "description": "user login"
-                      }
-                    }
+                    "$ref": "#/components/schemas/UserEntity"
                   }
                 }
               }
@@ -413,7 +399,7 @@ window.onload = function() {
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/UsersProfilesDto"
+                    "$ref": "#/components/schemas/UsersProfilesEntity"
                   }
                 }
               }
@@ -904,6 +890,75 @@ window.onload = function() {
           "required": [
             "newPassword",
             "recoveryCode"
+          ]
+        },
+        "UserEntity": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "User id"
+            },
+            "login": {
+              "type": "string",
+              "description": "User login"
+            },
+            "email": {
+              "type": "string",
+              "description": "User email"
+            }
+          },
+          "required": [
+            "id",
+            "login",
+            "email"
+          ]
+        },
+        "UsersProfilesEntity": {
+          "type": "object",
+          "properties": {
+            "userId": {
+              "type": "string",
+              "description": "User id"
+            },
+            "login": {
+              "type": "string",
+              "description": "User login"
+            },
+            "firstName": {
+              "type": "string",
+              "description": "User first name"
+            },
+            "lastName": {
+              "type": "string",
+              "description": "User last name"
+            },
+            "dateOfBirthday": {
+              "type": "string",
+              "description": "User date of birthday"
+            },
+            "city": {
+              "type": "string",
+              "description": "User city"
+            },
+            "userInfo": {
+              "type": "string",
+              "description": "User info"
+            },
+            "photo": {
+              "type": "string",
+              "description": "User avatar"
+            }
+          },
+          "required": [
+            "userId",
+            "login",
+            "firstName",
+            "lastName",
+            "dateOfBirthday",
+            "city",
+            "userInfo",
+            "photo"
           ]
         },
         "UsersProfilesDto": {

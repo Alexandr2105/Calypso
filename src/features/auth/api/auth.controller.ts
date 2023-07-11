@@ -38,6 +38,7 @@ import { UpdateInfoAboutDevicesUserCommand } from '../../devices/application/use
 import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
+import { UserEntity } from '../../users/entities/user.entity';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -207,7 +208,7 @@ export class AuthController {
     description:
       'The JWT refreshToken inside cookie is missing, expired or incorrect',
   })
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshAuthGuard)
   @Post('refresh-token')
   async updateRefreshToken(@Req() req, @Res() res) {
@@ -234,23 +235,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Returns user data' })
   @ApiResponse({
     status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string',
-          description: 'user id',
-        },
-        email: {
-          type: 'string',
-          description: 'user email',
-        },
-        login: {
-          type: 'string',
-          description: 'user login',
-        },
-      },
-    },
+    type: UserEntity,
   })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiBearerAuth()
