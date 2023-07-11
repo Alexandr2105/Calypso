@@ -18,4 +18,6 @@ export const settings = {
   S3_REGION: process.env.S3_REGION,
   BASE_URL_AWS: process.env.BASE_URL_AWS,
   BACKET_NAME: process.env.BACKET_NAME,
+  RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
+  RECAPTCHA_SITE_KEY: '6Le96RMnAAAAAE9dOL6eVQHJ1HYsNAo4OUbDGWIg',
 };
