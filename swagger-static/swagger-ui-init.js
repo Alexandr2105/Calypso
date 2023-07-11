@@ -591,6 +591,9 @@ window.onload = function() {
             }
           },
           "responses": {
+            "204": {
+              "description": "Post updated"
+            },
             "400": {
               "description": "Wrong length",
               "content": {
@@ -655,7 +658,7 @@ window.onload = function() {
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/PostsEntity"
+                    "$ref": "#/components/schemas/PostEntityWithImage"
                   }
                 }
               }
@@ -770,7 +773,7 @@ window.onload = function() {
             }
           ],
           "responses": {
-            "201": {
+            "200": {
               "description": "",
               "content": {
                 "application/json": {
@@ -1054,33 +1057,6 @@ window.onload = function() {
             "description",
             "createdAt",
             "images"
-          ]
-        },
-        "PostsEntity": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "description": "Post id"
-            },
-            "userId": {
-              "type": "string",
-              "description": "UserId"
-            },
-            "description": {
-              "type": "string",
-              "description": "Description post"
-            },
-            "createdAt": {
-              "type": "string",
-              "description": "Created Date"
-            }
-          },
-          "required": [
-            "id",
-            "userId",
-            "description",
-            "createdAt"
           ]
         },
         "PostQueryType": {

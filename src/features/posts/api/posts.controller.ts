@@ -80,6 +80,7 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update description for post' })
+  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Post updated')
   @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Wrong length')
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
@@ -104,13 +105,13 @@ export class PostsController {
   @ApiOperation({ summary: 'Get info for post' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: PostsEntity,
+    type: PostEntityWithImage,
   })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Get('post/:postId')
   async getPost(@Param() param: PostIdDto): Promise<PostsEntity> {
-    return this.postsRepository.getPostById(param.postId);
+    return this.postsRepository.getPostAndPhotos(param.postId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -131,7 +132,7 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get post for current user' })
-  @ApiResponse({ status: HttpStatus.CREATED, type: PostQueryType })
+  @ApiResponse({ status: HttpStatus.OK, type: PostQueryType })
   @ApiQuery({
     name: 'pageSize',
     description: 'Тumber of elements to return',

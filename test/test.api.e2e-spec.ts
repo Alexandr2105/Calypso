@@ -206,6 +206,7 @@ describe('Create test for profiles', () => {
     password: 'QWERTY',
     email: '5030553@gmail.com',
   };
+
   beforeAll(async () => {
     sendMailMock = jest.fn();
     (createTransport as jest.Mock).mockReturnValue({
@@ -389,5 +390,261 @@ describe('Create test for profiles', () => {
       userInfo: '',
       photo: `https://storage.yandexcloud.net/my1bucket/${profile.body.userId}/avatars/${profile.body.userId}_avatar.png`,
     });
+  });
+});
+
+describe('Create test for posts', () => {
+  jest.setTimeout(5 * 60 * 1000);
+  let app: INestApplication;
+  let test;
+  let sendMailMock;
+  let code;
+  let code2;
+  let token1;
+  let token2;
+  let post;
+  const user = {
+    login: 'Alex11',
+    password: 'QWERTY',
+    email: '5030553@gmail.com',
+  };
+  const user2 = {
+    login: 'Alex22',
+    password: 'QWERTY',
+    email: '503055@gmail.com',
+  };
+
+  beforeAll(async () => {
+    sendMailMock = jest.fn();
+    (createTransport as jest.Mock).mockReturnValue({
+      sendMail: sendMailMock,
+    });
+
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+    app = moduleFixture.createNestApplication();
+    app = createApp(app);
+    await app.init();
+    test = request(app.getHttpServer());
+    return test.del('/delete-all-data').expect(204);
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('Регистрируем нового пользователя', async () => {
+    await test.post('/auth/registration').send(user).expect(204);
+    const { html } = sendMailMock.mock.lastCall[0];
+    const regex = /code=([a-zA-Z0-9-]+)/;
+    code = html.match(regex)[1];
+    const info1 = await test
+      .post('/auth/registration')
+      .send({ login: '', password: '', email: '' })
+      .expect(400);
+    expect(info1.body).toEqual({
+      errorsMessages: [
+        { message: 'Wrong length', field: 'login' },
+        { message: 'Invalid email', field: 'email' },
+        { message: 'Wrong length', field: 'password' },
+      ],
+    });
+    expect(sendMailMock).toHaveBeenCalled();
+  });
+
+  it('Регистрируем второго пользователя получаем коды', async () => {
+    await test.post('/auth/registration').send(user2).expect(204);
+    const { html } = sendMailMock.mock.lastCall[0];
+    const regex = /code=([a-zA-Z0-9-]+)/;
+    code2 = html.match(regex)[1];
+    await test.get(`/auth/email-confirmation/${code2}`).expect(204);
+    token2 = await test
+      .post('/auth/login')
+      .send({
+        loginOrEmail: user2.login,
+        password: user2.password,
+      })
+      .set('user-agent', 'Chrome')
+      .expect(200);
+  });
+
+  it('Подтверждаем регистрацию по коду', async () => {
+    await test.get(`/auth/email-confirmation/${code}`).expect(204);
+    await test.get('/auth/email-confirmation/:code').expect(400);
+  });
+
+  it('login и получения токена', async () => {
+    token1 = await test
+      .post('/auth/login')
+      .send({
+        loginOrEmail: user.login,
+        password: user.password,
+      })
+      .set('user-agent', 'Chrome')
+      .expect(200);
+    expect(token1.body).toEqual({
+      accessToken: expect.any(String),
+      profile: false,
+    });
+    await test
+      .post('/auth/login')
+      .send({
+        loginOrEmail: 'user.login',
+        password: 'user.password',
+      })
+      .set('user-agent', 'Chrome')
+      .expect(401);
+    const info = await test
+      .get('/auth/me')
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .set('user-agent', 'Chrome')
+      .expect(200);
+    expect(info.body).toEqual({
+      email: user.email,
+      login: user.login,
+      id: expect.any(String),
+    });
+    await test
+      .get('/auth/me')
+      .auth('token.body.accessToken', { type: 'bearer' })
+      .set('user-agent', 'Chrome')
+      .expect(401);
+  });
+
+  it('Создаем пост с фото', async () => {
+    await test.post('/posts/post').expect(401);
+    post = await test
+      .post('/posts/post')
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .field({
+        description: 'string',
+      })
+      .expect(201);
+    expect(post.body).toEqual({
+      id: expect.any(String),
+      userId: expect.any(String),
+      description: 'string',
+      createdAt: expect.any(String),
+      images: [
+        {
+          url: expect.any(String),
+        },
+        { url: expect.any(String) },
+      ],
+    });
+    const post2 = await test
+      .post('/posts/post')
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .field({
+        description: 'adf',
+      })
+      .expect(400);
+    expect(post2.body).toEqual({
+      errorsMessages: [{ message: 'More than 10 photos', field: 'photo' }],
+    });
+    const post3 = await test
+      .post('/posts/post')
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .attach('posts', 'D:/blogWalpaper.jpg')
+      .field({
+        description:
+          'asdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf' +
+          ' adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf' +
+          ' adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf' +
+          ' adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf ' +
+          'adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf ' +
+          'adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf a' +
+          'df adsfd fdafdsfa fadsfa',
+      })
+      .expect(400);
+    expect(post3.body).toEqual({
+      errorsMessages: [{ message: 'Wrong length', field: 'description' }],
+    });
+  });
+
+  it('Обновляем описание поста и проверяем на правильный вывод', async () => {
+    await test
+      .put(`/posts/post/${post.body.id}`)
+      .send({
+        description: 'stringstringstringstring',
+      })
+      .expect(401);
+    await test
+      .put(`/posts/post/${post.body.id}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .send({
+        description: 'stringstringstringstring',
+      })
+      .expect(204);
+    const updatePost = await test
+      .put(`/posts/post/${post.body.id}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .send({
+        description:
+          'asdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf' +
+          ' adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf' +
+          ' adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf' +
+          ' adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf ' +
+          'adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf ' +
+          'adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf adf adsfd fdafdsfa fadsfaasdfadsfasdfasfdf a' +
+          'df adsfd fdafdsfa fadsfa',
+      })
+      .expect(400);
+    expect(updatePost.body).toEqual({
+      errorsMessages: [{ message: 'Wrong length', field: 'description' }],
+    });
+    await test
+      .put(`/posts/post/${1234}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .send({
+        description: 'stringstringstringstring',
+      })
+      .expect(404);
+    await test
+      .put(`/posts/post/${post.body.id}`)
+      .auth(token2.body.accessToken, { type: 'bearer' })
+      .send({
+        description: 'stringstringstringstring',
+      })
+      .expect(403);
+
+    const getPost = await test
+      .get(`/posts/post/${post.body.id}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .expect(200);
+    expect(getPost.body.description).toEqual('stringstringstringstring');
+    await test
+      .get(`/posts/post/${1234}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .expect(404);
+    await test.get(`/posts/post/${1234}`).expect(401);
+  });
+
+  it('Получаем пост конкретного пользователя', async () => {
+    await test.get(`/posts/${post.body.userId}`).expect(401);
+    await test
+      .get(`/posts/${post.body.userId}`)
+      .auth(token2.body.accessToken, { type: 'bearer' })
+      .expect(403);
+    const postInfo = await test
+      .get(`/posts/${post.body.userId}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .expect(200);
+    console.log(postInfo.body);
+    //TODO:додеталь вывод query post и сделать тест на удаление
   });
 });
