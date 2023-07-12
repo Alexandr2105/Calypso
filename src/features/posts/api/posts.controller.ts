@@ -135,7 +135,7 @@ export class PostsController {
   @ApiResponse({ status: HttpStatus.OK, type: PostQueryType })
   @ApiQuery({
     name: 'pageSize',
-    description: 'Тumber of elements to return',
+    description: 'Number of elements to return',
     required: false,
     schema: { default: 9, type: 'integer' },
   })

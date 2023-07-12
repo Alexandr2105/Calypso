@@ -765,7 +765,7 @@ window.onload = function() {
               "name": "pageSize",
               "required": false,
               "in": "query",
-              "description": "Тumber of elements to return",
+              "description": "Number of elements to return",
               "schema": {
                 "default": 9,
                 "type": "integer"
