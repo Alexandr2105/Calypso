@@ -1,4 +1,3 @@
-import cookieParser from 'cookie-parser';
 import {
   BadRequestException,
   INestApplication,
@@ -7,6 +6,7 @@ import {
 import { useContainer } from 'class-validator';
 import { AppModule } from '../../app.module';
 import { HttpExceptionFilter } from '../../exception.filter';
+import cookieParser from 'cookie-parser';
 
 export const createApp = (app: INestApplication) => {
   app.use(cookieParser());
