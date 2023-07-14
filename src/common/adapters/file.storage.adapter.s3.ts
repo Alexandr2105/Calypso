@@ -23,15 +23,17 @@ export class FileStorageAdapterS3 {
   }
 
   async saveAvatar(userId: string, buffer: Buffer) {
+    const key = `${userId}/avatars/${userId}&${+new Date()}_avatar.png`;
+
     const command = new PutObjectCommand({
       Bucket: settings.BACKET_NAME,
-      Key: `${userId}/avatars/${userId}_avatar.png`,
+      Key: key,
       Body: buffer,
       ContentType: 'image/png',
     });
     try {
       await this.s3Client.send(command);
-      return `${userId}/avatars/${userId}_avatar.png`;
+      return key;
     } catch (err) {
       console.error(err);
     }
