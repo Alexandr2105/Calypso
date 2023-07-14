@@ -10,7 +10,7 @@ import { HttpExceptionFilter } from '../../exception.filter';
 
 export const createApp = (app: INestApplication) => {
   app.use(cookieParser());
-  app.enableCors();
+  app.enableCors({ origin: 'http://localhost:3000' });
   app.useGlobalPipes(
     new ValidationPipe({
       forbidUnknownValues: false,
