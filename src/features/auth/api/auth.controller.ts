@@ -229,9 +229,9 @@ export class AuthController {
       ),
     );
     res.cookie('refreshToken', refreshToken, {
-      // httpOnly: false,
-      secure: true,
-      sameSite: 'None',
+      httpOnly: false,
+      secure: false,
+      // sameSite: 'None',
     });
     res.send(accessToken);
   }
