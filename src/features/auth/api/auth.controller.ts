@@ -229,7 +229,7 @@ export class AuthController {
       ),
     );
     res.cookie('refreshToken', refreshToken, {
-      httpOnly: false,
+      // httpOnly: false,
       secure: true,
       sameSite: 'None',
     });
