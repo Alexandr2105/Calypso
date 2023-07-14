@@ -10,7 +10,12 @@ import { HttpExceptionFilter } from '../../exception.filter';
 
 export const createApp = (app: INestApplication) => {
   app.use(cookieParser());
-  app.enableCors({ credentials: true });
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       forbidUnknownValues: false,
