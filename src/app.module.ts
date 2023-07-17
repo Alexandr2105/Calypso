@@ -48,6 +48,8 @@ import { UpdateDescriptionForPostUseCase } from './features/posts/application/us
 import { DeletePostUseCase } from './features/posts/application/use-cases/delete.post.use.case';
 import { QueryRepository } from './features/query.repository.ts/query.repository';
 import { QueryHelper } from './common/helpers/query.helper';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { GetUserByIdUseCase } from './features/users-profiles/application/use-cases/get.user.by.id.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -69,6 +71,7 @@ const UseCases = [
   CreatePostUseCase,
   UpdateDescriptionForPostUseCase,
   DeletePostUseCase,
+  GetUserByIdUseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -81,6 +84,13 @@ const Repositories = [
 
 @Module({
   imports: [
+    ClientsModule.register([
+      {
+        name: 'FILES_SERVICE',
+        transport: Transport.TCP,
+        options: { port: 3001 },
+      },
+    ]),
     PrismaModule,
     CqrsModule,
     JwtModule.register({}),

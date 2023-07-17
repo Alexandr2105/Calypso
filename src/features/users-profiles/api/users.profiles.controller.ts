@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Post,
   Req,
   UploadedFile,
@@ -22,14 +23,19 @@ import {
 } from '@nestjs/swagger';
 import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.user.case';
 import { GetUserProfileCommand } from '../application/use-cases/get.user.profile.use.case';
 import { UsersProfilesEntity } from '../entities/users.profiles.entity';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+import { GetUserByIdCommand } from '../application/use-cases/get.user.by.id.use.case';
 
 @ApiTags('Profiles')
 @Controller('users/profiles')
 export class UsersProfilesController {
-  constructor(private commandBus: CommandBus) {}
+  constructor(
+    @Inject('FILES_SERVICE') private client: ClientProxy,
+    private commandBus: CommandBus,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -70,8 +76,15 @@ export class UsersProfilesController {
   @Post('save-avatar')
   @UseInterceptors(FileInterceptor('avatar'))
   async saveAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() req) {
-    return await this.commandBus.execute(
-      new UploadAvatarCommand(req.user.id, avatar.buffer),
+    const pattern = { cmd: 'avatar' };
+    const user = await this.commandBus.execute(
+      new GetUserByIdCommand(req.user.id),
     );
+    await firstValueFrom(
+      this.client.send(pattern, { user: user, avatarBuffer: avatar.buffer }),
+    );
+    // return await this.commandBus.execute(
+    //   new UploadAvatarCommand(req.user.id, avatar.buffer),
+    // );
   }
 }
