@@ -27,6 +27,7 @@
     "@nestjs/cqrs": "^10.0.1",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^10.0.5",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/serve-static": "^4.0.0",
