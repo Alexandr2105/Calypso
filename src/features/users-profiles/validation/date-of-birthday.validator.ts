@@ -35,6 +35,6 @@ export class IsDateInFormat implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'Неверный формат даты или значение .';
+    return 'Неверный формат даты или значение.';
   }
 }
