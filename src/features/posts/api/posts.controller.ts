@@ -6,6 +6,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   Post,
   Put,
@@ -18,7 +19,6 @@ import {
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DescriptionDto } from '../dto/description.dto';
-import { checkPhotoSum } from '../validation/check.photo.sum';
 import { CommandBus } from '@nestjs/cqrs';
 import {
   ApiBearerAuth,
@@ -34,15 +34,19 @@ import { PostIdDto } from '../dto/post.id.dto';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostsEntity } from '../entities/posts.entity';
 import { DeletePostCommand } from '../application/use-cases/delete.post.use.case';
-import { QueryRepository } from '../../query.repository.ts/query.repository';
+import { QueryRepository } from '../../query-repository.ts/query.repository';
 import { PostQueryType } from '../../../common/query-types/post.query.type';
 import { PostEntityWithImage } from '../../../common/query-types/post.entity.with.image';
 import { QueryHelper } from '../../../common/helpers/query.helper';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+import { checkPhotoSum } from '../validation/check.photo.sum';
 
 @ApiTags('Posts')
 @Controller('/posts')
 export class PostsController {
   constructor(
+    @Inject('FILES_SERVICE') private client: ClientProxy,
     private commandBus: CommandBus,
     private postsRepository: PostsRepository,
     private queryRepository: QueryRepository,
@@ -71,9 +75,18 @@ export class PostsController {
     @Req() req,
   ) {
     checkPhotoSum(posts);
-    return this.commandBus.execute(
+    const pattern = { cmd: 'saveImages' };
+    const post: PostsEntity = await this.commandBus.execute(
       new CreatePostCommand(posts, body.description, req.user.id),
     );
+    const data = await firstValueFrom(
+      this.client.send(pattern, {
+        arrayImages: posts,
+        postId: post.id,
+        userId: post.userId,
+      }),
+    );
+    return { ...post, images: data };
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -110,8 +123,11 @@ export class PostsController {
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Get('post/:postId')
-  async getPost(@Param() param: PostIdDto): Promise<PostsEntity> {
-    return this.postsRepository.getPostAndPhotos(param.postId);
+  async getPost(@Param() param: PostIdDto): Promise<PostEntityWithImage> {
+    const pattern = { cmd: 'getImages' };
+    const postInfo = await this.postsRepository.getPostById(param.postId);
+    const data = await firstValueFrom(this.client.send(pattern, param.postId));
+    return { ...postInfo, images: data };
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -127,6 +143,8 @@ export class PostsController {
     await this.commandBus.execute(
       new DeletePostCommand(param.postId, req.user.id),
     );
+    const pattern = { cmd: 'deleteImages' };
+    await firstValueFrom(this.client.send(pattern, param.postId));
   }
 
   @UseGuards(JwtAuthGuard)

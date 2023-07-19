@@ -28,6 +28,7 @@ import { UsersProfilesEntity } from '../entities/users.profiles.entity';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { GetUserByIdCommand } from '../application/use-cases/get.user.by.id.use.case';
+import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.user.case';
 
 @ApiTags('Profiles')
 @Controller('users/profiles')
@@ -76,15 +77,18 @@ export class UsersProfilesController {
   @Post('save-avatar')
   @UseInterceptors(FileInterceptor('avatar'))
   async saveAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() req) {
-    const pattern = { cmd: 'avatar' };
+    const pattern = { cmd: 'saveAvatar' };
     const user = await this.commandBus.execute(
       new GetUserByIdCommand(req.user.id),
     );
-    await firstValueFrom(
-      this.client.send(pattern, { user: user, avatarBuffer: avatar.buffer }),
+    const url = await firstValueFrom(
+      this.client.send(pattern, {
+        userId: user.id,
+        avatar: avatar.buffer,
+      }),
     );
-    // return await this.commandBus.execute(
-    //   new UploadAvatarCommand(req.user.id, avatar.buffer),
-    // );
+    return await this.commandBus.execute(
+      new UploadAvatarCommand(user.id, user.login, url),
+    );
   }
 }

@@ -6,7 +6,7 @@ import {
 
 @ValidatorConstraint({ name: 'isDateInFormat', async: false })
 export class IsDateInFormat implements ValidatorConstraintInterface {
-  validate(value: string, args: ValidationArguments) {
+  validate(value: string) {
     // Регулярное выражение для соответствия формату dd.mm.yyyy
     const regex = /^([0-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).\d{4}$/;
 
@@ -35,7 +35,7 @@ export class IsDateInFormat implements ValidatorConstraintInterface {
     return !(day < 1 || day > daysInMonth);
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage() {
     return 'Неверный формат даты или значение.';
   }
 }

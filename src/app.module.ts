@@ -37,16 +37,14 @@ import { SaveInfoAboutUsersProfilesUseCase } from './features/users-profiles/app
 import { UsersProfilesRepository } from './features/users-profiles/infrastructure/users.profiles.repository';
 import { JwtStrategy } from './common/strategies/jwt.strategy';
 import { UploadAvatarUseCase } from './features/users-profiles/application/use-cases/upload.avatar.user.case';
-import { FileStorageAdapterS3 } from './common/adapters/file.storage.adapter.s3';
 import { GetUserProfileUseCase } from './features/users-profiles/application/use-cases/get.user.profile.use.case';
 import { PostsController } from './features/posts/api/posts.controller';
 import { CreatePostUseCase } from './features/posts/application/use-cases/create.post.use.case';
 import { PostsRepository } from './features/posts/infrastructure/posts.repository';
-import { ImagesRepository } from './features/images/images.repository';
 import { CheckPostId } from './features/posts/validation/check.post.id';
 import { UpdateDescriptionForPostUseCase } from './features/posts/application/use-cases/update.description.for.post.use.case';
 import { DeletePostUseCase } from './features/posts/application/use-cases/delete.post.use.case';
-import { QueryRepository } from './features/query.repository.ts/query.repository';
+import { QueryRepository } from './features/query-repository.ts/query.repository';
 import { QueryHelper } from './common/helpers/query.helper';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GetUserByIdUseCase } from './features/users-profiles/application/use-cases/get.user.by.id.use.case';
@@ -78,7 +76,6 @@ const Repositories = [
   DevicesRepository,
   UsersProfilesRepository,
   PostsRepository,
-  ImagesRepository,
   QueryRepository,
 ];
 
@@ -113,7 +110,6 @@ const Repositories = [
     BcryptService,
     UsersService,
     EmailAdapter,
-    FileStorageAdapterS3,
     ...Validators,
     ...UseCases,
     ...Strategies,

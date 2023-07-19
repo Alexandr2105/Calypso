@@ -1,11 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma-service';
 import { QueryHelper } from '../../common/helpers/query.helper';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class QueryRepository {
   constructor(
     @Inject(PrismaService) private prisma: PrismaService,
+    @Inject('FILES_SERVICE') private client: ClientProxy,
     private queryHelper: QueryHelper,
   ) {}
 
@@ -15,7 +18,6 @@ export class QueryRepository {
     });
     const posts = await this.prisma.post.findMany({
       where: { userId: userId },
-      include: { images: { select: { url: true } } },
       orderBy: { [queryParam.sortBy]: queryParam.sortDirection },
       skip: this.queryHelper.skipHelper(
         queryParam.pageNumber,
@@ -31,7 +33,21 @@ export class QueryRepository {
       page: queryParam.pageNumber,
       pageSize: queryParam.pageSize,
       totalCount: totalCount,
-      items: posts,
+      items: await Promise.all(
+        posts.map(async (post) => {
+          const pattern = { cmd: 'getImages' };
+          const imagesUrls = await firstValueFrom(
+            this.client.send(pattern, post.id),
+          );
+          return {
+            id: post.id,
+            userId: post.userId,
+            description: post.description,
+            createdAt: post.createdAt,
+            images: imagesUrls,
+          };
+        }),
+      ),
     };
   }
 }

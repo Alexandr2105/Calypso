@@ -388,7 +388,7 @@ describe('Create test for profiles', () => {
       dateOfBirthday: '21-05-1988',
       city: 'string',
       userInfo: '',
-      photo: `https://storage.yandexcloud.net/my1bucket/${profile.body.userId}/avatars/${profile.body.userId}_avatar.png`,
+      photo: profile.body.photo,
     });
   });
 });

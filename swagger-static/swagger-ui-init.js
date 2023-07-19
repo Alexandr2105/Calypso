@@ -1013,7 +1013,7 @@ window.onload = function() {
             "description"
           ]
         },
-        "PostsImagesEntity": {
+        "PostsImagesEntityForSwagger": {
           "type": "object",
           "properties": {
             "url": {
@@ -1047,7 +1047,7 @@ window.onload = function() {
             "images": {
               "type": "array",
               "items": {
-                "$ref": "#/components/schemas/PostsImagesEntity"
+                "$ref": "#/components/schemas/PostsImagesEntityForSwagger"
               }
             }
           },

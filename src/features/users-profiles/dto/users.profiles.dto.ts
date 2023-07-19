@@ -5,7 +5,7 @@ import {
 } from '../../../common/constants/models.constants';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateInFormat } from '../validators/date-of-birthday.validator';
+import { IsDateInFormat } from '../validation/date-of-birthday.validator';
 
 export class UsersProfilesDto {
   @Transform(({ value }) => String(value).trim())

@@ -58,18 +58,4 @@ model Post{
   description String?
   createdAt   DateTime
   user        User    @relation(fields: [userId],references: [id])
-  images      PostImage[]
-}
-
-model PostImage {
-  id         String   @id
-  url        String
-  bucket     String
-  postId     String
-  key        String
-  width      Int
-  height     Int
-  fileSize   Int
-  createdAt  DateTime
-  post       Post     @relation(fields: [postId],references: [id])
 }
