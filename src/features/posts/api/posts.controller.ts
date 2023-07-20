@@ -75,9 +75,8 @@ export class PostsController {
     @Body() body: DescriptionDto,
     @Req() req,
   ) {
-    const response = await axios.post(
+    const response = await axios.get(
       'https://calipso-microservice-files.vercel.app/saveAvatars/saveAvatars',
-      posts,
     );
     console.log(response.data);
     return response.data;
