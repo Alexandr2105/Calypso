@@ -40,6 +40,7 @@ import { PostEntityWithImage } from '../../../common/query-types/post.entity.wit
 import { QueryHelper } from '../../../common/helpers/query.helper';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import axios from 'axios';
 import { checkPhotoSum } from '../validation/check.photo.sum';
 
 @ApiTags('Posts')
@@ -70,23 +71,29 @@ export class PostsController {
   @Post('post')
   @UseInterceptors(FilesInterceptor('posts'))
   async createPosts(
-    @UploadedFiles() posts: any[],
+    @UploadedFiles() posts: Array<Express.Multer.File>,
     @Body() body: DescriptionDto,
     @Req() req,
   ) {
-    checkPhotoSum(posts);
-    const pattern = { cmd: 'saveImages' };
-    const post: PostsEntity = await this.commandBus.execute(
-      new CreatePostCommand(posts, body.description, req.user.id),
+    const response = await axios.post(
+      'https://calipso-microservice-files.vercel.app/saveAvatars/saveAvatars',
+      posts,
     );
-    const data = await firstValueFrom(
-      this.client.send(pattern, {
-        arrayImages: posts,
-        postId: post.id,
-        userId: post.userId,
-      }),
-    );
-    return { ...post, images: data };
+    console.log(response.data);
+    return response.data;
+    // checkPhotoSum(posts);
+    // const pattern = { cmd: 'saveImages' };
+    // const post: PostsEntity = await this.commandBus.execute(
+    //   new CreatePostCommand(posts, body.description, req.user.id),
+    // );
+    // const data = await firstValueFrom(
+    //   this.client.send(pattern, {
+    //     arrayImages: posts,
+    //     postId: post.id,
+    //     userId: post.userId,
+    //   }),
+    // );
+    // return { ...post, images: data };
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
