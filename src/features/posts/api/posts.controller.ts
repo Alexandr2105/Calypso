@@ -40,8 +40,8 @@ import { PostEntityWithImage } from '../../../common/query-types/post.entity.wit
 import { QueryHelper } from '../../../common/helpers/query.helper';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import axios from 'axios';
 import { checkPhotoSum } from '../validation/check.photo.sum';
+import axios from 'axios';
 
 @ApiTags('Posts')
 @Controller('/posts')
