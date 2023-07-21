@@ -75,25 +75,25 @@ export class PostsController {
     @Body() body: DescriptionDto,
     @Req() req,
   ) {
-    const response = await axios.post(
-      'https://calipso-microservice-files.vercel.app/saveAvatars/saveAvatars',
-      posts,
+    // const response = await axios.post(
+    //   'https://calipso-microservice-files.vercel.app/saveAvatars/saveAvatars',
+    //   posts,
+    // );
+    // console.log(response.data);
+    // return response.data;
+    checkPhotoSum(posts);
+    const pattern = { cmd: 'saveImages' };
+    const post: PostsEntity = await this.commandBus.execute(
+      new CreatePostCommand(body.description, req.user.id),
     );
-    console.log(response.data);
-    return response.data;
-    // checkPhotoSum(posts);
-    // const pattern = { cmd: 'saveImages' };
-    // const post: PostsEntity = await this.commandBus.execute(
-    //   new CreatePostCommand(posts, body.description, req.user.id),
-    // );
-    // const data = await firstValueFrom(
-    //   this.client.send(pattern, {
-    //     arrayImages: posts,
-    //     postId: post.id,
-    //     userId: post.userId,
-    //   }),
-    // );
-    // return { ...post, images: data };
+    const data = await firstValueFrom(
+      this.client.send(pattern, {
+        arrayImages: posts,
+        postId: post.id,
+        userId: post.userId,
+      }),
+    );
+    return { ...post, images: data };
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

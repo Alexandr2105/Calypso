@@ -3,11 +3,7 @@ import { PostsRepository } from '../../infrastructure/posts.repository';
 import { randomUUID } from 'crypto';
 
 export class CreatePostCommand {
-  constructor(
-    public photos: Buffer[],
-    public description: string,
-    public userId: string,
-  ) {}
+  constructor(public description: string, public userId: string) {}
 }
 
 @CommandHandler(CreatePostCommand)
