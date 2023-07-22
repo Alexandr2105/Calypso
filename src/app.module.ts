@@ -87,7 +87,7 @@ const Repositories = [
         transport: Transport.TCP,
         options: {
           port: 3002,
-          // host: 'calipso-microservice-files.vercel.app',
+          host: 'calipso-microservice-files.vercel.app',
         },
       },
     ]),
