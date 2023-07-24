@@ -41,7 +41,6 @@ import { QueryHelper } from '../../../common/helpers/query.helper';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { checkPhotoSum } from '../validation/check.photo.sum';
-import axios from 'axios';
 
 @ApiTags('Posts')
 @Controller('/posts')
