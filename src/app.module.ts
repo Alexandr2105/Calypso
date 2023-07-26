@@ -87,7 +87,7 @@ const Repositories = [
         transport: Transport.TCP,
         options: {
           port: 4722,
-          host: '2a09:8280:1::5b:4722',
+          host: '2a09:8280:1::5b',
           // host: 'calypso-microservice-files.fly.dev',
         },
       },
