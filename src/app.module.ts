@@ -86,8 +86,8 @@ const Repositories = [
         name: 'FILES_SERVICE',
         transport: Transport.TCP,
         options: {
-          port: 8080,
-          host: '66.241.125.226',
+          port: 22,
+          host: 'fdaa:2:9a60:a7b:c988:d9af:6443:26',
           // host: 'calypso-microservice-files.fly.dev',
         },
       },
