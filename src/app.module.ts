@@ -81,33 +81,33 @@ const Repositories = [
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'FILES_SERVICE',
-        transport: Transport.TCP,
-        options: {
-          port: 3001,
-          host: '54.220.192.176',
-          // host: 'calypso-microservice-files.fly.dev',
-        },
-      },
-    ]),
-
     // ClientsModule.register([
     //   {
     //     name: 'FILES_SERVICE',
-    //     transport: Transport.RMQ,
+    //     transport: Transport.TCP,
     //     options: {
-    //       urls: [
-    //         'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
-    //       ],
-    //       queue: 'FILES_SERVICE',
-    //       queueOptions: {
-    //         durable: false,
-    //       },
+    //       port: 3001,
+    //       host: '54.220.192.176',
+    //       // host: 'calypso-microservice-files.fly.dev',
     //     },
     //   },
     // ]),
+
+    ClientsModule.register([
+      {
+        name: 'FILES_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: [
+            'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
+          ],
+          queue: 'FILES_SERVICE',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
 
     PrismaModule,
     CqrsModule,
