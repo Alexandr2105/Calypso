@@ -7,6 +7,7 @@ import { HttpExceptionFilter } from './exception.filter';
 import { useContainer } from 'class-validator';
 import { settings } from './settings';
 import { createApp } from './common/helpers/createApp';
+import * as process from 'process';
 
 const port = 3000;
 
@@ -25,7 +26,7 @@ export async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(port, () => {
+  await app.listen(process.env.PORT || port, () => {
     console.log(`App started at ${port} port`);
   });
 
