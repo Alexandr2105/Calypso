@@ -96,7 +96,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  @ApiOperation({ summary: 'User authorization' })
+  @ApiOperation({ summary: 'User authorization ' })
   @ApiResponse({
     status: HttpStatus.OK,
     schema: {
