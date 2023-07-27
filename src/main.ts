@@ -9,7 +9,7 @@ import { settings } from './settings';
 import { createApp } from './common/helpers/createApp';
 import * as process from 'process';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 export async function bootstrap() {
   const rawApp = await NestFactory.create(AppModule);
@@ -26,7 +26,7 @@ export async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(port, () => {
+  await app.listen(parseInt(port), () => {
     console.log(`App started at ${port} port`);
   });
 
