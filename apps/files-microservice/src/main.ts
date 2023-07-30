@@ -16,7 +16,7 @@
 //   await app.listen();
 //
 //   // const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-//   //   AppModule,
+//   //   FilesMicroserviceModule,
 //   //   {
 //   //     transport: Transport.RMQ,
 //   //     options: {
