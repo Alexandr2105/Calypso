@@ -117,7 +117,7 @@ const Repositories = [
       rootPath: join(__dirname, '..', 'swagger-static'),
       serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
     }),
-    FilesMicroserviceModule,
+    // FilesMicroserviceModule,
   ],
   controllers: [
     AppController,
