@@ -7,7 +7,7 @@
 //   // const app = await NestFactory.create(FilesMicroserviceModule);
 //   // await app.listen(3000);
 //   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-//     AppModule,
+//     FilesMicroserviceModule,
 //     {
 //       transport: Transport.TCP,
 //       options: { port: 3001 },

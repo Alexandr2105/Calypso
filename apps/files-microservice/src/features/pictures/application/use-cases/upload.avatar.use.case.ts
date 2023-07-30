@@ -6,7 +6,7 @@ import { AvatarDocument } from '../../schemas/avatar.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import sharp from 'sharp';
-import { settings } from '../../../../../settings';
+import { settings } from '../../../../settings';
 
 export class UploadAvatarCommand {
   constructor(public userId: string, public avatar: Buffer) {}

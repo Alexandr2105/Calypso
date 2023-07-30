@@ -5,7 +5,7 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
-import { settings } from '../../../settings';
+import { settings } from '../../settings';
 
 @Injectable()
 export class FileStorageAdapterS3 {

@@ -5,7 +5,7 @@ import { PostsDto } from '../../dto/posts.dto';
 import sharp from 'sharp';
 import { ImagesRepository } from '../../infrastructure/images.repository';
 import { PostImagesDocument } from '../../schemas/post.images.schema';
-import { settings } from '../../../../../settings';
+import { settings } from '../../../../settings';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 

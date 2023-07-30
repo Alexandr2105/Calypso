@@ -48,7 +48,6 @@ import { QueryRepository } from './features/query-repository.ts/query.repository
 import { QueryHelper } from './common/helpers/query.helper';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GetUserByIdUseCase } from './features/users-profiles/application/use-cases/get.user.by.id.use.case';
-import { FilesMicroserviceModule } from '../../files-microservice/src/files-microservice.module';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -86,10 +85,10 @@ const Repositories = [
       {
         name: 'FILES_SERVICE',
         transport: Transport.TCP,
-        // options: {
-        //   port: 3001,
-        //   // host: 'calypso-microservice-files.fly.dev',
-        // },
+        options: {
+          port: 3001,
+          // host: 'calypso-microservice-files.fly.dev',
+        },
       },
     ]),
 
@@ -108,7 +107,6 @@ const Repositories = [
     //     },
     //   },
     // ]),
-
     PrismaModule,
     CqrsModule,
     JwtModule.register({}),

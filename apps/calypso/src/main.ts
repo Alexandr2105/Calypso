@@ -10,15 +10,19 @@ import { createApp } from './common/helpers/createApp';
 import * as process from 'process';
 import { MicroserviceOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
 import { Transport } from '@nestjs/microservices/enums/transport.enum';
+import { FilesMicroserviceModule } from '../../files-microservice/src/files-microservice.module';
 
 export async function bootstrap() {
   const microservice =
-    await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-      transport: Transport.TCP,
-      // options: {
-      // port: 3001,
-      // },
-    });
+    await NestFactory.createMicroservice<MicroserviceOptions>(
+      FilesMicroserviceModule,
+      {
+        transport: Transport.TCP,
+        options: {
+          port: 3001,
+        },
+      },
+    );
   await microservice.listen();
 
   const rawApp = await NestFactory.create(AppModule);
