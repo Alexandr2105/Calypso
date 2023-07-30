@@ -14,15 +14,18 @@ import { FilesMicroserviceModule } from '../../files-microservice/src/files-micr
 
 export async function bootstrap() {
   const microservice =
-    await NestFactory.createMicroservice<MicroserviceOptions>(
-      FilesMicroserviceModule,
-      {
-        transport: Transport.TCP,
-        options: {
-          port: 3001,
+    await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+      transport: Transport.RMQ,
+      options: {
+        urls: [
+          'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
+        ],
+        queue: 'FILES_SERVICE',
+        queueOptions: {
+          durable: false,
         },
       },
-    );
+    });
   await microservice.listen();
 
   const rawApp = await NestFactory.create(AppModule);
