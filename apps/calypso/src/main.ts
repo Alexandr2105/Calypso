@@ -16,7 +16,7 @@ export async function bootstrap() {
     await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
       transport: Transport.TCP,
       options: {
-        port: 3001,
+        // port: 3001,
       },
     });
   await microservice.listen();
