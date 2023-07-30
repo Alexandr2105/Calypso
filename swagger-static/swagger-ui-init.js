@@ -13,7 +13,7 @@ window.onload = function() {
     "paths": {
       "/": {
         "get": {
-          "operationId": "AppController_getHello",
+          "operationId": "FilesMicroserviceController_getHello",
           "parameters": [],
           "responses": {
             "200": {

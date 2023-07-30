@@ -8,8 +8,19 @@ import { useContainer } from 'class-validator';
 import { settings } from './settings';
 import { createApp } from './common/helpers/createApp';
 import * as process from 'process';
+import { MicroserviceOptions } from '@nestjs/microservices/interfaces/microservice-configuration.interface';
+import { Transport } from '@nestjs/microservices/enums/transport.enum';
 
 export async function bootstrap() {
+  const microservice =
+    await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+      transport: Transport.TCP,
+      options: {
+        port: 3001,
+      },
+    });
+  await microservice.listen();
+
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
