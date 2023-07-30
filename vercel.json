@@ -3,7 +3,7 @@
   "name": "Start-new-project",
   "builds": [
     {
-      "src": "apps/calypso/scr/main.ts",
+      "src": "apps/calypso/src/main.ts",
       "use": "@vercel/node"
     }
   ],
