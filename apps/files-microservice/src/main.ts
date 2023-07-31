@@ -18,10 +18,10 @@ export async function bootstrap() {
   });
   // await microserviceRMQ.listen();
 
-  await rawApp.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.TCP,
-    options: { port: 3001 },
-  });
+  // await rawApp.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.TCP,
+  //   options: { port: 3001 },
+  // });
   // await microserviceTCP.listen();
   await rawApp.startAllMicroservices();
   await rawApp.listen(3002);
