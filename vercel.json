@@ -9,8 +9,7 @@
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "yarn start:both"
+      "src": "/vercel-build", "dest": "package.json"
     }
   ]
 }
