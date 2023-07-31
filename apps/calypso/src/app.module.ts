@@ -81,20 +81,19 @@ const Repositories = [
 
 @Module({
   imports: [
-    // ClientsModule.register([
-    //   {
-    //     name: 'FILES_SERVICE',
-    //     transport: Transport.TCP,
-    //     options: {
-    //       port: 3001,
-    //       // host: 'calypso-microservice-files.fly.dev',
-    //     },
-    //   },
-    // ]),
-
     ClientsModule.register([
       {
         name: 'FILES_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          port: 3001,
+        },
+      },
+    ]),
+
+    ClientsModule.register([
+      {
+        name: 'FILES',
         transport: Transport.RMQ,
         options: {
           urls: [
@@ -115,7 +114,6 @@ const Repositories = [
       rootPath: join(__dirname, '..', 'swagger-static'),
       serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
     }),
-    // FilesMicroserviceModule,
   ],
   controllers: [
     AppController,

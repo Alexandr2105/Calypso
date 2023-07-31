@@ -13,7 +13,7 @@ import { Transport } from '@nestjs/microservices/enums/transport.enum';
 import { FilesMicroserviceModule } from '../../files-microservice/src/files-microservice.module';
 
 export async function bootstrap() {
-  const microservice =
+  const microserviceRMQ =
     await NestFactory.createMicroservice<MicroserviceOptions>(
       FilesMicroserviceModule,
       {
@@ -29,17 +29,17 @@ export async function bootstrap() {
         },
       },
     );
-  await microservice.listen();
+  await microserviceRMQ.listen();
 
-  // const microservice =
-  //   await NestFactory.createMicroservice<MicroserviceOptions>(
-  //     FilesMicroserviceModule,
-  //     {
-  //       transport: Transport.TCP,
-  //       options: { port: 3001 },
-  //     },
-  //   );
-  // await microservice.listen();
+  const microserviceTCP =
+    await NestFactory.createMicroservice<MicroserviceOptions>(
+      FilesMicroserviceModule,
+      {
+        transport: Transport.TCP,
+        options: { port: 3001 },
+      },
+    );
+  await microserviceTCP.listen();
 
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);

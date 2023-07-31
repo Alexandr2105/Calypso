@@ -34,7 +34,7 @@ import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.user
 @Controller('users/profiles')
 export class UsersProfilesController {
   constructor(
-    @Inject('FILES_SERVICE') private client: ClientProxy,
+    @Inject('FILES') private client: ClientProxy,
     private commandBus: CommandBus,
   ) {}
 
