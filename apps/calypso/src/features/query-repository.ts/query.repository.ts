@@ -8,7 +8,7 @@ import { firstValueFrom } from 'rxjs';
 export class QueryRepository {
   constructor(
     @Inject(PrismaService) private prisma: PrismaService,
-    @Inject('FILES_SERVICE_TCP') private client: ClientProxy,
+    @Inject('FILES_SERVICE_TCP') private clientTCP: ClientProxy,
     private queryHelper: QueryHelper,
   ) {}
 
@@ -37,7 +37,7 @@ export class QueryRepository {
         posts.map(async (post) => {
           const pattern = { cmd: 'getImages' };
           const imagesUrls = await firstValueFrom(
-            this.client.send(pattern, post.id),
+            this.clientTCP.send(pattern, post.id),
           );
           return {
             id: post.id,
