@@ -31,6 +31,16 @@ export async function bootstrap() {
   //   );
   // await microservice.listen();
 
+  const microservice =
+    await NestFactory.createMicroservice<MicroserviceOptions>(
+      FilesMicroserviceModule,
+      {
+        transport: Transport.TCP,
+        options: { port: 3001 },
+      },
+    );
+  await microservice.listen();
+
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
