@@ -3,19 +3,11 @@
   "name": "Start-all-projects",
   "builds": [
     {
-      "src": "apps/files-microservice/src/main.ts",
-      "use": "@vercel/node"
-    },
-    {
       "src": "apps/calypso/src/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "apps/files-microservice/src/main.ts"
-    },
     {
       "src": "/(.*)",
       "dest": "apps/calypso/src/main.ts"
