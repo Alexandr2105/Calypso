@@ -12,7 +12,7 @@ export async function bootstrap() {
           urls: [
             'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
           ],
-          queue: 'FILES_SERVICE',
+          queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
           },

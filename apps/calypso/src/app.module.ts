@@ -83,23 +83,20 @@ const Repositories = [
   imports: [
     ClientsModule.register([
       {
-        name: 'FILES_SERVICE',
+        name: 'FILES_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
           port: 3001,
         },
       },
-    ]),
-
-    ClientsModule.register([
       {
-        name: 'FILES',
+        name: 'FILES_SERVICE_RMQ',
         transport: Transport.RMQ,
         options: {
           urls: [
             'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
           ],
-          queue: 'FILES_SERVICE',
+          queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
           },

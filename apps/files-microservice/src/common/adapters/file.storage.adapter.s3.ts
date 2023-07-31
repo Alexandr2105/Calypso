@@ -11,9 +11,8 @@ import { settings } from '../../settings';
 export class FileStorageAdapterS3 {
   s3Client: S3Client;
   constructor() {
-    const REGION = 'ru-central1';
     this.s3Client = new S3Client({
-      region: REGION,
+      region: settings.S3_REGION,
       endpoint: settings.BASE_URL_AWS,
       credentials: {
         accessKeyId: settings.ACCESS_KEY_ID,
