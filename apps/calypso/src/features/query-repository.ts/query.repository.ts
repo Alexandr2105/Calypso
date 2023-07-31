@@ -8,7 +8,7 @@ import { firstValueFrom } from 'rxjs';
 export class QueryRepository {
   constructor(
     @Inject(PrismaService) private prisma: PrismaService,
-    @Inject('FILES_SERVICE') private client: ClientProxy,
+    @Inject('FILES_SERVICE_TCP') private client: ClientProxy,
     private queryHelper: QueryHelper,
   ) {}
 

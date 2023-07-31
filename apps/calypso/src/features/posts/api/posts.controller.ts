@@ -46,7 +46,8 @@ import { checkPhotoSum } from '../validation/check.photo.sum';
 @Controller('/posts')
 export class PostsController {
   constructor(
-    @Inject('FILES_SERVICE') private client: ClientProxy,
+    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
+    @Inject('FILES_SERVICE_TCP') private clientTCP: ClientProxy,
     private commandBus: CommandBus,
     private postsRepository: PostsRepository,
     private queryRepository: QueryRepository,
@@ -74,19 +75,13 @@ export class PostsController {
     @Body() body: DescriptionDto,
     @Req() req,
   ) {
-    // const response = await axios.post(
-    //   'https://calipso-microservice-files.vercel.app/saveAvatars/saveAvatars',
-    //   posts,
-    // );
-    // console.log(response.data);
-    // return response.data;
     checkPhotoSum(posts);
     const pattern = { cmd: 'saveImages' };
     const post: PostsEntity = await this.commandBus.execute(
       new CreatePostCommand(body.description, req.user.id),
     );
     const data = await firstValueFrom(
-      this.client.send(pattern, {
+      this.clientRMQ.send(pattern, {
         arrayImages: posts,
         postId: post.id,
         userId: post.userId,
@@ -132,7 +127,9 @@ export class PostsController {
   async getPost(@Param() param: PostIdDto): Promise<PostEntityWithImage> {
     const pattern = { cmd: 'getImages' };
     const postInfo = await this.postsRepository.getPostById(param.postId);
-    const data = await firstValueFrom(this.client.send(pattern, param.postId));
+    const data = await firstValueFrom(
+      this.clientTCP.send(pattern, param.postId),
+    );
     return { ...postInfo, images: data };
   }
 
@@ -150,7 +147,7 @@ export class PostsController {
       new DeletePostCommand(param.postId, req.user.id),
     );
     const pattern = { cmd: 'deleteImages' };
-    await firstValueFrom(this.client.send(pattern, param.postId));
+    await this.clientRMQ.send(pattern, param.postId);
   }
 
   @UseGuards(JwtAuthGuard)
