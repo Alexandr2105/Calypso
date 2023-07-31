@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { resizePhoto } from '../../../../common/helper/resize.photo';
+import { resizePhoto } from '../../../../common/helpers/resize.photo';
 import { FileStorageAdapterS3 } from '../../../../common/adapters/file.storage.adapter.s3';
 import { PostsDto } from '../../dto/posts.dto';
 import sharp from 'sharp';
