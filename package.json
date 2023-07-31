@@ -2,6 +2,7 @@
   "name": "calypso",
   "version": "0.0.1",
   "description": "",
+  "main": "index.js",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
