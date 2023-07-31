@@ -6,16 +6,14 @@ import { AppModule } from '../../calypso/src/app.module';
 export async function bootstrap() {
   // const app = await NestFactory.create(FilesMicroserviceModule);
   // await app.listen(3000);
-
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    FilesMicroserviceModule,
-    {
-      transport: Transport.TCP,
-      options: { port: 3001 },
-    },
-  );
-  await app.listen();
-
+  // const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+  //   FilesMicroserviceModule,
+  //   {
+  //     transport: Transport.TCP,
+  //     options: { port: 3001 },
+  //   },
+  // );
+  // await app.listen();
   // const app = await NestFactory.createMicroservice<MicroserviceOptions>(
   //   FilesMicroserviceModule,
   //   {
