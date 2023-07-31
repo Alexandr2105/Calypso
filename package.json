@@ -21,7 +21,7 @@
     "test:e2e": "jest --config ./apps/calypso/test/jest-e2e.json",
     "start:microservice1": "nest start files-microservice",
     "start:both": "npm-run-all --parallel start:microservice1 start",
-    "vercel-build": "npm run start:both"
+    "vercel-build": "yarn run start:both"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.363.0",
