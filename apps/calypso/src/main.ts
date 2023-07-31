@@ -13,33 +13,33 @@ import { Transport } from '@nestjs/microservices/enums/transport.enum';
 import { FilesMicroserviceModule } from '../../files-microservice/src/files-microservice.module';
 
 export async function bootstrap() {
-  // const microservice =
-  //   await NestFactory.createMicroservice<MicroserviceOptions>(
-  //     FilesMicroserviceModule,
-  //     {
-  //       transport: Transport.RMQ,
-  //       options: {
-  //         urls: [
-  //           'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
-  //         ],
-  //         queue: 'FILES_SERVICE',
-  //         queueOptions: {
-  //           durable: false,
-  //         },
-  //       },
-  //     },
-  //   );
-  // await microservice.listen();
-
   const microservice =
     await NestFactory.createMicroservice<MicroserviceOptions>(
       FilesMicroserviceModule,
       {
-        transport: Transport.TCP,
-        options: { port: 3001 },
+        transport: Transport.RMQ,
+        options: {
+          urls: [
+            'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
+          ],
+          queue: 'FILES_SERVICE',
+          queueOptions: {
+            durable: false,
+          },
+        },
       },
     );
   await microservice.listen();
+
+  // const microservice =
+  //   await NestFactory.createMicroservice<MicroserviceOptions>(
+  //     FilesMicroserviceModule,
+  //     {
+  //       transport: Transport.TCP,
+  //       options: { port: 3001 },
+  //     },
+  //   );
+  // await microservice.listen();
 
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
