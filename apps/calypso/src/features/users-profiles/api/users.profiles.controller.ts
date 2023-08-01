@@ -96,6 +96,12 @@ export class UsersProfilesController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete profile' })
+  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Profile deleted')
+  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
+  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
+  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Delete('profile')
   async deleteProfile(@Req() req) {
     const userId = req.user.id;

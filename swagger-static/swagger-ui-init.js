@@ -419,14 +419,29 @@ window.onload = function() {
         },
         "delete": {
           "operationId": "UsersProfilesController_deleteProfile",
+          "summary": "Delete profile",
           "parameters": [],
           "responses": {
             "204": {
-              "description": ""
+              "description": "Profile deleted"
+            },
+            "401": {
+              "description": "Unauthorized"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "404": {
+              "description": "Not Found"
             }
           },
           "tags": [
             "Profiles"
+          ],
+          "security": [
+            {
+              "bearer": []
+            }
           ]
         }
       },

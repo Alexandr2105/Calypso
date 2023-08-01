@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersProfilesRepository } from '../../infrastructure/users.profiles.repository';
-import { ForbiddenException, Inject } from '@nestjs/common';
+import { ForbiddenException, Inject, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 export class DeleteProfileCommand {
@@ -21,6 +21,7 @@ export class DeleteProfileUseCase
     const profile = await this.usersProfileRepository.getProfile(
       command.userId,
     );
+    if (!profile) throw new NotFoundException();
     if (profile.userId !== command.userId) throw new ForbiddenException();
     await this.usersProfileRepository.deleteProfile(command.userId);
     await this.clientRMQ.emit(pattern, command.userId);
