@@ -20,4 +20,5 @@ export const settings = {
   // BACKET_NAME: process.env.BACKET_NAME,
   RECAPTCHA_SECRET_KEY: process.env.RECAPTCHA_SECRET_KEY,
   RECAPTCHA_SITE_KEY: '6Le96RMnAAAAAE9dOL6eVQHJ1HYsNAo4OUbDGWIg',
+  RABBIT_MQ: process.env.RABBIT_MQ,
 };

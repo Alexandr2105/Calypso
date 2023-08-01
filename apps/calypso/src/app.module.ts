@@ -95,9 +95,7 @@ const Repositories = [
         name: 'FILES_SERVICE_RMQ',
         transport: Transport.RMQ,
         options: {
-          urls: [
-            'amqps://nvvffhzg:kunlrWhEIXXBPudNmmJTPT20KOCf8-80@stingray.rmq.cloudamqp.com/nvvffhzg',
-          ],
+          urls: [settings.RABBIT_MQ],
           queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
