@@ -7,6 +7,7 @@ import { PostsDto } from '../dto/posts.dto';
 import { CreateImagesForPostCommand } from '../application/use-cases/create.images.for.post.use.case';
 import { GetImagesForPostCommand } from '../application/use-cases/get.images.for.post.use.case';
 import { DeletePostImagesCommand } from '../application/use-cases/delete.post.images.use.case';
+import { DeleteProfileCommand } from '../application/use-cases/delete.profile.use.case';
 
 @Controller('saveAvatars')
 export class PictureController {
@@ -32,5 +33,10 @@ export class PictureController {
   @EventPattern({ cmd: 'deleteImages' })
   async deleteImages(data: string) {
     await this.commandBus.execute(new DeletePostImagesCommand(data));
+  }
+
+  @EventPattern({ cmd: 'deleteProfile' })
+  async deleteProfile(id: string) {
+    await this.commandBus.execute(new DeleteProfileCommand(id));
   }
 }

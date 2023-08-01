@@ -23,4 +23,8 @@ export class AvatarsRepository {
   async getAvatarInfo(userId: string): Promise<AvatarDocument> {
     return this.avatar.findOne({ userId: userId });
   }
+
+  async deleteAvatarInfo(userId: string): Promise<void> {
+    await this.avatar.deleteOne({ userId: userId });
+  }
 }

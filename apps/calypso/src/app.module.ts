@@ -48,6 +48,7 @@ import { QueryRepository } from './features/query-repository.ts/query.repository
 import { QueryHelper } from './common/helpers/query.helper';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GetUserByIdUseCase } from './features/users-profiles/application/use-cases/get.user.by.id.use.case';
+import { DeleteProfileUseCase } from './features/users-profiles/application/use-cases/delete.profile.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -70,6 +71,7 @@ const UseCases = [
   UpdateDescriptionForPostUseCase,
   DeletePostUseCase,
   GetUserByIdUseCase,
+  DeleteProfileUseCase,
 ];
 const Repositories = [
   UsersRepository,

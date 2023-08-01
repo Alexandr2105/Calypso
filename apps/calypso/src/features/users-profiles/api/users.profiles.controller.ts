@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -29,12 +30,13 @@ import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { GetUserByIdCommand } from '../application/use-cases/get.user.by.id.use.case';
 import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.user.case';
+import { DeleteProfileCommand } from '../application/use-cases/delete.profile.use.case';
 
 @ApiTags('Profiles')
 @Controller('users/profiles')
 export class UsersProfilesController {
   constructor(
-    @Inject('FILES_SERVICE_RMQ') private client: ClientProxy,
+    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
     private commandBus: CommandBus,
   ) {}
 
@@ -82,7 +84,7 @@ export class UsersProfilesController {
       new GetUserByIdCommand(req.user.id),
     );
     const url = await firstValueFrom(
-      this.client.send(pattern, {
+      this.clientRMQ.send(pattern, {
         userId: user.id,
         avatar: avatar.buffer,
       }),
@@ -90,5 +92,13 @@ export class UsersProfilesController {
     return await this.commandBus.execute(
       new UploadAvatarCommand(user.id, user.login, url),
     );
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  @Delete('profile')
+  async deleteProfile(@Req() req) {
+    const userId = req.user.id;
+    await this.commandBus.execute(new DeleteProfileCommand(userId));
   }
 }

@@ -416,6 +416,18 @@ window.onload = function() {
               "bearer": []
             }
           ]
+        },
+        "delete": {
+          "operationId": "UsersProfilesController_deleteProfile",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Profiles"
+          ]
         }
       },
       "/users/profiles/save-profileInfo": {
