@@ -108,7 +108,7 @@ const Repositories = [
     JwtModule.register({}),
     PassportModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'swagger-static'),
+      rootPath: join(__dirname, '..', '..', '..', 'swagger-static'),
       serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
     }),
   ],
