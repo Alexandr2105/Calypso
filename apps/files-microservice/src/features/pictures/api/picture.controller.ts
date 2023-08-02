@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { EventPattern, MessagePattern } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { CommandBus } from '@nestjs/cqrs';
 import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.use.case';
 import { AvatarsDto } from '../dto/avatars.dto';
@@ -30,13 +30,15 @@ export class PictureController {
     return this.commandBus.execute(new GetImagesForPostCommand(data));
   }
 
-  @EventPattern({ cmd: 'deleteImages' })
+  @MessagePattern({ cmd: 'deleteImages' })
   async deleteImages(data: string) {
     await this.commandBus.execute(new DeletePostImagesCommand(data));
+    // return true;
   }
 
-  @EventPattern({ cmd: 'deleteProfile' })
+  @MessagePattern({ cmd: 'deleteProfile' })
   async deleteProfile(id: string) {
     await this.commandBus.execute(new DeleteProfileCommand(id));
+    // return true;
   }
 }
