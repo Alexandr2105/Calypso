@@ -33,12 +33,12 @@ export class PictureController {
   @MessagePattern({ cmd: 'deleteImages' })
   async deleteImages(data: string) {
     await this.commandBus.execute(new DeletePostImagesCommand(data));
-    // return true;
+    return true;
   }
 
   @MessagePattern({ cmd: 'deleteProfile' })
   async deleteProfile(id: string) {
     await this.commandBus.execute(new DeleteProfileCommand(id));
-    // return true;
+    return true;
   }
 }
