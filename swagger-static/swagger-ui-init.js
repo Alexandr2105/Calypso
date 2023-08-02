@@ -377,6 +377,26 @@ window.onload = function() {
           ]
         }
       },
+      "/users/{userId}": {
+        "delete": {
+          "operationId": "UsersController_getAllUsers",
+          "summary": "Delete user for test",
+          "parameters": [],
+          "responses": {
+            "204": {
+              "description": "User deleted"
+            }
+          },
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "basic": []
+            }
+          ]
+        }
+      },
       "/delete-all-data": {
         "delete": {
           "operationId": "TestingController_clearAllData",
@@ -842,6 +862,10 @@ window.onload = function() {
           "scheme": "bearer",
           "bearerFormat": "JWT",
           "type": "http"
+        },
+        "basic": {
+          "type": "http",
+          "scheme": "basic"
         }
       },
       "schemas": {

@@ -49,6 +49,7 @@ export async function bootstrap() {
     .setDescription('The Instagram API description')
     .setVersion('1.0')
     .addBearerAuth()
+    .addBasicAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
