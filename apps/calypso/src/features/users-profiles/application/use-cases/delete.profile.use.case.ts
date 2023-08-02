@@ -16,7 +16,7 @@ export class DeleteProfileUseCase
     @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
   ) {}
 
-  async execute(command: DeleteProfileCommand): Promise<void> {
+  async execute(command: DeleteProfileCommand): Promise<boolean> {
     const pattern = { cmd: 'deleteProfile' };
     const profile = await this.usersProfileRepository.getProfile(
       command.userId,
@@ -25,5 +25,6 @@ export class DeleteProfileUseCase
     if (profile.userId !== command.userId) throw new ForbiddenException();
     await this.usersProfileRepository.deleteProfile(command.userId);
     await this.clientRMQ.send(pattern, command.userId);
+    return true;
   }
 }
