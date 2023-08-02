@@ -147,7 +147,7 @@ export class PostsController {
       new DeletePostCommand(param.postId, req.user.id),
     );
     const pattern = { cmd: 'deleteImages' };
-    await this.clientRMQ.send(pattern, param.postId);
+    await firstValueFrom(this.clientRMQ.send(pattern, param.postId));
   }
 
   @UseGuards(JwtAuthGuard)
