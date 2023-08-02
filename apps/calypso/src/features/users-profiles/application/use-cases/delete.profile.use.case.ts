@@ -24,6 +24,6 @@ export class DeleteProfileUseCase
     if (!profile) throw new NotFoundException();
     if (profile.userId !== command.userId) throw new ForbiddenException();
     await this.usersProfileRepository.deleteProfile(command.userId);
-    await this.clientRMQ.emit(pattern, command.userId);
+    await this.clientRMQ.send(pattern, command.userId);
   }
 }
