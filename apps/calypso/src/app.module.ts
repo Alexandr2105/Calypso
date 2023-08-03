@@ -49,15 +49,10 @@ import { QueryHelper } from './common/helpers/query.helper';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GetUserByIdUseCase } from './features/users-profiles/application/use-cases/get.user.by.id.use.case';
 import { DeleteProfileUseCase } from './features/users-profiles/application/use-cases/delete.profile.use.case';
-import { BasicAuthGuard } from './common/guards/basic.auth.guard';
 import { DeleteUserUseCase } from './features/users/application/use-case/delete.user.use.case';
+import { BasicStrategy } from './common/strategies/basic.strategy';
 
-const Strategies = [
-  LocalStrategy,
-  RefreshStrategy,
-  JwtStrategy,
-  BasicAuthGuard,
-];
+const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
 const UseCases = [
   RegistrationUserUseCase,
