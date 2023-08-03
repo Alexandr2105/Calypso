@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AvatarDocument } from '../../features/pictures/schemas/avatar.schema';
@@ -12,9 +12,10 @@ export class TestingController {
     @InjectModel('postImages') private postImages: Model<PostImagesDocument>,
   ) {}
 
-  @EventPattern({ cmd: 'deleteAll' })
+  @MessagePattern({ cmd: 'deleteAll' })
   async deleteAll() {
     await this.avatar.deleteMany({});
     await this.postImages.deleteMany({});
+    return true;
   }
 }

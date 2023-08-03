@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma-service';
 import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 @Controller('delete-all-data')
 export class TestingController {
@@ -27,7 +28,7 @@ export class TestingController {
 
     await this.prisma.user.deleteMany();
 
-    await this.client.send({ cmd: 'deleteAll' }, {});
+    await firstValueFrom(this.client.send({ cmd: 'deleteAll' }, {}));
 
     return;
   }

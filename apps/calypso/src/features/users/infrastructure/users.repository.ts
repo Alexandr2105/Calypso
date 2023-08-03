@@ -114,4 +114,22 @@ export class UsersRepository {
       });
     } catch (error) {}
   }
+
+  async deleteUser(userId: string) {
+    await this.prisma.post.deleteMany({
+      where: { userId: userId },
+    });
+    await this.prisma.userProfile.deleteMany({
+      where: { userId: userId },
+    });
+    await this.prisma.refreshTokenData.deleteMany({
+      where: { userId: userId },
+    });
+    await this.prisma.emailConfirmation.deleteMany({
+      where: { userId: userId },
+    });
+    await this.prisma.user.deleteMany({
+      where: { id: userId },
+    });
+  }
 }

@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ImagesRepository } from '../../infrastructure/images.repository';
 import { FileStorageAdapterS3 } from '../../../../common/adapters/file.storage.adapter.s3';
-import { PostImagesDocument } from '../../schemas/post.images.schema';
+import { settings } from '../../../../settings';
 
 export class DeletePostImagesCommand {
   constructor(public postId: string) {}
@@ -17,12 +17,7 @@ export class DeletePostImagesUseCase
   ) {}
 
   async execute(command: DeletePostImagesCommand): Promise<any> {
-    const images: PostImagesDocument[] = await this.imagesRepository.getImages(
-      command.postId,
-    );
-    await this.imagesRepository.deleteImages(command.postId);
-    for (const image of images) {
-      await this.fileStorage.deleteImage(image.bucket, image.key);
-    }
+    await this.imagesRepository.deleteImagesForPost(command.postId);
+    await this.fileStorage.deleteFolder(settings.BACKET_NAME, command.postId);
   }
 }

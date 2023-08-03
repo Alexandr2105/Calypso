@@ -146,7 +146,7 @@ export class PostsController {
     await this.commandBus.execute(
       new DeletePostCommand(param.postId, req.user.id),
     );
-    const pattern = { cmd: 'deleteImages' };
+    const pattern = { cmd: 'deletePost' };
     await firstValueFrom(this.clientRMQ.send(pattern, param.postId));
   }
 

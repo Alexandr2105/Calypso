@@ -16,6 +16,7 @@ import { DeletePostImagesUseCase } from './features/pictures/application/use-cas
 import { GetImagesForPostUseCase } from './features/pictures/application/use-cases/get.images.for.post.use.case';
 import { CqrsModule } from '@nestjs/cqrs';
 import { DeleteProfileUseCase } from './features/pictures/application/use-cases/delete.profile.use.case';
+import { DeleteAllUserProfileUseCase } from './features/pictures/application/use-cases/delete.all.user.profile.use.case';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { DeleteProfileUseCase } from './features/pictures/application/use-cases/
     GetImagesForPostUseCase,
     DeletePostImagesUseCase,
     DeleteProfileUseCase,
+    DeleteAllUserProfileUseCase,
   ],
 })
 export class FilesMicroserviceModule {}

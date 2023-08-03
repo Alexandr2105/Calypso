@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
   DeleteObjectCommand,
+  DeleteObjectsCommand,
+  ListObjectsCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -75,6 +77,28 @@ export class FileStorageAdapterS3 {
       await this.s3Client.send(command);
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  async deleteFolder(bucket: string, folderName: string): Promise<boolean> {
+    const objects = await this.s3Client.send(
+      new ListObjectsCommand({ Bucket: bucket, Prefix: folderName }),
+    );
+
+    if (objects.Contents && objects.Contents.length > 0) {
+      const objectsToDelete = objects.Contents.map((obj) => ({
+        Key: obj.Key,
+      }));
+      await this.s3Client.send(
+        new DeleteObjectsCommand({
+          Bucket: bucket,
+          Delete: { Objects: objectsToDelete },
+        }),
+      );
+      return true;
+    } else {
+      return true;
+      // console.log(`Папка "${folderName}" пустая или не существует.`);
     }
   }
 }

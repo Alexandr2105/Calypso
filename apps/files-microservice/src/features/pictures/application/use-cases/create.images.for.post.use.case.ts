@@ -38,6 +38,7 @@ export class CreateImagesForPostUseCase
       const imageInfo = await sharp(buffer).metadata();
       const postImage: PostImagesDocument = new this.postImages();
       postImage.id = image.id;
+      postImage.userId = command.data.userId;
       postImage.postId = image.postId;
       postImage.createdAt = image.createdAt;
       postImage.key = image.key;

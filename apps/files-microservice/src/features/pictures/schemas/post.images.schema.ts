@@ -10,6 +10,8 @@ export class PostImages {
   @Prop({ required: true })
   url: string;
   @Prop({ required: true })
+  userId: string;
+  @Prop({ required: true })
   bucket: string;
   @Prop({ required: true })
   postId: string;

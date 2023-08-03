@@ -13,8 +13,12 @@ export class ImagesRepository {
     return image.save();
   }
 
-  async deleteImages(postId: string) {
+  async deleteImagesForPost(postId: string) {
     await this.postImages.deleteMany({ postId: postId });
+  }
+
+  async deleteImagesForUser(userId: string) {
+    await this.postImages.deleteMany({ userId: userId });
   }
 
   async getImages(postId: string): Promise<PostImagesDocument[]> {

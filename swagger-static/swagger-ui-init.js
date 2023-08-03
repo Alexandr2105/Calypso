@@ -381,7 +381,16 @@ window.onload = function() {
         "delete": {
           "operationId": "UsersController_getAllUsers",
           "summary": "Delete user for test",
-          "parameters": [],
+          "parameters": [
+            {
+              "name": "userId",
+              "required": true,
+              "in": "path",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "responses": {
             "204": {
               "description": "User deleted"

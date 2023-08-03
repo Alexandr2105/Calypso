@@ -8,6 +8,7 @@ import { CreateImagesForPostCommand } from '../application/use-cases/create.imag
 import { GetImagesForPostCommand } from '../application/use-cases/get.images.for.post.use.case';
 import { DeletePostImagesCommand } from '../application/use-cases/delete.post.images.use.case';
 import { DeleteProfileCommand } from '../application/use-cases/delete.profile.use.case';
+import { DeleteAllUserProfileCommand } from '../application/use-cases/delete.all.user.profile.use.case';
 
 @Controller('saveAvatars')
 export class PictureController {
@@ -30,7 +31,7 @@ export class PictureController {
     return this.commandBus.execute(new GetImagesForPostCommand(data));
   }
 
-  @MessagePattern({ cmd: 'deleteImages' })
+  @MessagePattern({ cmd: 'deletePost' })
   async deleteImages(data: string) {
     await this.commandBus.execute(new DeletePostImagesCommand(data));
     return true;
@@ -39,6 +40,12 @@ export class PictureController {
   @MessagePattern({ cmd: 'deleteProfile' })
   async deleteProfile(id: string) {
     await this.commandBus.execute(new DeleteProfileCommand(id));
+    return true;
+  }
+
+  @MessagePattern({ cmd: 'deleteUser' })
+  async deleteAllUserProfile(userId: string) {
+    await this.commandBus.execute(new DeleteAllUserProfileCommand(userId));
     return true;
   }
 }
