@@ -18,6 +18,7 @@ export class GetUserByIdUseCase implements ICommandHandler<GetUserByIdCommand> {
       command.userId,
     );
     if (profile) {
+      console.log(profile);
       return { id: profile.userId, login: profile.login };
     } else {
       return await this.usersRepository.getUserById(command.userId);
