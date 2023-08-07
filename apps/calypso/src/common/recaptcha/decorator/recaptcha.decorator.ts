@@ -9,7 +9,7 @@ import { settings } from '../../../settings';
 export const Recaptcha = createParamDecorator(
   async (_, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    const recaptchaToken = request.headers['recaptcha-token'];
+    const recaptchaToken = request.headers['recaptcha-value'];
 
     if (!recaptchaToken) {
       throw new HttpException(

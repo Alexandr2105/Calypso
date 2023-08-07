@@ -165,7 +165,7 @@ export class AuthController {
   })
   async createNewPassword(
     @Body() body: NewPasswordDto,
-    // @Recaptcha() recaptchaToken: string,
+    // @Recaptcha() recaptchaToken,
   ) {
     await this.commandBus.execute(
       new ChangePasswordCommand(body.recoveryCode, body.newPassword),
