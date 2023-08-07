@@ -21,7 +21,7 @@ export class PictureController {
     );
   }
 
-  @MessagePattern({ cmd: 'save Images' })
+  @MessagePattern({ cmd: 'saveImages' })
   async saveImagesForPosts(data: PostsDto) {
     return this.commandBus.execute(new CreateImagesForPostCommand(data));
   }
