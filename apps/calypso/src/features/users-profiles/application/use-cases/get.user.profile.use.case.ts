@@ -1,6 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersProfilesRepository } from '../../infrastructure/users.profiles.repository';
 import { UsersProfilesEntity } from '../../entities/users.profiles.entity';
+import { NotFoundException } from '@nestjs/common';
 
 export class GetUserProfileCommand {
   constructor(public userId: string) {}
@@ -13,6 +14,8 @@ export class GetUserProfileUseCase
   constructor(private userProfile: UsersProfilesRepository) {}
 
   async execute(command: GetUserProfileCommand): Promise<UsersProfilesEntity> {
-    return this.userProfile.getProfile(command.userId);
+    const profile = await this.userProfile.getProfile(command.userId);
+    if (!profile) throw new NotFoundException();
+    return profile;
   }
 }

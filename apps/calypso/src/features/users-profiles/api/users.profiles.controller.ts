@@ -48,6 +48,7 @@ export class UsersProfilesController {
     type: UsersProfilesEntity,
   })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
+  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Get('profile')
   async getUserProfile(@Req() req) {
     return this.commandBus.execute(new GetUserProfileCommand(req.user.id));
@@ -100,7 +101,6 @@ export class UsersProfilesController {
   @ApiOperation({ summary: 'Delete profile' })
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Profile deleted')
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
-  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
   @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Delete('profile')
   async deleteProfile(@Req() req) {

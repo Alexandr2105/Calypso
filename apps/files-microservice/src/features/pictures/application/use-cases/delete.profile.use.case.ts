@@ -16,7 +16,11 @@ export class DeleteProfileUseCase
 
   async execute(command: DeleteProfileCommand): Promise<void> {
     const avatar = await this.avatarsRepository.getAvatarInfo(command.userId);
-    await this.avatarsRepository.deleteAvatarInfo(command.userId);
-    await this.fileStorage.deleteImage(avatar.bucket, avatar.key);
+    if (avatar) {
+      await this.avatarsRepository.deleteAvatarInfo(command.userId);
+      await this.fileStorage.deleteImage(avatar.bucket, avatar.key);
+    } else {
+      return;
+    }
   }
 }

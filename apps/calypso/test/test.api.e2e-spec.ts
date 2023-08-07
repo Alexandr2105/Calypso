@@ -352,7 +352,7 @@ describe('Create test for profiles', () => {
     });
   });
 
-  it('Проверка на возвращение токена и profile = true,', async () => {
+  it('Проверка на возвращение токена и profile = true', async () => {
     const refreshToken = token.headers['set-cookie'];
     await test.post('/auth/logout').set('Cookie', refreshToken).expect(204);
     token = await test
@@ -382,14 +382,30 @@ describe('Create test for profiles', () => {
       .expect(200);
     expect(profile.body).toEqual({
       userId: expect.any(String),
-      login: 'Alex11',
+      login: 'string1',
       firstName: 'string',
       lastName: '',
       dateOfBirthday: '21-05-1988',
       city: 'string',
       userInfo: '',
-      photo: profile.body.photo,
+      photo: profile.body.photo && expect.any(String),
     });
+  });
+
+  it('Удаляем pofile', async () => {
+    await test.delete('/users/profiles/profile').expect(401);
+    await test
+      .delete('/users/profiles/profile')
+      .auth(token.body.accessToken, { type: 'bearer' })
+      .expect(204);
+    await test
+      .delete('/users/profiles/profile')
+      .auth(token.body.accessToken, { type: 'bearer' })
+      .expect(404);
+    await test
+      .get('/users/profiles/profile')
+      .auth(token.body.accessToken, { type: 'bearer' })
+      .expect(404);
   });
 });
 

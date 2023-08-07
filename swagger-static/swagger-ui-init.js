@@ -435,6 +435,9 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized"
+            },
+            "404": {
+              "description": "Not Found"
             }
           },
           "tags": [
@@ -456,9 +459,6 @@ window.onload = function() {
             },
             "401": {
               "description": "Unauthorized"
-            },
-            "403": {
-              "description": "Forbidden"
             },
             "404": {
               "description": "Not Found"
