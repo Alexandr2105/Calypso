@@ -37,6 +37,7 @@ export class UploadAvatarUseCase
       avatar,
     );
     const avatarInfo = await sharp(avatar).metadata();
+    console.log(infoAboutSaveAvatar);
 
     const avatarDocument: AvatarDocument = new this.avatar();
     avatarDocument.id = infoAboutSaveAvatar.id;
