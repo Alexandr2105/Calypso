@@ -660,7 +660,43 @@ describe('Create test for posts', () => {
       .get(`/posts/${post.body.userId}`)
       .auth(token1.body.accessToken, { type: 'bearer' })
       .expect(200);
-    console.log(postInfo.body);
-    //TODO:додеталь вывод query post и сделать тест на удаление
+    expect(postInfo.body).toEqual({
+      pagesCount: 1,
+      page: 1,
+      pageSize: 9,
+      totalCount: 1,
+      items: [
+        {
+          id: post.body.id,
+          userId: post.body.userId,
+          description: 'stringstringstringstring',
+          createdAt: post.body.createdAt,
+          images: [
+            {
+              url: expect.any(String),
+            },
+            {
+              url: expect.any(String),
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('Удаляем пост и проверяем', async () => {
+    await test.delete(`/posts/post/${post.body.id}`).expect(401);
+    await test
+      .delete(`/posts/post/${post.body.id}`)
+      .auth(token2.body.accessToken, { type: 'bearer' })
+      .expect(403);
+    await test
+      .delete(`/posts/post/${post.body.id}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .expect(204);
+    await test
+      .delete(`/posts/post/${post.body.id}`)
+      .auth(token1.body.accessToken, { type: 'bearer' })
+      .expect(404);
   });
 });
