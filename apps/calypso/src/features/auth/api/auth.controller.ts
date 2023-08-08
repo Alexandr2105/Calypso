@@ -39,6 +39,7 @@ import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { UserEntity } from '../../users/entities/user.entity';
+import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -249,4 +250,28 @@ export class AuthController {
     const user = await this.userRepo.getUserById(req.user.id);
     if (user) return user;
   }
+
+  // @Get('google')
+  // async getAccessTokenForGoogle(@Body() body) {
+  //   console.log(body.code);
+  //   const code = decodeURIComponent(body.code);
+  //   console.log(code);
+  //   const info = await this.commandBus.execute(
+  //     new OAuth2ForGoogleCommand(code),
+  //   );
+  //   console.log(info);
+  //
+  //   return true;
+  // }
+  //
+  // @Get('github')
+  // async getAccessTokenForGithub(@Body() code: string) {
+  //   // const info=await this.commandBus.execute()
+  //   return true;
+  // }
+  //
+  // @Get('callback/google')
+  // async getCode() {
+  //   console.log('code');
+  // }
 }

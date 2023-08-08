@@ -51,6 +51,8 @@ import { GetUserByIdUseCase } from './features/users-profiles/application/use-ca
 import { DeleteProfileUseCase } from './features/users-profiles/application/use-cases/delete.profile.use.case';
 import { DeleteUserUseCase } from './features/users/application/use-case/delete.user.use.case';
 import { BasicStrategy } from './common/strategies/basic.strategy';
+import { OAuth2ForGoogleUseCase } from './features/auth/application/use-cases/oauth2.for.google.use.case';
+import { Auth } from 'googleapis';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -75,6 +77,7 @@ const UseCases = [
   GetUserByIdUseCase,
   DeleteProfileUseCase,
   DeleteUserUseCase,
+  OAuth2ForGoogleUseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -124,6 +127,7 @@ const Repositories = [
     PostsController,
   ],
   providers: [
+    Auth.OAuth2Client,
     AppService,
     BcryptService,
     UsersService,

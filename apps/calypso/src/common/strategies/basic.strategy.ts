@@ -4,7 +4,7 @@ import { BasicStrategy as Strategy } from 'passport-http';
 import { adminPassword } from '../authUsers/usersPasswords';
 
 @Injectable()
-export class BasicStrategy extends PassportStrategy(Strategy) {
+export class BasicStrategy extends PassportStrategy(Strategy, 'basic') {
   constructor() {
     super();
   }

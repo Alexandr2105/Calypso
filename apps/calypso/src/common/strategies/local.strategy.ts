@@ -5,7 +5,7 @@ import { UsersRepository } from '../../features/users/infrastructure/users.repos
 import { BcryptService } from '../bcript/bcript.service';
 
 @Injectable()
-export class LocalStrategy extends PassportStrategy(Strategy) {
+export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(
     private userRepo: UsersRepository,
     private genHash: BcryptService,
