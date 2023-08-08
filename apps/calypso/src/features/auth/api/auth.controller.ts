@@ -39,7 +39,7 @@ import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { UserEntity } from '../../users/entities/user.entity';
-import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
+// import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
 
 @ApiTags('Auth')
 @Controller('auth')
