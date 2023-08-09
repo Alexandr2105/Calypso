@@ -34,6 +34,8 @@ export class RegistrationUserUseCase
       createdAt,
       hash,
       false,
+      false,
+      false,
     );
 
     await this.userRepo.createUser(newUser);

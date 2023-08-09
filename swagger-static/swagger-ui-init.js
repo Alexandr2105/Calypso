@@ -42,7 +42,7 @@ window.onload = function() {
               "description": "Email confirmation link sent"
             },
             "400": {
-              "description": "List of possible errors:<br>1.User with this username is already registered <br>2.User with this email is already registered<br> 3.Wrong length\n",
+              "description": "List of possible errors:<br>1.User with this email is already registered<br> 2.Wrong length\n",
               "content": {
                 "application/json": {
                   "schema": {
@@ -184,7 +184,7 @@ window.onload = function() {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginDto"
+                  "$ref": "#/components/schemas/EmailDto"
                 }
               }
             }
@@ -374,6 +374,58 @@ window.onload = function() {
             {
               "bearer": []
             }
+          ]
+        }
+      },
+      "/auth/google": {
+        "get": {
+          "operationId": "AuthController_getAccessTokenForGoogle",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/auth/github": {
+        "get": {
+          "operationId": "AuthController_getAccessTokenForGithub",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/auth/callback/google": {
+        "get": {
+          "operationId": "AuthController_getCode",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
           ]
         }
       },
@@ -912,10 +964,10 @@ window.onload = function() {
             "email"
           ]
         },
-        "LoginDto": {
+        "EmailDto": {
           "type": "object",
           "properties": {
-            "loginOrEmail": {
+            "email": {
               "type": "string"
             },
             "password": {
@@ -923,7 +975,7 @@ window.onload = function() {
             }
           },
           "required": [
-            "loginOrEmail",
+            "email",
             "password"
           ]
         },

@@ -11,11 +11,11 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     private genHash: BcryptService,
   ) {
     super({
-      usernameField: 'loginOrEmail',
+      usernameField: 'email',
     });
   }
-  async validate(loginOrEmail: string, password: string): Promise<any> {
-    const user = await this.userRepo.getUserByLoginOrEmail(loginOrEmail);
+  async validate(email: string, password: string): Promise<any> {
+    const user = await this.userRepo.getUserByEmail(email);
 
     if (!user || user.emailConfirmation.isConfirmed === false) return false;
 

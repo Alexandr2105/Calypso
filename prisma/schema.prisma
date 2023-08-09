@@ -11,11 +11,13 @@ datasource db {
 
 model User {
   id                String             @id @default(uuid())
-  login             String             @unique
+  login             String
   email             String             @unique
   createdAt         DateTime
   passwordHash      String
   isDeleted         Boolean
+  googleAuth        Boolean
+  githubAuth        Boolean
   emailConfirmation EmailConfirmation?
   refreshTokenData  RefreshTokenData[]
   userProfile       UserProfile?
@@ -42,7 +44,7 @@ model RefreshTokenData{
 
 model UserProfile{
   userId         String    @id
-  login          String    @unique
+  login          String
   firstName      String?
   lastName       String?
   dateOfBirthday String?

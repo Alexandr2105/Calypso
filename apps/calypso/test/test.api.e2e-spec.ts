@@ -69,7 +69,7 @@ describe('Create test for auth', () => {
     const token = await test
       .post('/auth/login')
       .send({
-        loginOrEmail: user.login,
+        email: user.email,
         password: user.password,
       })
       .set('user-agent', 'Chrome')
@@ -81,7 +81,7 @@ describe('Create test for auth', () => {
     await test
       .post('/auth/login')
       .send({
-        loginOrEmail: 'user.login',
+        email: 'user.login',
         password: 'user.password',
       })
       .set('user-agent', 'Chrome')
@@ -154,12 +154,12 @@ describe('Create test for auth', () => {
     });
     const response = await test
       .post('/auth/login')
-      .send({ loginOrEmail: 'Alex11', password: 'string' })
+      .send({ email: user.email, password: 'string' })
       .set('user-agent', 'Chrome')
       .expect(200);
     await test
       .post('/auth/login')
-      .send({ loginOrEmail: 'Alex11', password: 'string1' })
+      .send({ email: 'Alex11', password: 'string1' })
       .set('user-agent', 'Chrome')
       .expect(401);
     const refreshToken = response.headers['set-cookie'];
@@ -180,7 +180,7 @@ describe('Create test for auth', () => {
   it('Получаем новую пару accessToken и refreshToken', async () => {
     const response = await test
       .post('/auth/login')
-      .send({ loginOrEmail: 'Alex11', password: 'string' })
+      .send({ email: user.email, password: 'string' })
       .set('user-agent', 'Chrome')
       .expect(200);
     const refreshToken = response.headers['set-cookie'];
@@ -255,7 +255,7 @@ describe('Create test for profiles', () => {
     token = await test
       .post('/auth/login')
       .send({
-        loginOrEmail: user.login,
+        email: user.email,
         password: user.password,
       })
       .set('user-agent', 'Chrome')
@@ -358,7 +358,7 @@ describe('Create test for profiles', () => {
     token = await test
       .post('/auth/login')
       .send({
-        loginOrEmail: user.login,
+        email: user.email,
         password: user.password,
       })
       .set('user-agent', 'Chrome')
@@ -478,7 +478,7 @@ describe('Create test for posts', () => {
     token2 = await test
       .post('/auth/login')
       .send({
-        loginOrEmail: user2.login,
+        email: user2.email,
         password: user2.password,
       })
       .set('user-agent', 'Chrome')
@@ -494,7 +494,7 @@ describe('Create test for posts', () => {
     token1 = await test
       .post('/auth/login')
       .send({
-        loginOrEmail: user.login,
+        email: user.email,
         password: user.password,
       })
       .set('user-agent', 'Chrome')
@@ -506,7 +506,7 @@ describe('Create test for posts', () => {
     await test
       .post('/auth/login')
       .send({
-        loginOrEmail: 'user.login',
+        email: 'user.login',
         password: 'user.password',
       })
       .set('user-agent', 'Chrome')

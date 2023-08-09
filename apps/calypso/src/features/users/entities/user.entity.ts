@@ -15,6 +15,10 @@ export class UserEntity implements Prisma.UserCreateInput {
 
   isDeleted: boolean;
 
+  googleAuth: boolean;
+
+  githubAuth: boolean;
+
   constructor(
     id: string,
     login: string,
@@ -22,12 +26,16 @@ export class UserEntity implements Prisma.UserCreateInput {
     createdAt: Date,
     passwordHash: string,
     isDeleted: boolean,
+    googleAuth: boolean,
+    githubAuth: boolean,
   ) {
-    (this.id = id),
-      (this.login = login),
-      (this.email = email),
-      (this.createdAt = createdAt),
-      (this.passwordHash = passwordHash),
-      (this.isDeleted = isDeleted);
+    this.id = id;
+    this.login = login;
+    this.email = email;
+    this.createdAt = createdAt;
+    this.passwordHash = passwordHash;
+    this.isDeleted = isDeleted;
+    this.googleAuth = googleAuth;
+    this.githubAuth = githubAuth;
   }
 }

@@ -7,15 +7,12 @@ import {
   minLengthPassword,
   minLengthUserName,
 } from '../../../common/constants/models.constants';
-import { CheckLoginOrEmailInDb } from '../../users/validation/check-login-or-email-in-db';
+import { CheckEmailInDb } from '../../users/validation/check-email-in-db.service';
 
 export class CreateUserDto {
   @Transform(({ value }) => String(value).trim())
   @Length(minLengthUserName, maxLengthUserName, {
     message: 'Wrong length',
-  })
-  @Validate(CheckLoginOrEmailInDb, {
-    message: 'User with this username is already registered',
   })
   @ApiProperty({
     type: 'string',
@@ -33,7 +30,7 @@ export class CreateUserDto {
   )
   @Transform(({ value }) => String(value).trim())
   @ApiProperty({ type: 'string' })
-  @Validate(CheckLoginOrEmailInDb, {
+  @Validate(CheckEmailInDb, {
     message: 'User with this email is already registered',
   })
   email: string;

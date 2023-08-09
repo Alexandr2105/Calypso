@@ -14,7 +14,7 @@ import { UsersController } from './features/users/api/users.controller';
 import { BcryptService } from './common/bcript/bcript.service';
 import { UsersRepository } from './features/users/infrastructure/users.repository';
 import { EmailAdapter } from './common/SMTP-adapter/email-adapter';
-import { CheckLoginOrEmailInDb } from './features/users/validation/check-login-or-email-in-db';
+import { CheckEmailInDb } from './features/users/validation/check-email-in-db.service';
 import { TestingController } from './common/testing/testing.controller';
 import { SendPasswordRecoveryLinkUseCase } from './features/auth/application/use-cases/send-password-recovery-link.use-case';
 import { UsersService } from './features/users/application/users.service';
@@ -51,11 +51,11 @@ import { GetUserByIdUseCase } from './features/users-profiles/application/use-ca
 import { DeleteProfileUseCase } from './features/users-profiles/application/use-cases/delete.profile.use.case';
 import { DeleteUserUseCase } from './features/users/application/use-case/delete.user.use.case';
 import { BasicStrategy } from './common/strategies/basic.strategy';
-// import { OAuth2ForGoogleUseCase } from './features/auth/application/use-cases/oauth2.for.google.use.case';
-// import { Auth } from 'googleapis';
+import { CreateUserOauth20UseCase } from './features/auth/application/use-cases/create.user.oauth20.use.case';
+import { OAuth2ForGoogleUseCase } from './features/auth/application/use-cases/oauth2.for.google.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
-const Validators = [CheckLoginOrEmailInDb, CheckConfirmationCode, CheckPostId];
+const Validators = [CheckEmailInDb, CheckConfirmationCode, CheckPostId];
 const UseCases = [
   RegistrationUserUseCase,
   CreateConfirmationInfoForUserUseCase,
@@ -77,7 +77,8 @@ const UseCases = [
   GetUserByIdUseCase,
   DeleteProfileUseCase,
   DeleteUserUseCase,
-  // OAuth2ForGoogleUseCase,
+  OAuth2ForGoogleUseCase,
+  CreateUserOauth20UseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -127,7 +128,6 @@ const Repositories = [
     PostsController,
   ],
   providers: [
-    // Auth.OAuth2Client,
     AppService,
     BcryptService,
     UsersService,

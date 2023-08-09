@@ -7,10 +7,10 @@ import { UsersRepository } from '../infrastructure/users.repository';
 
 @ValidatorConstraint({ async: true })
 @Injectable()
-export class CheckLoginOrEmailInDb implements ValidatorConstraintInterface {
+export class CheckEmailInDb implements ValidatorConstraintInterface {
   constructor(private readonly usersRepo: UsersRepository) {}
-  async validate(loginOrEmail: string): Promise<boolean> {
-    const user = await this.usersRepo.getUserByLoginOrEmail(loginOrEmail);
+  async validate(email: string): Promise<boolean> {
+    const user = await this.usersRepo.getUserByEmail(email);
     if (
       user &&
       user.emailConfirmation.isConfirmed === false &&

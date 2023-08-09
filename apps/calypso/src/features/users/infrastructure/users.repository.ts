@@ -37,7 +37,7 @@ export class UsersRepository {
     });
   }
 
-  async getUserByEmail(email: string): Promise<UserEntity> {
+  async getUserByEmail(email: string) {
     return this.prisma.user.findUnique({
       where: { email },
       include: { emailConfirmation: true },
@@ -59,38 +59,12 @@ export class UsersRepository {
     });
   }
 
-  async getUserByLoginOrEmail(loginOrEmail: string) {
-    return this.prisma.user.findFirst({
-      where: {
-        OR: [
-          {
-            login: loginOrEmail,
-          },
-          {
-            email: loginOrEmail,
-          },
-        ],
-      },
-      include: {
-        emailConfirmation: {
-          select: { isConfirmed: true, expirationDate: true },
-        },
-      },
-    });
-  }
-
   async changePassword(userId: string, newPasswordHash: string) {
     await this.prisma.user.update({
       where: { id: userId },
       data: { passwordHash: newPasswordHash },
     });
   }
-
-  // async getAllUsers() {
-  //   return this.prisma.user.findMany({
-  //     select: { id: true, email: true, login: true },
-  //   });
-  // }
 
   async getUserById(userId: string) {
     return this.prisma.user.findUnique({

@@ -18,7 +18,7 @@ import {
 } from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { RegistrationConformationDto } from '../dto/registration-confirmation.dto';
-import { LoginDto } from '../dto/login.dto';
+import { EmailDto } from '../dto/email.dto';
 import { EmailResendingDto } from '../dto/email-resending.dto';
 import { NewPasswordDto } from '../dto/new-password.dto';
 import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
@@ -39,7 +39,9 @@ import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { UserEntity } from '../../users/entities/user.entity';
-// import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
+import { GoogleUserInfoDto } from '../dto/google.user.info.dto';
+import { CreateUserOauth20Command } from '../application/use-cases/create.user.oauth20.use.case';
+import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -55,8 +57,8 @@ export class AuthController {
   @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email confirmation link sent')
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.User with this username is already registered <br>' +
-      '2.User with this email is already registered<br> 3.Wrong length\n',
+    'List of possible errors:<br>1.User with this email is already registered<br> ' +
+      '2.Wrong length\n',
   )
   async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
     // res.status(204).json({});
@@ -115,7 +117,7 @@ export class AuthController {
     },
   })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
-  async loginUser(@Body() body: LoginDto, @Res() res, @Req() req) {
+  async loginUser(@Body() body: EmailDto, @Res() res, @Req() req) {
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(req.user.id, randomUUID()),
     );
@@ -251,27 +253,27 @@ export class AuthController {
     if (user) return user;
   }
 
-  // @Get('google')
-  // async getAccessTokenForGoogle(@Body() body) {
-  //   console.log(body.code);
-  //   const code = decodeURIComponent(body.code);
-  //   console.log(code);
-  //   const info = await this.commandBus.execute(
-  //     new OAuth2ForGoogleCommand(code),
-  //   );
-  //   console.log(info);
-  //
-  //   return true;
-  // }
-  //
-  // @Get('github')
-  // async getAccessTokenForGithub(@Body() code: string) {
-  //   // const info=await this.commandBus.execute()
-  //   return true;
-  // }
-  //
-  // @Get('callback/google')
-  // async getCode() {
-  //   console.log('code');
-  // }
+  @Get('google')
+  async getAccessTokenForGoogle(@Body() body) {
+    const code = decodeURIComponent(body.code);
+    const userInfo: GoogleUserInfoDto = await this.commandBus.execute(
+      new OAuth2ForGoogleCommand(code),
+    );
+    const info = await this.commandBus.execute(
+      new CreateUserOauth20Command(userInfo),
+    );
+    console.log(userInfo);
+    return true;
+  }
+
+  @Get('github')
+  async getAccessTokenForGithub(@Body() code: string) {
+    // const info=await this.commandBus.execute()
+    return true;
+  }
+
+  @Get('callback/google')
+  async getCode() {
+    console.log('code');
+  }
 }
