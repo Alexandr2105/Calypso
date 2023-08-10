@@ -241,7 +241,7 @@ export class AuthController {
     res.send(accessToken);
   }
 
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Returns user data' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -256,39 +256,39 @@ export class AuthController {
     if (user) return user;
   }
 
-  @Post('google')
-  async getAccessTokenForGoogle(@Body() body, @Req() req, @Res() res) {
-    const code = decodeURIComponent(body.code);
-    const userInfo: GoogleUserInfoDto = await this.commandBus.execute(
-      new OAuth2ForGoogleCommand(code),
-    );
-    const userId = await this.commandBus.execute(
-      new CreateUserOauth20Command(userInfo),
-    );
-    if (userId) {
-      const { accessToken, refreshToken, info } = await this.commandBus.execute(
-        new CreateAccessAndRefreshTokensCommand(userId, randomUUID()),
-      );
-
-      await this.commandBus.execute(
-        new SaveInfoAboutDevicesUserCommand(
-          refreshToken,
-          req.ip,
-          req.headers['user-agent'],
-        ),
-      );
-
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
-      });
-
-      res.send({ ...accessToken, profile: info });
-    } else {
-      res.send('Email sent');
-    }
-  }
-
+  // @Post('google')
+  // async getAccessTokenForGoogle(@Body() body, @Req() req, @Res() res) {
+  //   const code = decodeURIComponent(body.code);
+  //   const userInfo: GoogleUserInfoDto = await this.commandBus.execute(
+  //     new OAuth2ForGoogleCommand(code),
+  //   );
+  //   const userId = await this.commandBus.execute(
+  //     new CreateUserOauth20Command(userInfo),
+  //   );
+  //   if (userId) {
+  //     const { accessToken, refreshToken, info } = await this.commandBus.execute(
+  //       new CreateAccessAndRefreshTokensCommand(userId, randomUUID()),
+  //     );
+  //
+  //     await this.commandBus.execute(
+  //       new SaveInfoAboutDevicesUserCommand(
+  //         refreshToken,
+  //         req.ip,
+  //         req.headers['user-agent'],
+  //       ),
+  //     );
+  //
+  //     res.cookie('refreshToken', refreshToken, {
+  //       httpOnly: false,
+  //       secure: false,
+  //     });
+  //
+  //     res.send({ ...accessToken, profile: info });
+  //   } else {
+  //     res.send('Email sent');
+  //   }
+  // }
+  //
   // @Post('merge/google')
   // async mergeAccounts(@Body() body: RegistrationConformationDto) {
   //   const info: ConfirmationInfoEntity = await this.commandBus.execute(

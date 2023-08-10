@@ -377,20 +377,6 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/google": {
-        "post": {
-          "operationId": "AuthController_getAccessTokenForGoogle",
-          "parameters": [],
-          "responses": {
-            "201": {
-              "description": ""
-            }
-          },
-          "tags": [
-            "Auth"
-          ]
-        }
-      },
       "/users/{userId}": {
         "delete": {
           "operationId": "UsersController_getAllUsers",
