@@ -14,7 +14,7 @@ model User {
   login             String
   email             String             @unique
   createdAt         DateTime
-  passwordHash      String
+  passwordHash      String?
   isDeleted         Boolean
   googleAuth        Boolean
   githubAuth        Boolean

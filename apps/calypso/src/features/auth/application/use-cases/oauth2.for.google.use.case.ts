@@ -1,6 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Auth, google } from 'googleapis';
 import { settings } from '../../../../settings';
+import axios from 'axios';
+import { Jwt } from '../../../../common/jwt/jwt';
 
 export class OAuth2ForGoogleCommand {
   constructor(public code: string) {}
@@ -10,23 +11,27 @@ export class OAuth2ForGoogleCommand {
 export class OAuth2ForGoogleUseCase
   implements ICommandHandler<OAuth2ForGoogleCommand>
 {
+  constructor(private jwt: Jwt) {}
+
   async execute(command: OAuth2ForGoogleCommand) {
-    const oauthClient: Auth.OAuth2Client = new google.auth.OAuth2(
-      settings.GOOGLE_ID,
-      settings.GOOGLE_SECRET,
-      settings.GOOGLE_REDIRECT_URL,
-    );
-    const info = await oauthClient.getToken(command.code);
-    const userInfo: Auth.LoginTicket = await oauthClient.verifyIdToken({
-      idToken: info.tokens.id_token,
-    });
-    if (!userInfo.getPayload()) {
+    const data = {
+      code: command.code,
+      client_id: settings.GOOGLE_ID,
+      client_secret: settings.GOOGLE_SECRET,
+      redirect_uri: settings.GOOGLE_REDIRECT_URL,
+      grant_type: 'authorization_code',
+    };
+    const tokenUrl = 'https://oauth2.googleapis.com/token';
+    const oauthClient = await axios.post(tokenUrl, data);
+    if (!oauthClient.data.id_token) {
       return false;
     }
+    const token = oauthClient.data.id_token;
+    const userInfo: any = this.jwt.decodeUserByToken(token);
     return {
-      email: userInfo.getPayload().email,
-      avatar_url: userInfo.getPayload().picture,
-      name: userInfo.getPayload().name,
+      email: userInfo.email,
+      avatar: userInfo.picture,
+      login: userInfo.name,
     };
   }
 }

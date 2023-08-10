@@ -4,8 +4,8 @@ import { settings } from '../../settings';
 export class EmailAdapter {
   async sendEmailConfirmationLink(email: string, code: string) {
     const transporter = this.createTransport();
-    const info = await transporter.sendMail({
-      from: '"KUSTO" <kusto@gmail.com>',
+    await transporter.sendMail({
+      from: '"KustoGram" <kustogram@gmail.com>',
       to: email,
       subject: 'Confirmation link',
       text: 'Для подтверждения регистрации пройдите по ссылке',
@@ -15,12 +15,22 @@ export class EmailAdapter {
 
   async sendEmailPasswordRecoveryLink(email: string, code: string) {
     const transporter = this.createTransport();
-    const info = await transporter.sendMail({
-      from: '"KUSTO" <kusto@gmail.com>',
+    await transporter.sendMail({
+      from: '"KustoGram" <kustogram@gmail.com>',
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
       html: `<p>Привет, вот <a href="${settings.RECOVERY_PASSWORD}/auth/new_password?code=${code}">ссылка</a> для обновления пароля</p>`,
+    });
+  }
+
+  async sendEmailGoogleRegistration(email: string) {
+    const transporter = this.createTransport();
+    await transporter.sendMail({
+      from: '"KustoGram" <kustogram@gmail.com>',
+      to: email,
+      subject: 'Successful registration',
+      text: 'Вы успешно зарегистрировались в KustoGram',
     });
   }
 

@@ -11,7 +11,7 @@ export class UserEntity implements Prisma.UserCreateInput {
 
   createdAt: Date;
 
-  passwordHash: string;
+  passwordHash?: string;
 
   isDeleted: boolean;
 
@@ -24,10 +24,10 @@ export class UserEntity implements Prisma.UserCreateInput {
     login: string,
     email: string,
     createdAt: Date,
-    passwordHash: string,
     isDeleted: boolean,
     googleAuth: boolean,
     githubAuth: boolean,
+    passwordHash?: string,
   ) {
     this.id = id;
     this.login = login;

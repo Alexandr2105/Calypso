@@ -27,15 +27,15 @@ export class RegistrationUserUseCase
     const userId = randomUUID();
     const createdAt = new Date();
 
-    const newUser = new UserEntity(
+    const newUser: UserEntity = new UserEntity(
       userId,
       command.body.login,
       command.body.email,
       createdAt,
+      false,
+      false,
+      false,
       hash,
-      false,
-      false,
-      false,
     );
 
     await this.userRepo.createUser(newUser);

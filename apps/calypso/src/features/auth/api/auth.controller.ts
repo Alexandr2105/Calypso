@@ -262,8 +262,7 @@ export class AuthController {
     const info = await this.commandBus.execute(
       new CreateUserOauth20Command(userInfo),
     );
-    console.log(userInfo);
-    return true;
+    return info;
   }
 
   @Get('github')

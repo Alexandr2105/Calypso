@@ -49,4 +49,12 @@ export class Jwt {
       return null;
     }
   }
+
+  decodeUserByToken(token: string) {
+    try {
+      return this.jwt.decode(token);
+    } catch (error) {
+      return null;
+    }
+  }
 }

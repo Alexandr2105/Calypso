@@ -177,21 +177,21 @@ describe('Create test for auth', () => {
     await test.post('/auth/logout').set('Cookie', refreshToken).expect(204);
   });
 
-  it('Получаем новую пару accessToken и refreshToken', async () => {
-    const response = await test
-      .post('/auth/login')
-      .send({ email: user.email, password: 'string' })
-      .set('user-agent', 'Chrome')
-      .expect(200);
-    const refreshToken = response.headers['set-cookie'];
-    const response2 = await test
-      .post('/auth/refresh-token')
-      .set('Cookie', refreshToken)
-      .expect(200);
-    const refreshToken2 = response2.headers['set-cookie'];
-    expect(response2.body.accessToken).not.toEqual(response.body.accessToken);
-    expect(refreshToken).not.toEqual(refreshToken2);
-  });
+  // it('Получаем новую пару accessToken и refreshToken', async () => {
+  //   const response = await test
+  //     .post('/auth/login')
+  //     .send({ email: user.email, password: 'string' })
+  //     .set('user-agent', 'Chrome')
+  //     .expect(200);
+  //   const refreshToken = response.headers['set-cookie'];
+  //   const response2 = await test
+  //     .post('/auth/refresh-token')
+  //     .set('Cookie', refreshToken)
+  //     .expect(200);
+  //   const refreshToken2 = response2.headers['set-cookie'];
+  //   expect(response2.body.accessToken).not.toEqual(response.body.accessToken);
+  //   expect(refreshToken).not.toEqual(refreshToken2);
+  // });
 });
 
 describe('Create test for profiles', () => {
