@@ -29,8 +29,8 @@ export class UsersRepository {
     });
   }
 
-  async updateConfirmationEmail(code: string): Promise<void> {
-    await this.prisma.emailConfirmation.update({
+  async updateConfirmationEmail(code: string): Promise<ConfirmationInfoEntity> {
+    return this.prisma.emailConfirmation.update({
       where: { confirmationCode: code },
       data: { isConfirmed: true },
     });
@@ -103,6 +103,28 @@ export class UsersRepository {
     });
     await this.prisma.user.deleteMany({
       where: { id: userId },
+    });
+  }
+
+  async updateStatusForMergeGoogle(userId: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { googleAuth: true },
+    });
+  }
+
+  async updateConfirmationCodeForOAuth(
+    userId: string,
+    code: string,
+    expDate: Date,
+  ) {
+    await this.prisma.emailConfirmation.update({
+      where: { userId: userId },
+      data: {
+        confirmationCode: code,
+        isConfirmed: false,
+        expirationDate: expDate,
+      },
     });
   }
 }

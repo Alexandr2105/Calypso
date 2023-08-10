@@ -10,7 +10,6 @@ export const settings = {
   REFRESH_TOKEN_LIFE: 6000,
   CURRENT_APP_BASE_URL:
     process.env.CURRENT_APP_BASE_URL || 'http://localhost:3000',
-  RECOVERY_PASSWORD: process.env.ADDRESS_SITE_FOR_RECOVERY_PASSWORD,
   ADDRESS_SITE_FOR_CONFIRMATION:
     process.env.ADDRESS_SITE_FOR_CONFIRMATION || 'http://localhost:3000',
   // ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,

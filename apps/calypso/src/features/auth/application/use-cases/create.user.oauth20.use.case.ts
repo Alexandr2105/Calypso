@@ -1,10 +1,11 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { GoogleUserInfoDto } from '../../dto/google.user.info.dto';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
 import { UserEntity } from '../../../users/entities/user.entity';
 import { randomUUID } from 'crypto';
 import { EmailAdapter } from '../../../../common/SMTP-adapter/email-adapter';
 import { UsersProfilesRepository } from '../../../users-profiles/infrastructure/users.profiles.repository';
+import { UpdateConfirmationCodeCommand } from './update.confirmation.code.use.case';
 
 export class CreateUserOauth20Command {
   constructor(public userInfo: GoogleUserInfoDto) {}
@@ -18,13 +19,14 @@ export class CreateUserOauth20UseCase
     private usersRepository: UsersRepository,
     private emailAdapter: EmailAdapter,
     private usersProfilesRepository: UsersProfilesRepository,
+    private commandBus: CommandBus,
   ) {}
 
   async execute(command: CreateUserOauth20Command) {
-    const userInfo: UserEntity = await this.usersRepository.getUserByEmail(
+    const user: UserEntity = await this.usersRepository.getUserByEmail(
       command.userInfo.email,
     );
-    if (!userInfo) {
+    if (!user) {
       const userId = randomUUID();
       const createdAt = new Date();
 
@@ -46,7 +48,16 @@ export class CreateUserOauth20UseCase
         login: newUser.login,
         photo: command.userInfo.avatar,
       });
+      return newUser.id;
     } else {
+      const createConfirmationInfoAndReturnConfirmationCode =
+        await this.commandBus.execute(
+          new UpdateConfirmationCodeCommand(user.id),
+        );
+      await this.emailAdapter.sendEmailForMergeAccount(
+        command.userInfo.email,
+        createConfirmationInfoAndReturnConfirmationCode,
+      );
       return false;
     }
   }

@@ -22,7 +22,7 @@ window.onload = function() {
           }
         }
       },
-      "/auth/registration": {
+      "/api/auth/registration": {
         "post": {
           "operationId": "AuthController_registrationUsers",
           "summary": "Registration users",
@@ -73,7 +73,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/email-confirmation/{code}": {
+      "/api/auth/email-confirmation/{code}": {
         "get": {
           "operationId": "AuthController_registrationConfirmation",
           "summary": "Email confirmation",
@@ -123,7 +123,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/refresh-link": {
+      "/api/auth/refresh-link": {
         "post": {
           "operationId": "AuthController_refreshConfirmationLink",
           "summary": "Refresh confirmation link",
@@ -174,7 +174,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/login": {
+      "/api/auth/login": {
         "post": {
           "operationId": "AuthController_loginUser",
           "summary": "User authorization",
@@ -219,7 +219,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/password-recovery": {
+      "/api/auth/password-recovery": {
         "post": {
           "operationId": "AuthController_passwordRecovery",
           "summary": "Password recovery",
@@ -270,7 +270,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/new-password": {
+      "/api/auth/new-password": {
         "post": {
           "operationId": "AuthController_createNewPassword",
           "summary": "Creating a new password",
@@ -298,7 +298,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/logout": {
+      "/api/auth/logout": {
         "post": {
           "operationId": "AuthController_logout",
           "summary": "User logout",
@@ -316,7 +316,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/refresh-token": {
+      "/api/auth/refresh-token": {
         "post": {
           "operationId": "AuthController_updateRefreshToken",
           "summary": "Generate new pair of access and refresh tokens",
@@ -347,7 +347,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/me": {
+      "/api/auth/me": {
         "get": {
           "operationId": "AuthController_getInfoAboutMe",
           "summary": "Returns user data",
@@ -377,50 +377,12 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/google": {
-        "get": {
+      "/api/auth/google": {
+        "post": {
           "operationId": "AuthController_getAccessTokenForGoogle",
           "parameters": [],
           "responses": {
-            "200": {
-              "description": ""
-            }
-          },
-          "tags": [
-            "Auth"
-          ]
-        }
-      },
-      "/auth/github": {
-        "get": {
-          "operationId": "AuthController_getAccessTokenForGithub",
-          "parameters": [],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": ""
-            }
-          },
-          "tags": [
-            "Auth"
-          ]
-        }
-      },
-      "/auth/callback/google": {
-        "get": {
-          "operationId": "AuthController_getCode",
-          "parameters": [],
-          "responses": {
-            "200": {
+            "201": {
               "description": ""
             }
           },

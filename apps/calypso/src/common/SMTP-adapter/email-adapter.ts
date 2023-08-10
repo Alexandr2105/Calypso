@@ -20,7 +20,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${settings.RECOVERY_PASSWORD}/auth/new_password?code=${code}">ссылка</a> для обновления пароля</p>`,
+      html: `<p>Привет, вот <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}/auth/new_password?code=${code}">ссылка</a> для обновления пароля</p>`,
     });
   }
 
@@ -31,6 +31,17 @@ export class EmailAdapter {
       to: email,
       subject: 'Successful registration',
       text: 'Вы успешно зарегистрировались в KustoGram',
+    });
+  }
+
+  async sendEmailForMergeAccount(email: string, code: string) {
+    const transporter = this.createTransport();
+    await transporter.sendMail({
+      from: '"KustoGram" <kustogram@gmail.com>',
+      to: email,
+      subject: 'Merge accounts',
+      text: 'Для объединения аккаунтов пройдите по ссылке',
+      html: `<p>Пользователь с таким ${email} уже зарегистрирован. Если это вы, то пройдите по <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}?code=${code}">ссылке</a></p>`,
     });
   }
 

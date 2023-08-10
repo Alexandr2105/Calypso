@@ -42,9 +42,11 @@ import { UserEntity } from '../../users/entities/user.entity';
 import { GoogleUserInfoDto } from '../dto/google.user.info.dto';
 import { CreateUserOauth20Command } from '../application/use-cases/create.user.oauth20.use.case';
 import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
+import { ConfirmationInfoEntity } from '../../users/entities/confirmation-info.entity';
+import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google.account.use.case';
 
 @ApiTags('Auth')
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(
     private commandBus: CommandBus,
@@ -239,6 +241,7 @@ export class AuthController {
     res.send(accessToken);
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Returns user data' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -253,26 +256,55 @@ export class AuthController {
     if (user) return user;
   }
 
-  @Get('google')
-  async getAccessTokenForGoogle(@Body() body) {
+  @Post('google')
+  async getAccessTokenForGoogle(@Body() body, @Req() req, @Res() res) {
     const code = decodeURIComponent(body.code);
     const userInfo: GoogleUserInfoDto = await this.commandBus.execute(
       new OAuth2ForGoogleCommand(code),
     );
-    const info = await this.commandBus.execute(
+    const userId = await this.commandBus.execute(
       new CreateUserOauth20Command(userInfo),
     );
-    return info;
+    if (userId) {
+      const { accessToken, refreshToken, info } = await this.commandBus.execute(
+        new CreateAccessAndRefreshTokensCommand(userId, randomUUID()),
+      );
+
+      await this.commandBus.execute(
+        new SaveInfoAboutDevicesUserCommand(
+          refreshToken,
+          req.ip,
+          req.headers['user-agent'],
+        ),
+      );
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: false,
+        secure: false,
+      });
+
+      res.send({ ...accessToken, profile: info });
+    } else {
+      res.send('Email sent');
+    }
   }
 
-  @Get('github')
-  async getAccessTokenForGithub(@Body() code: string) {
-    // const info=await this.commandBus.execute()
-    return true;
-  }
-
-  @Get('callback/google')
-  async getCode() {
-    console.log('code');
-  }
+  // @Post('merge/google')
+  // async mergeAccounts(@Body() body: RegistrationConformationDto) {
+  //   const info: ConfirmationInfoEntity = await this.commandBus.execute(
+  //     new ConfirmationEmailCommand(body.code),
+  //   );
+  //   await this.commandBus.execute(new MergeGoogleAccountCommand(info.userId));
+  // }
+  //
+  // @Get('github')
+  // async getAccessTokenForGithub(@Body() code: string) {
+  //   // const info=await this.commandBus.execute()
+  //   return true;
+  // }
+  //
+  // @Get('callback/google')
+  // async getCode() {
+  //   console.log('code');
+  // }
 }

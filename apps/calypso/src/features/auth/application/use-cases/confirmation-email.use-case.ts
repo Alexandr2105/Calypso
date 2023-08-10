@@ -2,6 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
 import { BadRequestException } from '@nestjs/common';
 import { createErrorMessage } from '../../../../common/helpers/create-error-message';
+import { ConfirmationInfoEntity } from '../../../users/entities/confirmation-info.entity';
 
 export class ConfirmationEmailCommand {
   constructor(public code: string) {}
@@ -13,9 +14,8 @@ export class ConfirmationEmailUseCase
 {
   constructor(private userRepo: UsersRepository) {}
   async execute(command: ConfirmationEmailCommand): Promise<void> {
-    const confirmationInfo = await this.userRepo.getConfirmationInfoByCode(
-      command.code,
-    );
+    const confirmationInfo: ConfirmationInfoEntity =
+      await this.userRepo.getConfirmationInfoByCode(command.code);
 
     if (
       !confirmationInfo ||
@@ -24,6 +24,6 @@ export class ConfirmationEmailUseCase
     )
       throw new BadRequestException(createErrorMessage('code'));
 
-    await this.userRepo.updateConfirmationEmail(command.code);
+    return this.userRepo.updateConfirmationEmail(command.code);
   }
 }

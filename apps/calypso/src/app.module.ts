@@ -53,6 +53,8 @@ import { DeleteUserUseCase } from './features/users/application/use-case/delete.
 import { BasicStrategy } from './common/strategies/basic.strategy';
 import { CreateUserOauth20UseCase } from './features/auth/application/use-cases/create.user.oauth20.use.case';
 import { OAuth2ForGoogleUseCase } from './features/auth/application/use-cases/oauth2.for.google.use.case';
+import { MergeGoogleAccountUseCase } from './features/auth/application/use-cases/merge.google.account.use.case';
+import { UpdateConfirmationCodeUseCase } from './features/auth/application/use-cases/update.confirmation.code.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [CheckEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -79,6 +81,8 @@ const UseCases = [
   DeleteUserUseCase,
   OAuth2ForGoogleUseCase,
   CreateUserOauth20UseCase,
+  MergeGoogleAccountUseCase,
+  UpdateConfirmationCodeUseCase,
 ];
 const Repositories = [
   UsersRepository,
