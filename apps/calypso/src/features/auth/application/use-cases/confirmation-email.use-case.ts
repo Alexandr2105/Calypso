@@ -13,7 +13,9 @@ export class ConfirmationEmailUseCase
   implements ICommandHandler<ConfirmationEmailCommand>
 {
   constructor(private userRepo: UsersRepository) {}
-  async execute(command: ConfirmationEmailCommand): Promise<void> {
+  async execute(
+    command: ConfirmationEmailCommand,
+  ): Promise<ConfirmationInfoEntity> {
     const confirmationInfo: ConfirmationInfoEntity =
       await this.userRepo.getConfirmationInfoByCode(command.code);
 

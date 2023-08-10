@@ -46,7 +46,7 @@ import { ConfirmationInfoEntity } from '../../users/entities/confirmation-info.e
 import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google.account.use.case';
 
 @ApiTags('Auth')
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
   constructor(
     private commandBus: CommandBus,
