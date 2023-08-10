@@ -44,9 +44,10 @@ import { CreateUserOauth20Command } from '../application/use-cases/create.user.o
 import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
 import { ConfirmationInfoEntity } from '../../users/entities/confirmation-info.entity';
 import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google.account.use.case';
+import { OauthCodeDto } from '../dto/oauth.code.dto';
 
 @ApiTags('Auth')
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(
     private commandBus: CommandBus,
@@ -256,8 +257,31 @@ export class AuthController {
     if (user) return user;
   }
 
+  // @HttpCode(HttpStatus.OK)
+  // @ApiOperation({ summary: 'OAuth registration' })
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  //   schema: {
+  //     type: 'object',
+  //     properties: {
+  //       accessToken: {
+  //         type: 'string',
+  //         description: 'Access token for authentication.',
+  //       },
+  //       profile: {
+  //         type: 'boolean',
+  //         description: 'Indicates if a profile exists.',
+  //       },
+  //     },
+  //   },
+  // })
+  // @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
   // @Post('google')
-  // async getAccessTokenForGoogle(@Body() body, @Req() req, @Res() res) {
+  // async getAccessTokenForGoogle(
+  //   @Body() body: OauthCodeDto,
+  //   @Req() req,
+  //   @Res() res,
+  // ) {
   //   const code = decodeURIComponent(body.code);
   //   const userInfo: GoogleUserInfoDto = await this.commandBus.execute(
   //     new OAuth2ForGoogleCommand(code),
@@ -285,16 +309,20 @@ export class AuthController {
   //
   //     res.send({ ...accessToken, profile: info });
   //   } else {
-  //     res.send('Email sent');
+  //     res.sendStatus(HttpStatus.NO_CONTENT);
   //   }
   // }
   //
   // @Post('merge/google')
   // async mergeAccounts(@Body() body: RegistrationConformationDto) {
-  //   const info: ConfirmationInfoEntity = await this.commandBus.execute(
-  //     new ConfirmationEmailCommand(body.code),
-  //   );
-  //   await this.commandBus.execute(new MergeGoogleAccountCommand(info.userId));
+  //   if (body.status) {
+  //     const info: ConfirmationInfoEntity = await this.commandBus.execute(
+  //       new ConfirmationEmailCommand(body.code),
+  //     );
+  //     await this.commandBus.execute(new MergeGoogleAccountCommand(info.userId));
+  //   } else {
+  //     await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
+  //   }
   // }
   //
   // @Get('github')
