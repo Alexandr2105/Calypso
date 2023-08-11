@@ -502,54 +502,6 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/login/google": {
-        "post": {
-          "operationId": "AuthController_loginOauthGoogle",
-          "parameters": [],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OauthCodeDto"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": ""
-            }
-          },
-          "tags": [
-            "Auth"
-          ]
-        }
-      },
-      "/auth/login/github": {
-        "post": {
-          "operationId": "AuthController_loginOauthGithub",
-          "parameters": [],
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OauthCodeDto"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": ""
-            }
-          },
-          "tags": [
-            "Auth"
-          ]
-        }
-      },
       "/users/{userId}": {
         "delete": {
           "operationId": "UsersController_getAllUsers",

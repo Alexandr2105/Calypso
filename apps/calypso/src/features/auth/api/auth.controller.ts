@@ -45,7 +45,6 @@ import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google
 import { OauthCodeDto } from '../dto/oauth.code.dto';
 import { OAuth2ForGithubCommand } from '../application/use-cases/oauth2ForGithubUseCase';
 import { MergeGithubAccountCommand } from '../application/use-cases/merge.github.account.use.case';
-import { GetInfoUserCommand } from '../application/use-cases/get.info.user.use.case';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -304,12 +303,33 @@ export class AuthController {
   }
 
   @Post('merge/google')
-  async mergeAccountsForGoogle(@Body() body: RegistrationConformationDto) {
+  async mergeAccountsForGoogle(
+    @Body() body: RegistrationConformationDto,
+    @Req() req,
+    @Res() res,
+  ) {
     if (body.status) {
-      const info: ConfirmationInfoEntity = await this.commandBus.execute(
+      const infoUser: ConfirmationInfoEntity = await this.commandBus.execute(
         new ConfirmationEmailCommand(body.code),
       );
-      await this.commandBus.execute(new MergeGoogleAccountCommand(info.userId));
+      await this.commandBus.execute(
+        new MergeGoogleAccountCommand(infoUser.userId),
+      );
+      const { accessToken, refreshToken, info } = await this.commandBus.execute(
+        new CreateAccessAndRefreshTokensCommand(
+          infoUser.userId,
+          randomUUID(),
+          req.ip,
+          req.headers['user-agent'],
+        ),
+      );
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: false,
+        secure: false,
+      });
+
+      res.send({ ...accessToken, profile: info });
     } else {
       await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
     }
@@ -351,67 +371,36 @@ export class AuthController {
   }
 
   @Post('merge/github')
-  async mergeAccountsForGithub(@Body() body: RegistrationConformationDto) {
+  async mergeAccountsForGithub(
+    @Body() body: RegistrationConformationDto,
+    @Req() req,
+    @Res() res,
+  ) {
     if (body.status) {
-      const info: ConfirmationInfoEntity = await this.commandBus.execute(
+      const infoUser: ConfirmationInfoEntity = await this.commandBus.execute(
         new ConfirmationEmailCommand(body.code),
       );
-      await this.commandBus.execute(new MergeGithubAccountCommand(info.userId));
+      await this.commandBus.execute(
+        new MergeGithubAccountCommand(infoUser.userId),
+      );
+      const { accessToken, refreshToken, info } = await this.commandBus.execute(
+        new CreateAccessAndRefreshTokensCommand(
+          infoUser.userId,
+          randomUUID(),
+          req.ip,
+          req.headers['user-agent'],
+        ),
+      );
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: false,
+        secure: false,
+      });
+
+      res.send({ ...accessToken, profile: info });
     } else {
       await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
     }
-  }
-
-  @Post('login/google')
-  async loginOauthGoogle(@Body() body: OauthCodeDto, @Req() req, @Res() res) {
-    const code = decodeURIComponent(body.code);
-    const userInfo: OauthUserInfoDto = await this.commandBus.execute(
-      new OAuth2ForGoogleCommand(code),
-    );
-    const user = await this.commandBus.execute(
-      new GetInfoUserCommand(userInfo.email),
-    );
-    const { accessToken, refreshToken, info } = await this.commandBus.execute(
-      new CreateAccessAndRefreshTokensCommand(
-        user.id,
-        randomUUID(),
-        req.ip,
-        req.headers['user-agent'],
-      ),
-    );
-
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: false,
-      secure: false,
-    });
-
-    res.send({ ...accessToken, profile: info });
-  }
-
-  @Post('login/github')
-  async loginOauthGithub(@Body() body: OauthCodeDto, @Req() req, @Res() res) {
-    const code = body.code;
-    const userInfo: OauthUserInfoDto = await this.commandBus.execute(
-      new OAuth2ForGithubCommand(code),
-    );
-    const user = await this.commandBus.execute(
-      new GetInfoUserCommand(userInfo.email),
-    );
-    const { accessToken, refreshToken, info } = await this.commandBus.execute(
-      new CreateAccessAndRefreshTokensCommand(
-        user.id,
-        randomUUID(),
-        req.ip,
-        req.headers['user-agent'],
-      ),
-    );
-
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: false,
-      secure: false,
-    });
-
-    res.send({ ...accessToken, profile: info });
   }
 
   // @Get('callback/google')

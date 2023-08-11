@@ -49,6 +49,10 @@ export class CreateUserOauth20UseCase
         photo: command.userInfo.avatar,
       });
       return newUser.id;
+    } else if (user.googleAuth === true || command.method === 'google') {
+      return user.id;
+    } else if (user.githubAuth === true || command.method === 'github') {
+      return user.id;
     } else {
       const createConfirmationInfoAndReturnConfirmationCode =
         await this.commandBus.execute(
