@@ -57,6 +57,7 @@ import { MergeGoogleAccountUseCase } from './features/auth/application/use-cases
 import { UpdateConfirmationCodeUseCase } from './features/auth/application/use-cases/update.confirmation.code.use.case';
 import { OAuth2ForGithubUseCase } from './features/auth/application/use-cases/oauth2ForGithubUseCase';
 import { MergeGithubAccountUseCase } from './features/auth/application/use-cases/merge.github.account.use.case';
+import { GetInfoUserUseCase } from './features/auth/application/use-cases/get.info.user.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [CheckEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -87,6 +88,7 @@ const UseCases = [
   UpdateConfirmationCodeUseCase,
   OAuth2ForGithubUseCase,
   MergeGithubAccountUseCase,
+  GetInfoUserUseCase,
 ];
 const Repositories = [
   UsersRepository,

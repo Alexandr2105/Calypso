@@ -1,5 +1,5 @@
 import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { GoogleUserInfoDto } from '../../dto/google.user.info.dto';
+import { OauthUserInfoDto } from '../../dto/oauth.user.info.dto';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
 import { UserEntity } from '../../../users/entities/user.entity';
 import { randomUUID } from 'crypto';
@@ -8,7 +8,7 @@ import { UsersProfilesRepository } from '../../../users-profiles/infrastructure/
 import { UpdateConfirmationCodeCommand } from './update.confirmation.code.use.case';
 
 export class CreateUserOauth20Command {
-  constructor(public userInfo: GoogleUserInfoDto, public method: string) {}
+  constructor(public userInfo: OauthUserInfoDto, public method: string) {}
 }
 
 @CommandHandler(CreateUserOauth20Command)

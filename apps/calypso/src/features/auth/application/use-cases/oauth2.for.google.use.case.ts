@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { settings } from '../../../../settings';
 import axios from 'axios';
 import { Jwt } from '../../../../common/jwt/jwt';
-import { GoogleUserInfoDto } from '../../dto/google.user.info.dto';
+import { OauthUserInfoDto } from '../../dto/oauth.user.info.dto';
 import { BadRequestException } from '@nestjs/common';
 
 export class OAuth2ForGoogleCommand {
@@ -17,7 +17,7 @@ export class OAuth2ForGoogleUseCase
 
   async execute(
     command: OAuth2ForGoogleCommand,
-  ): Promise<Promise<GoogleUserInfoDto> | false> {
+  ): Promise<Promise<OauthUserInfoDto> | false> {
     const data = {
       code: command.code,
       client_id: settings.GOOGLE_ID,

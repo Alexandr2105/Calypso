@@ -37,7 +37,7 @@ import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { UserEntity } from '../../users/entities/user.entity';
-import { GoogleUserInfoDto } from '../dto/google.user.info.dto';
+import { OauthUserInfoDto } from '../dto/oauth.user.info.dto';
 import { CreateUserOauth20Command } from '../application/use-cases/create.user.oauth20.use.case';
 import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
 import { ConfirmationInfoEntity } from '../../users/entities/confirmation-info.entity';
@@ -45,6 +45,7 @@ import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google
 import { OauthCodeDto } from '../dto/oauth.code.dto';
 import { OAuth2ForGithubCommand } from '../application/use-cases/oauth2ForGithubUseCase';
 import { MergeGithubAccountCommand } from '../application/use-cases/merge.github.account.use.case';
+import { GetInfoUserCommand } from '../application/use-cases/get.info.user.use.case';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -275,7 +276,7 @@ export class AuthController {
     @Res() res,
   ) {
     const code = decodeURIComponent(body.code);
-    const userInfo: GoogleUserInfoDto = await this.commandBus.execute(
+    const userInfo: OauthUserInfoDto = await this.commandBus.execute(
       new OAuth2ForGoogleCommand(code),
     );
     const userId = await this.commandBus.execute(
@@ -320,8 +321,8 @@ export class AuthController {
     @Req() req,
     @Res() res,
   ) {
-    const code = decodeURIComponent(body.code);
-    const userInfo: GoogleUserInfoDto = await this.commandBus.execute(
+    const code = body.code;
+    const userInfo: OauthUserInfoDto = await this.commandBus.execute(
       new OAuth2ForGithubCommand(code),
     );
     const userId = await this.commandBus.execute(
@@ -359,6 +360,58 @@ export class AuthController {
     } else {
       await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
     }
+  }
+
+  @Post('login/google')
+  async loginOauthGoogle(@Body() body: OauthCodeDto, @Req() req, @Res() res) {
+    const code = decodeURIComponent(body.code);
+    const userInfo: OauthUserInfoDto = await this.commandBus.execute(
+      new OAuth2ForGoogleCommand(code),
+    );
+    const user = await this.commandBus.execute(
+      new GetInfoUserCommand(userInfo.email),
+    );
+    const { accessToken, refreshToken, info } = await this.commandBus.execute(
+      new CreateAccessAndRefreshTokensCommand(
+        user.id,
+        randomUUID(),
+        req.ip,
+        req.headers['user-agent'],
+      ),
+    );
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: false,
+      secure: false,
+    });
+
+    res.send({ ...accessToken, profile: info });
+  }
+
+  @Post('login/github')
+  async loginOauthGithub(@Body() body: OauthCodeDto, @Req() req, @Res() res) {
+    const code = body.code;
+    const userInfo: OauthUserInfoDto = await this.commandBus.execute(
+      new OAuth2ForGithubCommand(code),
+    );
+    const user = await this.commandBus.execute(
+      new GetInfoUserCommand(userInfo.email),
+    );
+    const { accessToken, refreshToken, info } = await this.commandBus.execute(
+      new CreateAccessAndRefreshTokensCommand(
+        user.id,
+        randomUUID(),
+        req.ip,
+        req.headers['user-agent'],
+      ),
+    );
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: false,
+      secure: false,
+    });
+
+    res.send({ ...accessToken, profile: info });
   }
 
   // @Get('callback/google')

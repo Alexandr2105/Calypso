@@ -108,4 +108,10 @@ export class UsersRepository {
       data: { githubAuth: true },
     });
   }
+
+  async getUserByEmailForOAuth(email: string) {
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
+  }
 }
