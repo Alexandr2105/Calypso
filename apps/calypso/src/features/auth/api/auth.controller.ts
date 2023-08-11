@@ -250,7 +250,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'OAuth registration' })
+  @ApiOperation({ summary: 'OAuth registration and login' })
   @ApiResponse({
     status: HttpStatus.OK,
     schema: {
@@ -268,6 +268,7 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
+  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Bad auth code')
   @Post('google')
   async getAccessTokenForGoogle(
     @Body() body: OauthCodeDto,
@@ -302,6 +303,25 @@ export class AuthController {
     }
   }
 
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+          description: 'Access token for authentication.',
+        },
+        profile: {
+          type: 'boolean',
+          description: 'Indicates if a profile exists.',
+        },
+      },
+    },
+  })
+  @ApiOperation({ summary: 'Merge accounts for google' })
+  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Incorrect confirmation code')
   @Post('merge/google')
   async mergeAccountsForGoogle(
     @Body() body: RegistrationConformationDto,
@@ -335,6 +355,30 @@ export class AuthController {
     }
   }
 
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Github OAuth registration and login' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+          description: 'Access token for authentication.',
+        },
+        profile: {
+          type: 'boolean',
+          description: 'Indicates if a profile exists.',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
+  @ApiResponseForSwagger(
+    HttpStatus.BAD_REQUEST,
+    'List of possible errors:<br>1.Bad auth code<br> 2.Bad verification code' +
+      '<br> 3. Email not specified or private',
+  )
   @Post('github')
   async getAccessTokenForGithub(
     @Body() body: OauthCodeDto,
@@ -370,6 +414,25 @@ export class AuthController {
     return true;
   }
 
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: {
+          type: 'string',
+          description: 'Access token for authentication.',
+        },
+        profile: {
+          type: 'boolean',
+          description: 'Indicates if a profile exists.',
+        },
+      },
+    },
+  })
+  @ApiOperation({ summary: 'Merge accounts for github' })
+  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Incorrect confirmation code')
   @Post('merge/github')
   async mergeAccountsForGithub(
     @Body() body: RegistrationConformationDto,

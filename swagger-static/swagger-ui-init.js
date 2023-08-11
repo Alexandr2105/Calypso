@@ -388,7 +388,7 @@ window.onload = function() {
       "/auth/google": {
         "post": {
           "operationId": "AuthController_getAccessTokenForGoogle",
-          "summary": "OAuth registration",
+          "summary": "OAuth registration and login",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -423,6 +423,32 @@ window.onload = function() {
             },
             "204": {
               "description": "Email sent"
+            },
+            "400": {
+              "description": "Bad auth code",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "tags": [
@@ -433,6 +459,7 @@ window.onload = function() {
       "/auth/merge/google": {
         "post": {
           "operationId": "AuthController_mergeAccountsForGoogle",
+          "summary": "Merge accounts for google",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -445,8 +472,51 @@ window.onload = function() {
             }
           },
           "responses": {
-            "201": {
-              "description": ""
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string",
+                        "description": "Access token for authentication."
+                      },
+                      "profile": {
+                        "type": "boolean",
+                        "description": "Indicates if a profile exists."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Incorrect confirmation code",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "tags": [
@@ -457,6 +527,7 @@ window.onload = function() {
       "/auth/github": {
         "post": {
           "operationId": "AuthController_getAccessTokenForGithub",
+          "summary": "Github OAuth registration and login",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -469,8 +540,54 @@ window.onload = function() {
             }
           },
           "responses": {
-            "201": {
-              "description": ""
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string",
+                        "description": "Access token for authentication."
+                      },
+                      "profile": {
+                        "type": "boolean",
+                        "description": "Indicates if a profile exists."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "204": {
+              "description": "Email sent"
+            },
+            "400": {
+              "description": "List of possible errors:<br>1.Bad auth code<br> 2.Bad verification code<br> 3. Email not specified or private",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "tags": [
@@ -481,6 +598,7 @@ window.onload = function() {
       "/auth/merge/github": {
         "post": {
           "operationId": "AuthController_mergeAccountsForGithub",
+          "summary": "Merge accounts for github",
           "parameters": [],
           "requestBody": {
             "required": true,
@@ -493,8 +611,51 @@ window.onload = function() {
             }
           },
           "responses": {
-            "201": {
-              "description": ""
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string",
+                        "description": "Access token for authentication."
+                      },
+                      "profile": {
+                        "type": "boolean",
+                        "description": "Indicates if a profile exists."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Incorrect confirmation code",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "errorsMessages": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "message": {
+                              "type": "string"
+                            },
+                            "field": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "tags": [
