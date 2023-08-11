@@ -47,7 +47,7 @@ import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google
 import { OauthCodeDto } from '../dto/oauth.code.dto';
 
 @ApiTags('Auth')
-@Controller('api/auth')
+@Controller('auth')
 export class AuthController {
   constructor(
     private commandBus: CommandBus,
