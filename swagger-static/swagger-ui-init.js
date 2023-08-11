@@ -91,7 +91,7 @@ window.onload = function() {
               "required": true,
               "in": "path",
               "schema": {
-                "type": "string"
+                "type": "boolean"
               }
             }
           ],
@@ -1281,7 +1281,7 @@ window.onload = function() {
               "type": "string"
             },
             "status": {
-              "type": "string"
+              "type": "boolean"
             }
           },
           "required": [
