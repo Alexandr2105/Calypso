@@ -250,7 +250,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'OAuth registration and login' })
+  @ApiOperation({ summary: 'Google OAuth registration and login' })
   @ApiResponse({
     status: HttpStatus.OK,
     schema: {

@@ -388,7 +388,7 @@ window.onload = function() {
       "/auth/google": {
         "post": {
           "operationId": "AuthController_getAccessTokenForGoogle",
-          "summary": "OAuth registration and login",
+          "summary": "Google OAuth registration and login",
           "parameters": [],
           "requestBody": {
             "required": true,
