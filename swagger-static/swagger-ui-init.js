@@ -385,6 +385,151 @@ window.onload = function() {
           ]
         }
       },
+      "/api/auth/google": {
+        "post": {
+          "operationId": "AuthController_getAccessTokenForGoogle",
+          "summary": "OAuth registration",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OauthCodeDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "accessToken": {
+                        "type": "string",
+                        "description": "Access token for authentication."
+                      },
+                      "profile": {
+                        "type": "boolean",
+                        "description": "Indicates if a profile exists."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "204": {
+              "description": "Email sent"
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/api/auth/merge/google": {
+        "post": {
+          "operationId": "AuthController_mergeAccountsForGoogle",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationConformationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/api/auth/github": {
+        "post": {
+          "operationId": "AuthController_getAccessTokenForGithub",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OauthCodeDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/api/auth/merge/github": {
+        "post": {
+          "operationId": "AuthController_mergeAccountsForGithub",
+          "parameters": [],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationConformationDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/api/auth/callback/google": {
+        "get": {
+          "operationId": "AuthController_getGoogleCode",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
+      "/api/auth/callback/github": {
+        "get": {
+          "operationId": "AuthController_getGithubCode",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": ""
+            }
+          },
+          "tags": [
+            "Auth"
+          ]
+        }
+      },
       "/users/{userId}": {
         "delete": {
           "operationId": "UsersController_getAllUsers",
@@ -983,6 +1128,32 @@ window.onload = function() {
             "id",
             "login",
             "email"
+          ]
+        },
+        "OauthCodeDto": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code"
+          ]
+        },
+        "RegistrationConformationDto": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "status"
           ]
         },
         "UsersProfilesEntity": {

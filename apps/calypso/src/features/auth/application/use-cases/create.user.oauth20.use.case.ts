@@ -8,7 +8,7 @@ import { UsersProfilesRepository } from '../../../users-profiles/infrastructure/
 import { UpdateConfirmationCodeCommand } from './update.confirmation.code.use.case';
 
 export class CreateUserOauth20Command {
-  constructor(public userInfo: GoogleUserInfoDto) {}
+  constructor(public userInfo: GoogleUserInfoDto, public method: string) {}
 }
 
 @CommandHandler(CreateUserOauth20Command)
@@ -36,8 +36,8 @@ export class CreateUserOauth20UseCase
         command.userInfo.email,
         createdAt,
         false,
-        true,
-        false,
+        command.method === 'google',
+        command.method === 'github',
       );
       await this.usersRepository.createUser(newUser);
       await this.emailAdapter.sendEmailGoogleRegistration(

@@ -11,11 +11,12 @@ export class UsersService {
 
     const expDate = createExpirationDateForLink(300);
 
-    await this.usersRepo.refreshConfirmationInfo(
-      userId,
-      newConfirmationCode,
-      expDate,
-    );
+    await this.usersRepo.saveEmailConfirmation({
+      userId: userId,
+      confirmationCode: newConfirmationCode,
+      expirationDate: expDate,
+      isConfirmed: false,
+    });
 
     return newConfirmationCode;
   }

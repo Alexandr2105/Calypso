@@ -28,7 +28,7 @@ export class OAuth2ForGoogleUseCase
     const tokenUrl = 'https://oauth2.googleapis.com/token';
     const oauthClient: any = await axios.post(tokenUrl, data).catch(() => {
       throw new BadRequestException([
-        { message: 'bad auth code', field: 'code' },
+        { message: 'Bad auth code', field: 'code' },
       ]);
     });
     const token = oauthClient.data.id_token;

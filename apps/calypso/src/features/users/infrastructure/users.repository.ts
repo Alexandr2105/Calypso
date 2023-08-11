@@ -9,8 +9,10 @@ export class UsersRepository {
   async saveEmailConfirmation(
     emailConfirmation: ConfirmationInfoEntity,
   ): Promise<string> {
-    const emailConf = await this.prisma.emailConfirmation.create({
-      data: emailConfirmation,
+    const emailConf = await this.prisma.emailConfirmation.upsert({
+      where: { userId: emailConfirmation.userId },
+      create: emailConfirmation,
+      update: emailConfirmation,
     });
 
     return emailConf.confirmationCode;
@@ -29,7 +31,9 @@ export class UsersRepository {
     });
   }
 
-  async updateConfirmationEmail(code: string): Promise<ConfirmationInfoEntity> {
+  async updateStatusConfirmationEmail(
+    code: string,
+  ): Promise<ConfirmationInfoEntity> {
     return this.prisma.emailConfirmation.update({
       where: { confirmationCode: code },
       data: { isConfirmed: true },
@@ -40,21 +44,6 @@ export class UsersRepository {
     return this.prisma.user.findUnique({
       where: { email },
       include: { emailConfirmation: true },
-    });
-  }
-
-  async refreshConfirmationInfo(
-    userId: string,
-    newConfirmationCode: `${string}-${string}-${string}-${string}-${string}`,
-    expDate: Date,
-  ): Promise<void> {
-    await this.prisma.emailConfirmation.update({
-      where: { userId },
-      data: {
-        confirmationCode: newConfirmationCode,
-        expirationDate: expDate,
-        isConfirmed: false,
-      },
     });
   }
 
@@ -113,18 +102,10 @@ export class UsersRepository {
     });
   }
 
-  async updateConfirmationCodeForOAuth(
-    userId: string,
-    code: string,
-    expDate: Date,
-  ) {
-    await this.prisma.emailConfirmation.update({
-      where: { userId: userId },
-      data: {
-        confirmationCode: code,
-        isConfirmed: false,
-        expirationDate: expDate,
-      },
+  async updateStatusForMergeGithub(userId: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { githubAuth: true },
     });
   }
 }

@@ -26,6 +26,6 @@ export class ConfirmationEmailUseCase
     )
       throw new BadRequestException(createErrorMessage('code'));
 
-    return this.userRepo.updateConfirmationEmail(command.code);
+    return this.userRepo.updateStatusConfirmationEmail(command.code);
   }
 }

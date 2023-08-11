@@ -16,11 +16,12 @@ export class UpdateConfirmationCodeUseCase
   async execute(command: UpdateConfirmationCodeCommand): Promise<any> {
     const code = randomUUID();
     const expDate = createExpirationDateForLink(3600);
-    await this.usersRepository.updateConfirmationCodeForOAuth(
-      command.userId,
-      code,
-      expDate,
-    );
+    await this.usersRepository.saveEmailConfirmation({
+      userId: command.userId,
+      confirmationCode: code,
+      expirationDate: expDate,
+      isConfirmed: false,
+    });
     return code;
   }
 }
