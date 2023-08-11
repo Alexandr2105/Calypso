@@ -1,9 +1,15 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Jwt } from '../../../../common/jwt/jwt';
 import { UsersProfilesRepository } from '../../../users-profiles/infrastructure/users.profiles.repository';
+import { SaveInfoAboutDevicesUserCommand } from '../../../devices/application/use-cases/save.info.about.devices.user.use.case';
 
 export class CreateAccessAndRefreshTokensCommand {
-  constructor(public userId: string, public deviceId: string) {}
+  constructor(
+    public userId: string,
+    public deviceId: string,
+    public ip: string,
+    public deviceName: string,
+  ) {}
 }
 @CommandHandler(CreateAccessAndRefreshTokensCommand)
 export class CreateAccessAndRefreshTokensUseCase
@@ -12,6 +18,7 @@ export class CreateAccessAndRefreshTokensUseCase
   constructor(
     private jwtService: Jwt,
     private profileRepo: UsersProfilesRepository,
+    private commandBus: CommandBus,
   ) {}
 
   async execute(command: CreateAccessAndRefreshTokensCommand): Promise<object> {
@@ -21,6 +28,14 @@ export class CreateAccessAndRefreshTokensUseCase
       command.deviceId,
     );
     const profile = await this.profileRepo.getProfile(command.userId);
+
+    await this.commandBus.execute(
+      new SaveInfoAboutDevicesUserCommand(
+        refreshToken,
+        command.ip,
+        command.deviceName,
+      ),
+    );
 
     return { accessToken, refreshToken, info: profile !== null };
   }

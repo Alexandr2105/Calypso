@@ -33,8 +33,6 @@ import { LocalAuthGuard } from '../../../common/guards/local.auth.guard';
 import { CreateAccessAndRefreshTokensCommand } from '../application/use-cases/create-access-and-refresh-tokens.use-case';
 import { RefreshAuthGuard } from '../../../common/guards/refresh.auth.guard';
 import { LogoutUserCommand } from '../../devices/application/use-cases/logout.user.use.case';
-import { SaveInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/save.info.about.devices.user.use.case';
-import { UpdateInfoAboutDevicesUserCommand } from '../../devices/application/use-cases/update.info.about.devices.user.use.case';
 import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
@@ -124,12 +122,9 @@ export class AuthController {
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   async loginUser(@Body() body: EmailDto, @Res() res, @Req() req) {
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
-      new CreateAccessAndRefreshTokensCommand(req.user.id, randomUUID()),
-    );
-
-    await this.commandBus.execute(
-      new SaveInfoAboutDevicesUserCommand(
-        refreshToken,
+      new CreateAccessAndRefreshTokensCommand(
+        req.user.id,
+        randomUUID(),
         req.ip,
         req.headers['user-agent'],
       ),
@@ -227,11 +222,6 @@ export class AuthController {
       new CreateAccessAndRefreshTokensCommand(
         req.user.userId,
         req.user.deviceId,
-      ),
-    );
-    await this.commandBus.execute(
-      new UpdateInfoAboutDevicesUserCommand(
-        refreshToken,
         req.ip,
         req.headers['user-agent'],
       ),
@@ -293,12 +283,9 @@ export class AuthController {
     );
     if (userId) {
       const { accessToken, refreshToken, info } = await this.commandBus.execute(
-        new CreateAccessAndRefreshTokensCommand(userId, randomUUID()),
-      );
-
-      await this.commandBus.execute(
-        new SaveInfoAboutDevicesUserCommand(
-          refreshToken,
+        new CreateAccessAndRefreshTokensCommand(
+          userId,
+          randomUUID(),
           req.ip,
           req.headers['user-agent'],
         ),
@@ -342,12 +329,9 @@ export class AuthController {
     );
     if (userId) {
       const { accessToken, refreshToken, info } = await this.commandBus.execute(
-        new CreateAccessAndRefreshTokensCommand(userId, randomUUID()),
-      );
-
-      await this.commandBus.execute(
-        new SaveInfoAboutDevicesUserCommand(
-          refreshToken,
+        new CreateAccessAndRefreshTokensCommand(
+          userId,
+          randomUUID(),
           req.ip,
           req.headers['user-agent'],
         ),
