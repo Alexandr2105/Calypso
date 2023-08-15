@@ -25,7 +25,7 @@ COPY --chown=node yarn.lock ./
 RUN yarn install
 
 # Bundle app source code
-COPY --chown=node . .
+COPY --chown=node apps/calypso .
 
 RUN yarn build:${SERVICE}
 
