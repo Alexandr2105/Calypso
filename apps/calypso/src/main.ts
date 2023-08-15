@@ -41,7 +41,7 @@ export async function bootstrap() {
 
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
-  // app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix('api/v1');
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalFilters(new HttpExceptionFilter());
 
