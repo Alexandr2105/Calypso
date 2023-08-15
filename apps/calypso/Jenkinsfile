@@ -5,7 +5,7 @@ pipeline {
         ENV_TYPE = "production"
         PORT = 3018
         NAMESPACE = "kustogram-site"
-        REGISTRY_HOSTNAME = "Alexandr2105"
+        REGISTRY_HOSTNAME = "alex2105"
         PROJECT = "calypso"
         SERVICE="calypso"
         REGISTRY = "registry.hub.docker.com"
