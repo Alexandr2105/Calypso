@@ -29,6 +29,7 @@ export async function bootstrap() {
       },
     );
   await microserviceTCP.listen();
+
   console.log('Microservices are starting');
 }
 bootstrap();
