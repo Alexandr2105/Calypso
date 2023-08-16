@@ -12,31 +12,31 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FilesMicroserviceModule } from '../../files-microservice/src/files-microservice.module';
 
 export async function bootstrap() {
-  const microserviceRMQ =
-    await NestFactory.createMicroservice<MicroserviceOptions>(
-      FilesMicroserviceModule,
-      {
-        transport: Transport.RMQ,
-        options: {
-          urls: [settings.RABBIT_MQ],
-          queue: 'FILES_SERVICE_RMQ',
-          queueOptions: {
-            durable: false,
-          },
-        },
-      },
-    );
-  await microserviceRMQ.listen();
-
-  const microserviceTCP =
-    await NestFactory.createMicroservice<MicroserviceOptions>(
-      FilesMicroserviceModule,
-      {
-        transport: Transport.TCP,
-        options: { port: 3001 },
-      },
-    );
-  await microserviceTCP.listen();
+  // const microserviceRMQ =
+  //   await NestFactory.createMicroservice<MicroserviceOptions>(
+  //     FilesMicroserviceModule,
+  //     {
+  //       transport: Transport.RMQ,
+  //       options: {
+  //         urls: [settings.RABBIT_MQ],
+  //         queue: 'FILES_SERVICE_RMQ',
+  //         queueOptions: {
+  //           durable: false,
+  //         },
+  //       },
+  //     },
+  //   );
+  // await microserviceRMQ.listen();
+  //
+  // const microserviceTCP =
+  //   await NestFactory.createMicroservice<MicroserviceOptions>(
+  //     FilesMicroserviceModule,
+  //     {
+  //       transport: Transport.TCP,
+  //       options: { port: 3001 },
+  //     },
+  //   );
+  // await microserviceTCP.listen();
 
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
