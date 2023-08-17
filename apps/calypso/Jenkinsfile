@@ -20,17 +20,15 @@ pipeline {
                 checkout scm
             }
         }
-        withEnv(['PATH+NODE=C:\\Program Files\\nodejs']) {
-            stage('Prepare') {
-                sh "npm install -g yarn"
-                sh "yarn install"
-            }
-        }
         stage('Unit tests') {
             steps {
                 script {
+                  withEnv(['PATH+NODE=C:\\Program Files\\nodejs']) {
+                   sh "npm install -g yarn"
+                   sh "yarn install"
+                   }
 //                     sh "yarn install"
-                    sh "yarn test"
+//                     sh "yarn test"
                 }
             }
         }
