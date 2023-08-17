@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
 //                     sh "yarn install"
-                    npm install -g yarn
+                    sh "npm install -g yarn"
                     sh "yarn test"
                 }
             }
