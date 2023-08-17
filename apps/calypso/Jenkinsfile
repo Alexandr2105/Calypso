@@ -12,6 +12,7 @@ pipeline {
         DEPLOYMENT_NAME = "calypso-deployment"
         IMAGE_NAME = "${env.BUILD_ID}_${env.ENV_TYPE}_${env.GIT_COMMIT}"
         DOCKER_BUILD_NAME = "${env.REGISTRY_HOSTNAME}/${env.PROJECT}:${env.IMAGE_NAME}"
+        PATH+NODE = "C:\\Program Files\\nodejs\\node_modules\\npm\\bin"
     }
 
     stages {
@@ -23,13 +24,9 @@ pipeline {
         stage('Unit tests') {
             steps {
                 script {
-                    withEnv(['PATH+NODE=C:\\Program Files\\nodejs\\node_modules\\npm\\bin']) {
-                        sh "npm install -g yarn"
-                        sh "yarn install"
-                        sh "yarn test"
-                    }
-//                     sh "yarn install"
-//                     sh "yarn test"
+                    sh "npm install -g yarn"
+                    sh "yarn install"
+                    sh "yarn test"
                 }
             }
         }
