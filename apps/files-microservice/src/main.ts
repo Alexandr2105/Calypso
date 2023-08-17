@@ -30,6 +30,6 @@ export async function bootstrap() {
     );
   await microserviceTCP.listen();
 
-  console.log('Microservices are starting 3002');
+  console.log('Microservices are starting');
 }
 bootstrap();
