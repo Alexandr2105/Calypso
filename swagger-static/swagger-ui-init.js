@@ -11,7 +11,7 @@ window.onload = function() {
   "swaggerDoc": {
     "openapi": "3.0.0",
     "paths": {
-      "/": {
+      "/api/v1": {
         "get": {
           "operationId": "AppController_getHello",
           "parameters": [],
@@ -22,7 +22,7 @@ window.onload = function() {
           }
         }
       },
-      "/auth/registration": {
+      "/api/v1/auth/registration": {
         "post": {
           "operationId": "AuthController_registrationUsers",
           "summary": "Registration users",
@@ -73,7 +73,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/email-confirmation/{code}": {
+      "/api/v1/auth/email-confirmation/{code}": {
         "get": {
           "operationId": "AuthController_registrationConfirmation",
           "summary": "Email confirmation",
@@ -131,7 +131,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/refresh-link": {
+      "/api/v1/auth/refresh-link": {
         "post": {
           "operationId": "AuthController_refreshConfirmationLink",
           "summary": "Refresh confirmation link",
@@ -182,7 +182,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/login": {
+      "/api/v1/auth/login": {
         "post": {
           "operationId": "AuthController_loginUser",
           "summary": "User authorization",
@@ -227,7 +227,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/password-recovery": {
+      "/api/v1/auth/password-recovery": {
         "post": {
           "operationId": "AuthController_passwordRecovery",
           "summary": "Password recovery",
@@ -278,7 +278,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/new-password": {
+      "/api/v1/auth/new-password": {
         "post": {
           "operationId": "AuthController_createNewPassword",
           "summary": "Creating a new password",
@@ -306,7 +306,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/logout": {
+      "/api/v1/auth/logout": {
         "post": {
           "operationId": "AuthController_logout",
           "summary": "User logout",
@@ -324,7 +324,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/refresh-token": {
+      "/api/v1/auth/refresh-token": {
         "post": {
           "operationId": "AuthController_updateRefreshToken",
           "summary": "Generate new pair of access and refresh tokens",
@@ -355,7 +355,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/me": {
+      "/api/v1/auth/me": {
         "get": {
           "operationId": "AuthController_getInfoAboutMe",
           "summary": "Returns user data",
@@ -385,7 +385,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/google": {
+      "/api/v1/auth/google": {
         "post": {
           "operationId": "AuthController_getAccessTokenForGoogle",
           "summary": "Google OAuth registration and login",
@@ -456,7 +456,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/merge/google": {
+      "/api/v1/auth/merge/google": {
         "post": {
           "operationId": "AuthController_mergeAccountsForGoogle",
           "summary": "Merge accounts for google",
@@ -524,7 +524,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/github": {
+      "/api/v1/auth/github": {
         "post": {
           "operationId": "AuthController_getAccessTokenForGithub",
           "summary": "Github OAuth registration and login",
@@ -595,7 +595,7 @@ window.onload = function() {
           ]
         }
       },
-      "/auth/merge/github": {
+      "/api/v1/auth/merge/github": {
         "post": {
           "operationId": "AuthController_mergeAccountsForGithub",
           "summary": "Merge accounts for github",
@@ -663,7 +663,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/{userId}": {
+      "/api/v1/users/{userId}": {
         "delete": {
           "operationId": "UsersController_getAllUsers",
           "summary": "Delete user for test",
@@ -692,7 +692,7 @@ window.onload = function() {
           ]
         }
       },
-      "/delete-all-data": {
+      "/api/v1/delete-all-data": {
         "delete": {
           "operationId": "TestingController_clearAllData",
           "parameters": [],
@@ -703,7 +703,7 @@ window.onload = function() {
           }
         }
       },
-      "/users/profiles/profile": {
+      "/api/v1/users/profiles/profile": {
         "get": {
           "operationId": "UsersProfilesController_getUserProfile",
           "summary": "Get user profile",
@@ -760,7 +760,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/profiles/save-profileInfo": {
+      "/api/v1/users/profiles/save-profileInfo": {
         "post": {
           "operationId": "UsersProfilesController_saveUsersProfiles",
           "summary": "Create profile",
@@ -819,7 +819,7 @@ window.onload = function() {
           ]
         }
       },
-      "/users/profiles/save-avatar": {
+      "/api/v1/users/profiles/save-avatar": {
         "post": {
           "operationId": "UsersProfilesController_saveAvatar",
           "summary": "Upload avatar. \"fieldName\" must be \"avatar\"",
@@ -842,7 +842,7 @@ window.onload = function() {
           ]
         }
       },
-      "/posts/post": {
+      "/api/v1/posts/post": {
         "post": {
           "operationId": "PostsController_createPosts",
           "summary": "Create post. \"fieldName\" must be \"posts\"",
@@ -908,7 +908,7 @@ window.onload = function() {
           ]
         }
       },
-      "/posts/post/{postId}": {
+      "/api/v1/posts/post/{postId}": {
         "put": {
           "operationId": "PostsController_updatePost",
           "summary": "Update description for post",
@@ -1058,7 +1058,7 @@ window.onload = function() {
           ]
         }
       },
-      "/posts/{userId}": {
+      "/api/v1/posts/{userId}": {
         "get": {
           "operationId": "PostsController_getPostsCurrentUser",
           "summary": "Get post for current user",
