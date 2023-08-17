@@ -23,7 +23,7 @@ pipeline {
         stage('Unit tests') {
             steps {
                 script {
-                    sh "yarn install"
+//                     sh "yarn install"
                     sh "yarn test"
                 }
             }
