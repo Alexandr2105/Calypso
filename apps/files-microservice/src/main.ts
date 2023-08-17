@@ -3,7 +3,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FilesMicroserviceModule } from './files-microservice.module';
 import { settings } from './settings';
 
-async function bootstrap() {
+export async function bootstrap() {
   const microserviceRMQ =
     await NestFactory.createMicroservice<MicroserviceOptions>(
       FilesMicroserviceModule,
