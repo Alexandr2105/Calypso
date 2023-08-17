@@ -23,8 +23,10 @@ pipeline {
         stage('Unit tests') {
             steps {
                 script {
-                    sh "yarn install"
-                    sh "yarn test"
+                    withEnv(["PATH+NODE=${env.PATH_NODE};${env.PATH_YARN}"]) {
+                        sh "npm install -g yarn"
+                        sh "yarn install"
+                    }
                 }
             }
         }
