@@ -23,10 +23,8 @@ pipeline {
         stage('Unit tests') {
             steps {
                 script {
-                    withEnv(["PATH+NODE = C:\\Program Files (x86)\\Yarn\\bin"]) {
-                        sh "yarn install"
-                        sh "yarn test"
-                    }
+                    sh "yarn install"
+                    sh "yarn test"
                 }
             }
         }
