@@ -92,6 +92,7 @@ export class UsersProfilesController {
         avatar: avatar.buffer,
       }),
     );
+    console.log('agagsdafsdfa');
     return await this.commandBus.execute(
       new UploadAvatarCommand(user.id, user.login, url),
     );
