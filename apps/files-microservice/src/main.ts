@@ -29,7 +29,7 @@ export async function bootstrap() {
       FilesMicroserviceModule,
       {
         transport: Transport.TCP,
-        options: { port: 3001 },
+        options: { port: 3043 },
       },
     );
   await microserviceTCP.listen();

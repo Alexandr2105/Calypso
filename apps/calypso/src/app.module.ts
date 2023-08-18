@@ -103,7 +103,7 @@ const Repositories = [
         name: 'FILES_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
-          port: 3001,
+          port: 3043,
         },
       },
       {
