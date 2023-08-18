@@ -23,7 +23,10 @@ pipeline {
         stage('Unit tests') {
             steps {
                 script {
-                    sh "pwd"
+                    def workspacePath = pwd() // Получить путь к рабочей директории
+                    echo "Workspace Path: ${workspacePath}"
+
+                    sh "cd ${workspacePath}"
                     sh "yarn install"
                     sh "yarn test"
                 }
