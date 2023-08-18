@@ -21,3 +21,29 @@ spec:
            ports:
              - containerPort: PORT_CONTAINER
 
+           env:
+             - name: SECRET_ACCESS_KEY
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: SECRET_ACCESS_KEY
+             - name: S3_REGION
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: S3_REGION
+             - name: BASE_URL_AWS
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: BASE_URL_AWS
+             - name: BACKET_NAME
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: BACKET_NAME
+             - name: ACCESS_KEY_ID
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: ACCESS_KEY_ID
