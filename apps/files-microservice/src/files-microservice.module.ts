@@ -17,7 +17,6 @@ import { GetImagesForPostUseCase } from './features/pictures/application/use-cas
 import { CqrsModule } from '@nestjs/cqrs';
 import { DeleteProfileUseCase } from './features/pictures/application/use-cases/delete.profile.use.case';
 import { DeleteAllUserProfileUseCase } from './features/pictures/application/use-cases/delete.all.user.profile.use.case';
-import * as process from 'process';
 
 @Module({
   imports: [
@@ -28,8 +27,7 @@ import * as process from 'process';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         // uri: configService.get<string>('MONGO_DB'),
-        // uri: 'mongodb+srv://5030553:admin@cluster0.zrjj8ew.mongodb.net/calypso?retryWrites=true&w=majority',
-        uri: process.env.MONGO_DB,
+        uri: 'mongodb+srv://5030553:admin@cluster0.zrjj8ew.mongodb.net/calypso?retryWrites=true&w=majority',
       }),
       inject: [ConfigService],
     }),
