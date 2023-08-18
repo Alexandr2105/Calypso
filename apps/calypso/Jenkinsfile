@@ -3,7 +3,7 @@ pipeline {
     agent any
     environment {
         ENV_TYPE = "production"
-        PORT = 3037
+        PORT = 3038
         NAMESPACE = "kustogram-site"
         REGISTRY_HOSTNAME = "alex2105"
         PROJECT = "calypso"
@@ -23,10 +23,6 @@ pipeline {
         stage('Unit tests') {
             steps {
                 script {
-                    def workspacePath = pwd() // Получить путь к рабочей директории
-                    echo "Workspace Path: ${workspacePath}"
-
-                    sh "cd ${workspacePath}"
                     sh "yarn install"
                     sh "yarn test"
                 }
