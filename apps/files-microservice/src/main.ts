@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FilesMicroserviceModule } from './files-microservice.module';
 import { settings } from './settings';
+import * as process from 'process';
 
 export async function bootstrap() {
   const microserviceRMQ =
@@ -10,7 +11,7 @@ export async function bootstrap() {
       {
         transport: Transport.RMQ,
         options: {
-          urls: [settings.RABBIT_MQ],
+          urls: [process.env.RABBIT_MQ],
           queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
