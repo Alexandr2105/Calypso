@@ -38,7 +38,7 @@ export async function bootstrap() {
 
   const rawApp = await NestFactory.create(AppModule);
   const app = createApp(rawApp);
-  // app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix('api/v1');
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalFilters(new HttpExceptionFilter());
 
@@ -57,49 +57,49 @@ export async function bootstrap() {
   });
 
   // get the swagger json file (if app is running in development mode)
-  if (process.env.NODE_ENV === 'development') {
-    // write swagger ui files
-    get(
-      `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui-bundle.js`,
-      function (response) {
-        response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js'));
-        console.log(
-          `Swagger UI bundle file written to: '/swagger-static/swagger-ui-bundle.js'`,
-        );
-      },
-    );
-
-    get(
-      `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui-init.js`,
-      function (response) {
-        response.pipe(createWriteStream('swagger-static/swagger-ui-init.js'));
-        console.log(
-          `Swagger UI init file written to: '/swagger-static/swagger-ui-init.js'`,
-        );
-      },
-    );
-
-    get(
-      `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui-standalone-preset.js`,
-      function (response) {
-        response.pipe(
-          createWriteStream('swagger-static/swagger-ui-standalone-preset.js'),
-        );
-        console.log(
-          `Swagger UI standalone preset file written to: '/swagger-static/swagger-ui-standalone-preset.js'`,
-        );
-      },
-    );
-
-    get(
-      `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui.css`,
-      function (response) {
-        response.pipe(createWriteStream('swagger-static/swagger-ui.css'));
-        console.log(
-          `Swagger UI css file written to: '/swagger-static/swagger-ui.css'`,
-        );
-      },
-    );
-  }
+  //   if (process.env.NODE_ENV === 'development') {
+  //     // write swagger ui files
+  //     get(
+  //       `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui-bundle.js`,
+  //       function (response) {
+  //         response.pipe(createWriteStream('swagger-static/swagger-ui-bundle.js'));
+  //         console.log(
+  //           `Swagger UI bundle file written to: '/swagger-static/swagger-ui-bundle.js'`,
+  //         );
+  //       },
+  //     );
+  //
+  //     get(
+  //       `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui-init.js`,
+  //       function (response) {
+  //         response.pipe(createWriteStream('swagger-static/swagger-ui-init.js'));
+  //         console.log(
+  //           `Swagger UI init file written to: '/swagger-static/swagger-ui-init.js'`,
+  //         );
+  //       },
+  //     );
+  //
+  //     get(
+  //       `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui-standalone-preset.js`,
+  //       function (response) {
+  //         response.pipe(
+  //           createWriteStream('swagger-static/swagger-ui-standalone-preset.js'),
+  //         );
+  //         console.log(
+  //           `Swagger UI standalone preset file written to: '/swagger-static/swagger-ui-standalone-preset.js'`,
+  //         );
+  //       },
+  //     );
+  //
+  //     get(
+  //       `${settings.CURRENT_APP_BASE_URL}/swagger/swagger-ui.css`,
+  //       function (response) {
+  //         response.pipe(createWriteStream('swagger-static/swagger-ui.css'));
+  //         console.log(
+  //           `Swagger UI css file written to: '/swagger-static/swagger-ui.css'`,
+  //         );
+  //       },
+  //     );
+  //   }
 }
 bootstrap();
