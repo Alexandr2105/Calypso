@@ -122,10 +122,10 @@ const Repositories = [
     CqrsModule,
     JwtModule.register({}),
     PassportModule,
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', '..', '..', 'swagger-static'),
-    //   serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
-    // }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', '..', 'swagger-static'),
+      serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
+    }),
   ],
   controllers: [
     AppController,
