@@ -26,7 +26,8 @@ import { DeleteAllUserProfileUseCase } from './features/pictures/application/use
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_DB'),
+        // uri: configService.get<string>('MONGO_DB'),
+        uri: 'mongodb+srv://5030553:admin@cluster0.zrjj8ew.mongodb.net/calypso?retryWrites=true&w=majority',
       }),
       inject: [ConfigService],
     }),
