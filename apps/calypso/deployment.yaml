@@ -21,9 +21,3 @@ spec:
            ports:
              - containerPort: PORT_CONTAINER
 
-           env:
-             - name: NODEMAILER_PASSWORD
-               valueFrom:
-                 secretKeyRef:
-                   name: calypso-config-secret
-                   key: NODEMAILER_PASSWORD

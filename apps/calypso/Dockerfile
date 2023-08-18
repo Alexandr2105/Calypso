@@ -21,10 +21,9 @@ WORKDIR /home/node/dist/${SERVICE}
 
 COPY --chown=node package*.json ./
 COPY --chown=node yarn.lock ./
+COPY --chow=node ../prisma ./prisma/
 
 RUN yarn install
-
-RUN yarn prisma generate
 
 # Bundle app source code
 COPY --chown=node . .
