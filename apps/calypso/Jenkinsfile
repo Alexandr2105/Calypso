@@ -3,7 +3,7 @@ pipeline {
     agent any
     environment {
         ENV_TYPE = "production"
-        PORT = 3039
+        PORT = 3040
         NAMESPACE = "kustogram-site"
         REGISTRY_HOSTNAME = "alex2105"
         PROJECT = "calypso"
