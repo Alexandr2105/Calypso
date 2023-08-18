@@ -23,6 +23,7 @@ pipeline {
         stage('Unit tests') {
             steps {
                 script {
+                    sh "pwd"
                     sh "yarn install"
                     sh "yarn test"
                 }
