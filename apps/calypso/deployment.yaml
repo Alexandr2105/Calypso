@@ -22,16 +22,16 @@ spec:
              - containerPort: PORT_CONTAINER
 
            env:
-#             - name: DIRECT_URL
-#               valueFrom:
-#                 secretKeyRef:
-#                   name: calypso-config-secret
-#                   key: DIRECT_URL
-#             - name: SHADOW_DATABASE_URL
-#               valueFrom:
-#                 secretKeyRef:
-#                   name: calypso-config-secret
-#                   key: SHADOW_DATABASE_URL
+             - name: DIRECT_URL
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: DIRECT_URL
+             - name: SHADOW_DATABASE_URL
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: SHADOW_DATABASE_URL
              - name: DATABASE_URL
                valueFrom:
                  secretKeyRef:
