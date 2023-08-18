@@ -44,7 +44,7 @@ export async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Instagram')
-    .setDescription('The Instagram API description')
+    .setDescription('The Instagram API description ')
     .setVersion('1.0')
     .addBearerAuth()
     .addBasicAuth()
