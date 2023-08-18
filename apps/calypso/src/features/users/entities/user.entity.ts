@@ -1,7 +1,6 @@
-import { Prisma } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserEntity implements Prisma.UserCreateInput {
+export class UserEntity {
   @ApiProperty({ type: 'string', description: 'User id' })
   id: string;
   @ApiProperty({ type: 'string', description: 'User login' })
