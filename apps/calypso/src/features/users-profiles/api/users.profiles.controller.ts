@@ -36,7 +36,7 @@ import { DeleteProfileCommand } from '../application/use-cases/delete.profile.us
 @Controller('users/profiles')
 export class UsersProfilesController {
   constructor(
-    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
+    @Inject('FILES_SERVICE_TCP') private clientRMQ: ClientProxy,
     private commandBus: CommandBus,
   ) {}
 
