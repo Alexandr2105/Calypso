@@ -80,13 +80,10 @@ export class UsersProfilesController {
   @Post('save-avatar')
   @UseInterceptors(FileInterceptor('avatar'))
   async saveAvatar(@UploadedFile() avatar: Express.Multer.File, @Req() req) {
-    console.log(2343242342);
     const pattern = { cmd: 'saveAvatar' };
     const user = await this.commandBus.execute(
       new GetUserByIdCommand(req.user.id),
     );
-    console.log('Первый');
-    console.log(user.id);
     const url = await firstValueFrom(
       this.clientRMQ.send(pattern, {
         userId: user.id,

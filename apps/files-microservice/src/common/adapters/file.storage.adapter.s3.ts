@@ -33,6 +33,7 @@ export class FileStorageAdapterS3 {
       ContentType: 'image/png',
     });
     try {
+      console.log(command);
       await this.s3Client.send(command);
       return {
         id: randomUUID(),
