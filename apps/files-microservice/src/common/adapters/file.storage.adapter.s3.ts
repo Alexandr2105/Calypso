@@ -27,8 +27,8 @@ export class FileStorageAdapterS3 {
     const key = `${userId}/avatars/${userId}&${+new Date()}_avatar.png`;
 
     const command = new PutObjectCommand({
-      Bucket: settings.BACKET_NAME,
       Key: key,
+      Bucket: settings.BACKET_NAME,
       Body: buffer,
       ContentType: 'image/png',
     });
