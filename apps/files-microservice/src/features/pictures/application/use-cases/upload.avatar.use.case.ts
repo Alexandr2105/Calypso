@@ -31,12 +31,17 @@ export class UploadAvatarUseCase
         userAvatar.key,
       );
     }
+
+    console.log('userAvatar');
+
     const avatar = await resizePhoto(command.avatar);
     const infoAboutSaveAvatar = await this.fileStorageAdapter.saveAvatar(
       command.userId,
       avatar,
     );
     const avatarInfo = await sharp(avatar).metadata();
+
+    console.log('sharp');
 
     const avatarDocument: AvatarDocument = new this.avatar();
     avatarDocument.id = infoAboutSaveAvatar.id;
