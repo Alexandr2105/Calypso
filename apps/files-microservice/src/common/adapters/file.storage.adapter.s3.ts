@@ -30,8 +30,8 @@ export class FileStorageAdapterS3 {
     const command = new PutObjectCommand({
       Key: key,
       // Bucket: settings.BACKET_NAME,
-      Bucket: process.env.BACKET_NAME,
-      // Bucket: 'my1bucket',
+      // Bucket: process.env.BACKET_NAME,
+      Bucket: 'my1bucket',
       Body: buffer,
       ContentType: 'image/png',
     });
