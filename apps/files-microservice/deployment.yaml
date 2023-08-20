@@ -42,16 +42,16 @@ spec:
                  secretKeyRef:
                    name: files-microservice-config-secret
                    key: BACKET_NAME
-#             - name: MONGO_DB
-#               valueFrom:
-#                 secretKeyRef:
-#                   name: files-microservice-config-secret
-#                   key: MONGO_DB
-#             - name: RABBIT_MQ
-#               valueFrom:
-#                 secretKeyRef:
-#                   name: files-microservice-config-secret
-#                   key: RABBIT_MQ
+             - name: MONGO_DB
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: MONGO_DB
+             - name: RABBIT_MQ
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: RABBIT_MQ
              - name: ACCESS_KEY_ID
                valueFrom:
                  secretKeyRef:
