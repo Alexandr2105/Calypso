@@ -8,6 +8,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 import { settings } from '../../settings';
+import * as process from 'process';
 
 @Injectable()
 export class FileStorageAdapterS3 {
@@ -29,7 +30,8 @@ export class FileStorageAdapterS3 {
     const command = new PutObjectCommand({
       Key: key,
       // Bucket: settings.BACKET_NAME,
-      Bucket: 'my1bucket',
+      Bucket: process.env.BACKET_NAME,
+      // Bucket: 'my1bucket',
       Body: buffer,
       ContentType: 'image/png',
     });
