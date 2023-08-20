@@ -17,7 +17,8 @@ export class FileStorageAdapterS3 {
     this.s3Client = new S3Client({
       // region: settings.S3_REGION,
       region: 'ru-central1',
-      endpoint: settings.BASE_URL_AWS,
+      // endpoint: settings.BASE_URL_AWS,
+      endpoint: 'https://storage.yandexcloud.net',
       credentials: {
         accessKeyId: settings.ACCESS_KEY_ID,
         secretAccessKey: settings.SECRET_ACCESS_KEY,
