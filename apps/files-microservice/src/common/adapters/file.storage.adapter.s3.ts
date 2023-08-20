@@ -15,7 +15,8 @@ export class FileStorageAdapterS3 {
   s3Client: S3Client;
   constructor() {
     this.s3Client = new S3Client({
-      region: settings.S3_REGION,
+      // region: settings.S3_REGION,
+      region: 'ru-central1',
       endpoint: settings.BASE_URL_AWS,
       credentials: {
         accessKeyId: settings.ACCESS_KEY_ID,
@@ -42,8 +43,6 @@ export class FileStorageAdapterS3 {
       console.log(settings.BASE_URL_AWS);
       console.log(settings.SECRET_ACCESS_KEY);
       console.log(settings.BASE_URL_AWS);
-      console.log(await this.s3Client.config);
-      console.log(this.s3Client.config.region.name);
       await this.s3Client.send(command);
       console.log({
         id: randomUUID(),
