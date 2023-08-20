@@ -42,6 +42,7 @@ export class FileStorageAdapterS3 {
       console.log(settings.BASE_URL_AWS);
       console.log(settings.SECRET_ACCESS_KEY);
       console.log(settings.BASE_URL_AWS);
+      console.log('s3: ' + this.s3Client);
       await this.s3Client.send(command);
       console.log({
         id: randomUUID(),
