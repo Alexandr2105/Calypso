@@ -43,6 +43,12 @@ export class FileStorageAdapterS3 {
       console.log(settings.SECRET_ACCESS_KEY);
       console.log(settings.BASE_URL_AWS);
       await this.s3Client.send(command);
+      console.log({
+        id: randomUUID(),
+        key: key,
+        createdAt: new Date(),
+        bucket: settings.BACKET_NAME,
+      });
       return {
         id: randomUUID(),
         key: key,
