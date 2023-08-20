@@ -11,10 +11,10 @@ export async function bootstrap() {
       {
         transport: Transport.RMQ,
         options: {
-          urls: [process.env.RABBIT_MQ.trim()],
-          // urls: [
-          //   'amqps://mnarqdfe:x90bjcNdFH5tO9OleEXq-aRnqennJuhE@stingray.rmq.cloudamqp.com/mnarqdfe',
-          // ],
+          // urls: [process.env.RABBIT_MQ.trim()],
+          urls: [
+            'amqps://mnarqdfe:x90bjcNdFH5tO9OleEXq-aRnqennJuhE@stingray.rmq.cloudamqp.com/mnarqdfe',
+          ],
           queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
