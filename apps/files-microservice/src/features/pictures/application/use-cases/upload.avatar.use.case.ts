@@ -39,6 +39,7 @@ export class UploadAvatarUseCase
       command.userId,
       avatar,
     );
+    console.log(infoAboutSaveAvatar);
     const avatarInfo = await sharp(avatar).metadata();
 
     console.log('sharp');
