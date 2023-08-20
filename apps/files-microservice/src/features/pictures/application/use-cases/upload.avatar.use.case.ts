@@ -55,6 +55,8 @@ export class UploadAvatarUseCase
     avatarDocument.fileSize = avatarInfo.size;
     avatarDocument.createdAt = infoAboutSaveAvatar.createdAt;
 
+    console.log(avatarDocument);
+
     await this.avatarsRepository.saveAvatar(avatarDocument);
 
     console.log('finish');
