@@ -56,6 +56,8 @@ export class UploadAvatarUseCase
 
     await this.avatarsRepository.saveAvatar(avatarDocument);
 
+    console.log('finish');
+
     return avatarDocument.url;
   }
 }
