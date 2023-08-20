@@ -16,7 +16,7 @@ export class PictureController {
 
   @MessagePattern({ cmd: 'saveAvatar' })
   async saveAvatars(data: AvatarsDto): Promise<string> {
-    console.log('Пришел');
+    console.log(data.userId, data.avatar);
     return this.commandBus.execute(
       new UploadAvatarCommand(data.userId, data.avatar),
     );
