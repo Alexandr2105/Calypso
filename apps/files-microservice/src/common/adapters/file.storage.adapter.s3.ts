@@ -20,8 +20,10 @@ export class FileStorageAdapterS3 {
       // endpoint: settings.BASE_URL_AWS,
       endpoint: 'https://storage.yandexcloud.net',
       credentials: {
-        accessKeyId: settings.ACCESS_KEY_ID,
-        secretAccessKey: settings.SECRET_ACCESS_KEY,
+        // accessKeyId: settings.ACCESS_KEY_ID,
+        // secretAccessKey: settings.SECRET_ACCESS_KEY,
+        accessKeyId: 'YCAJEoc13VNh8lGnC8i4-8H0A',
+        secretAccessKey: 'YCOhoLcWlwcv6E9F9uqbRMTXCOPBxoNANFezXmRi',
       },
     });
   }
