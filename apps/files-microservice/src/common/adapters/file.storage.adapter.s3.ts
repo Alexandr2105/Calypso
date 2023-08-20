@@ -54,7 +54,8 @@ export class FileStorageAdapterS3 {
         id: randomUUID(),
         key: key,
         createdAt: new Date(),
-        bucket: settings.BACKET_NAME,
+        // bucket: settings.BACKET_NAME,
+        bucket: process.env.BACKET_NAME,
       });
       return {
         id: randomUUID(),
