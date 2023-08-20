@@ -86,13 +86,13 @@ export class UsersProfilesController {
       new GetUserByIdCommand(req.user.id),
     );
     console.log('Первый');
+    console.log(user.id);
     const url = await firstValueFrom(
       this.clientRMQ.send(pattern, {
         userId: user.id,
         avatar: avatar.buffer,
       }),
     );
-    console.log('agagsdafsdfa');
     return await this.commandBus.execute(
       new UploadAvatarCommand(user.id, user.login, url),
     );
