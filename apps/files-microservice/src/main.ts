@@ -29,7 +29,7 @@ export async function bootstrap() {
       {
         transport: Transport.TCP,
         options: {
-          port: 3043,
+          port: 8080,
           host: 'files-microservice-service.kustogram-site',
         },
       },
