@@ -99,7 +99,7 @@ export class UsersProfilesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete profile' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Profile deleted   ')
+  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Profile deleted')
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
   @Delete('profile')
