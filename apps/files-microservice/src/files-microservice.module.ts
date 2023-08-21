@@ -20,6 +20,12 @@ import { DeleteAllUserProfileUseCase } from './features/pictures/application/use
 import { settings } from './settings';
 import * as process from 'process';
 
+const configService = new ConfigService();
+
+console.log(settings.MONGO_DB);
+console.log(configService.get<string>('MONGO_DB').trim());
+console.log(process.env.MONGO_DB);
+
 @Module({
   imports: [
     ConfigModule.forRoot({
