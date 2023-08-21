@@ -31,7 +31,7 @@ import * as process from 'process';
         // uri: configService.get<string>('MONGO_DB'),
         // uri: 'mongodb+srv://5030553:admin@cluster0.zrjj8ew.mongodb.net/calypso?retryWrites=true&w=majority',
         // uri: settings.MONGO_DB.trim(),
-        uri: process.env.MONGO_DB.trim(),
+        uri: process.env.MONGO_DB,
       }),
       inject: [ConfigService],
     }),
