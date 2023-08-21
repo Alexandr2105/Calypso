@@ -23,8 +23,14 @@ import * as process from 'process';
 const configService = new ConfigService();
 
 console.log(settings.MONGO_DB);
-console.log(configService.get<string>('MONGO_DB').trim());
+console.log(configService.get<string>('MONGO_DB'));
 console.log(process.env.MONGO_DB);
+console.log(async (configService: ConfigService) => ({
+  uri: configService.get<string>('MONGO_DB'),
+  // uri: 'mongodb+srv://5030553:admin@cluster0.zrjj8ew.mongodb.net/calypso?retryWrites=true&w=majority',
+  // uri: settings.MONGO_DB.trim(),
+  // uri: process.env.MONGO_DB,
+}));
 
 @Module({
   imports: [
