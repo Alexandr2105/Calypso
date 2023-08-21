@@ -9,5 +9,5 @@ export const settings = {
   BASE_URL_AWS: process.env.BASE_URL_AWS,
   BACKET_NAME: process.env.BACKET_NAME,
   RABBIT_MQ: process.env.RABBIT_MQ,
-  // MONGO_DB: process.env.MONGO_DB,
+  MONGO_DB: process.env.MONGO_DB,
 };
