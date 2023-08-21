@@ -10,7 +10,10 @@ export async function bootstrap() {
       {
         transport: Transport.RMQ,
         options: {
-          urls: [settings.RABBIT_MQ],
+          // urls: [settings.RABBIT_MQ],
+          urls: [
+            'amqps://mnarqdfe:x90bjcNdFH5tO9OleEXq-aRnqennJuhE@stingray.rmq.cloudamqp.com/mnarqdfe',
+          ],
           queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
@@ -25,7 +28,10 @@ export async function bootstrap() {
       FilesMicroserviceModule,
       {
         transport: Transport.TCP,
-        options: { port: 3043 },
+        options: {
+          port: 3043,
+          host: 'files-microservice-service.kustogram-site',
+        },
       },
     );
   await microserviceTCP.listen();
