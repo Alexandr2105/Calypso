@@ -8,22 +8,17 @@ import {
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 import { settings } from '../../settings';
-import * as process from 'process';
 
 @Injectable()
 export class FileStorageAdapterS3 {
   s3Client: S3Client;
   constructor() {
     this.s3Client = new S3Client({
-      // region: settings.S3_REGION,
-      region: 'ru-central1',
-      // endpoint: settings.BASE_URL_AWS,
-      endpoint: 'https://storage.yandexcloud.net',
+      region: settings.S3_REGION.trim(),
+      endpoint: settings.BASE_URL_AWS.trim(),
       credentials: {
-        // accessKeyId: settings.ACCESS_KEY_ID,
-        // secretAccessKey: settings.SECRET_ACCESS_KEY,
-        accessKeyId: 'YCAJEoc13VNh8lGnC8i4-8H0A',
-        secretAccessKey: 'YCOhoLcWlwcv6E9F9uqbRMTXCOPBxoNANFezXmRi',
+        accessKeyId: settings.ACCESS_KEY_ID.trim(),
+        secretAccessKey: settings.SECRET_ACCESS_KEY.trim(),
       },
     });
   }
@@ -31,37 +26,19 @@ export class FileStorageAdapterS3 {
   async saveAvatar(userId: string, buffer: Buffer) {
     const key = `${userId}/avatars/${userId}&${+new Date()}_avatar.png`;
 
-    console.log(this.s3Client.config);
-    console.log(this.s3Client.config.region);
-
     const command = new PutObjectCommand({
       Key: key,
-      // Bucket: settings.BACKET_NAME,
-      // Bucket: process.env.BACKET_NAME,
-      Bucket: 'my1bucket',
+      Bucket: settings.BACKET_NAME.trim(),
       Body: buffer,
       ContentType: 'image/png',
     });
     try {
-      console.log(command);
-      console.log(settings.BACKET_NAME);
-      console.log(settings.S3_REGION);
-      console.log(settings.BASE_URL_AWS);
-      console.log(settings.SECRET_ACCESS_KEY);
-      console.log(settings.BASE_URL_AWS);
       await this.s3Client.send(command);
-      console.log({
-        id: randomUUID(),
-        key: key,
-        createdAt: new Date(),
-        // bucket: settings.BACKET_NAME,
-        bucket: process.env.BACKET_NAME.trim(),
-      });
       return {
         id: randomUUID(),
         key: key,
         createdAt: new Date(),
-        bucket: settings.BACKET_NAME,
+        bucket: settings.BACKET_NAME.trim(),
       };
     } catch (err) {
       console.error(err);

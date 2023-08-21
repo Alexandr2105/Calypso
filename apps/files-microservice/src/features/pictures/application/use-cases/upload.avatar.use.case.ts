@@ -32,17 +32,12 @@ export class UploadAvatarUseCase
       );
     }
 
-    console.log('userAvatar');
-
     const avatar = await resizePhoto(command.avatar);
     const infoAboutSaveAvatar = await this.fileStorageAdapter.saveAvatar(
       command.userId,
       avatar,
     );
-    console.log(infoAboutSaveAvatar);
     const avatarInfo = await sharp(avatar).metadata();
-
-    console.log('sharp');
 
     const avatarDocument: AvatarDocument = new this.avatar();
     avatarDocument.id = infoAboutSaveAvatar.id;
@@ -55,11 +50,7 @@ export class UploadAvatarUseCase
     avatarDocument.fileSize = avatarInfo.size;
     avatarDocument.createdAt = infoAboutSaveAvatar.createdAt;
 
-    console.log(avatarDocument);
-
     await this.avatarsRepository.saveAvatar(avatarDocument);
-
-    console.log('finish');
 
     return avatarDocument.url;
   }
