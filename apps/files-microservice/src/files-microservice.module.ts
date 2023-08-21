@@ -31,6 +31,7 @@ console.log({
   // uri: settings.MONGO_DB.trim(),
   // uri: process.env.MONGO_DB,
 });
+console.log(settings.RABBIT_MQ);
 
 @Module({
   imports: [
