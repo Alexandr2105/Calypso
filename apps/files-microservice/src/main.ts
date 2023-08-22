@@ -29,7 +29,8 @@ export async function bootstrap() {
   const microserviceTCP = await app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
-      port: parseInt(process.env.PORT),
+      // port: parseInt(process.env.PORT),
+      port: 3043,
     },
   });
   await microserviceTCP.listen();
