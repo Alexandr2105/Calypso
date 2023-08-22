@@ -4,7 +4,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { settings } from '../../../settings';
+import * as process from 'process';
 
 export const Recaptcha = createParamDecorator(
   async (_, ctx: ExecutionContext) => {
@@ -18,7 +18,7 @@ export const Recaptcha = createParamDecorator(
       );
     }
 
-    const secretKey = settings.RECAPTCHA_SECRET_KEY;
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
     const result = await fetch(
       'https://www.google.com/recaptcha/api/siteverify',
