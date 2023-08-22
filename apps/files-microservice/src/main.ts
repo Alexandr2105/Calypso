@@ -2,6 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FilesMicroserviceModule } from './files-microservice.module';
 import { ConfigService } from '@nestjs/config';
+import { settings } from './settings';
+
+console.log(settings.DDDD);
+console.log({ url: settings.DDDD });
 
 export async function bootstrap() {
   const app = await NestFactory.create(FilesMicroserviceModule);
@@ -25,14 +29,12 @@ export async function bootstrap() {
   const microserviceTCP = await app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
-      // port: parseInt(process.env.PORT),
-      // host: 'files-microservice.kustogram-site',
-      port: 3001,
+      port: parseInt(process.env.PORT),
     },
   });
   await microserviceTCP.listen();
 
-  // console.log(parseInt(process.env.PORT));
+  console.log(parseInt(process.env.PORT));
   console.log('Microservices are starting');
 }
 bootstrap();
