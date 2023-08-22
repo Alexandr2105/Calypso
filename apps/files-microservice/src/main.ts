@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FilesMicroserviceModule } from './files-microservice.module';
-import { settings } from './settings';
+import * as process from 'process';
 
-console.log(settings.DDDD);
-console.log({ url: settings.DDDD });
+console.log(process.env.MONGO_DB);
+console.log({ url: process.env.MONGO_DB });
 
 export async function bootstrap() {
   // const app = await NestFactory.create(FilesMicroserviceModule);
