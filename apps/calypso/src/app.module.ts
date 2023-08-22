@@ -57,6 +57,8 @@ import { MergeGoogleAccountUseCase } from './features/auth/application/use-cases
 import { UpdateConfirmationCodeUseCase } from './features/auth/application/use-cases/update.confirmation.code.use.case';
 import { OAuth2ForGithubUseCase } from './features/auth/application/use-cases/oauth2ForGithubUseCase';
 import { MergeGithubAccountUseCase } from './features/auth/application/use-cases/merge.github.account.use.case';
+import { ApiConfigService } from './common/helpers/api.config.service';
+import { ConfigModule } from '@nestjs/config';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [CheckEmailInDb, CheckConfirmationCode, CheckPostId];
@@ -98,6 +100,9 @@ const Repositories = [
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ClientsModule.register([
       {
         name: 'FILES_SERVICE_TCP',
@@ -151,6 +156,7 @@ const Repositories = [
     ...Repositories,
     Jwt,
     QueryHelper,
+    ApiConfigService,
   ],
 })
 export class AppModule {}

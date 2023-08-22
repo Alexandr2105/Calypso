@@ -21,9 +21,8 @@ import { ApiConfigService } from './common/helpers/api.config.service';
 
 @Module({
   imports: [
-    ConfigModule,
     ConfigModule.forRoot({
-      isGlobal: true, // ?
+      isGlobal: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
