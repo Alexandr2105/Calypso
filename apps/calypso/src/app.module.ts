@@ -103,8 +103,8 @@ const Repositories = [
         name: 'FILES_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
-          host: 'files-microservice.kustogram-site',
-          port: 3043,
+          // host: 'files-microservice.kustogram-site',
+          port: 3001,
         },
       },
       {

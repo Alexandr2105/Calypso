@@ -5,9 +5,9 @@ import { PostsDto } from '../../dto/posts.dto';
 import sharp from 'sharp';
 import { ImagesRepository } from '../../infrastructure/images.repository';
 import { PostImagesDocument } from '../../schemas/post.images.schema';
-import { settings } from '../../../../settings';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ApiConfigService } from '../../../../common/helpers/api.config.service';
 
 export class CreateImagesForPostCommand {
   constructor(public data: PostsDto) {}
@@ -19,6 +19,7 @@ export class CreateImagesForPostUseCase
 {
   constructor(
     @InjectModel('postImages') private postImages: Model<PostImagesDocument>,
+    private apiConfigService: ApiConfigService,
     private fileStorageAdapter: FileStorageAdapterS3,
     private imageRepository: ImagesRepository,
   ) {}
@@ -43,7 +44,7 @@ export class CreateImagesForPostUseCase
       postImage.createdAt = image.createdAt;
       postImage.key = image.key;
       postImage.bucket = image.bucket;
-      postImage.url = `${settings.BASE_URL_AWS}/${image.bucket}/${image.key}`;
+      postImage.url = `${this.apiConfigService.baseUrlAws}/${image.bucket}/${image.key}`;
       postImage.height = imageInfo.height;
       postImage.width = imageInfo.width;
       postImage.fileSize = imageInfo.size;
