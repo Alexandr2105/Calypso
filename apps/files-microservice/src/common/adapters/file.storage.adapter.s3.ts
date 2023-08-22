@@ -13,10 +13,6 @@ import { ApiConfigService } from '../helpers/api.config.service';
 export class FileStorageAdapterS3 {
   s3Client: S3Client;
   constructor(private apiConfigService: ApiConfigService) {
-    console.log(apiConfigService.bucketName);
-    console.log(apiConfigService.s3Region);
-    console.log(apiConfigService.secretAccessKey);
-    console.log(apiConfigService.accessKeyId);
     this.s3Client = new S3Client({
       region: apiConfigService.s3Region,
       endpoint: apiConfigService.baseUrlAws,
@@ -28,7 +24,6 @@ export class FileStorageAdapterS3 {
   }
 
   async saveAvatar(userId: string, buffer: Buffer) {
-    console.log(this.apiConfigService.bucketName);
     const key = `${userId}/avatars/${userId}&${+new Date()}_avatar.png`;
 
     const command = new PutObjectCommand({

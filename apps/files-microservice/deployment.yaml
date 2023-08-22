@@ -37,11 +37,11 @@ spec:
                  secretKeyRef:
                    name: files-microservice-config-secret
                    key: BASE_URL_AWS
-             - name: BACKET_NAME
+             - name: BUCKET_NAME
                valueFrom:
                  secretKeyRef:
                    name: files-microservice-config-secret
-                   key: BACKET_NAME
+                   key: BUCKET_NAME
              - name: MONGO_DB
                valueFrom:
                  secretKeyRef:
