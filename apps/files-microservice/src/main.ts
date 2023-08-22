@@ -4,17 +4,13 @@ import { FilesMicroserviceModule } from './files-microservice.module';
 import * as process from 'process';
 
 export async function bootstrap() {
-  console.log(process.env.RABBIT_MQ);
   const microserviceRMQ =
     await NestFactory.createMicroservice<MicroserviceOptions>(
       FilesMicroserviceModule,
       {
         transport: Transport.RMQ,
         options: {
-          // urls: [configService.get('RABBIT_MQ')],
-          urls: [
-            'amqps://mnarqdfe:x90bjcNdFH5tO9OleEXq-aRnqennJuhE@stingray.rmq.cloudamqp.com/mnarqdfe',
-          ],
+          urls: [process.env.RABBIT_MQ],
           queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,

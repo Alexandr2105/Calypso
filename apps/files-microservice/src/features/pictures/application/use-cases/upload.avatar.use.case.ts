@@ -24,7 +24,6 @@ export class UploadAvatarUseCase
   ) {}
 
   async execute(command: UploadAvatarCommand): Promise<any> {
-    console.log(2);
     const userAvatar: AvatarDocument =
       await this.avatarsRepository.getAvatarInfo(command.userId);
     if (userAvatar) {

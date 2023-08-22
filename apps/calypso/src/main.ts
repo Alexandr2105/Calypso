@@ -10,7 +10,6 @@ import { createApp } from './common/helpers/createApp';
 import * as process from 'process';
 
 export async function bootstrap() {
-  console.log(process.env.RABBIT_MQ);
   // const microserviceRMQ =
   //   await NestFactory.createMicroservice<MicroserviceOptions>(
   //     FilesMicroserviceModule,
