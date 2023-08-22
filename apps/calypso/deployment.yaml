@@ -32,6 +32,61 @@ spec:
                  secretKeyRef:
                    name: calypso-config-secret
                    key: DATABASE_URL
+             - name: ADDRESS_SITE_FOR_CONFIRMATION
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: ADDRESS_SITE_FOR_CONFIRMATION
+             - name: NODEMAILER_USER
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: NODEMAILER_USER
+             - name: NODEMAILER_PASSWORD
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: NODEMAILER_PASSWORD
+             - name: RABBIT_MQ
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: RABBIT_MQ
+             - name: RECAPTCHA_SECRET_KEY
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: RECAPTCHA_SECRET_KEY
+             - name: GOOGLE_ID
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: GOOGLE_ID
+             - name: GOOGLE_SECRET
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: GOOGLE_SECRET
+             - name: GOOGLE_REDIRECT_URL
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: GOOGLE_REDIRECT_URL
+             - name: GITHUB_ID
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: GITHUB_ID
+             - name: GITHUB_SECRET
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: GITHUB_SECRET
+             - name: GITHUB_REDIRECT_URL
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: GITHUB_REDIRECT_URL
              - name: SHADOW_DATABASE_URL
                valueFrom:
                  secretKeyRef:
