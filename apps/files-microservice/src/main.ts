@@ -3,13 +3,8 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FilesMicroserviceModule } from './files-microservice.module';
 import * as process from 'process';
 
-console.log(process.env.MONGO_DB);
-console.log({ url: process.env.MONGO_DB });
-
 export async function bootstrap() {
-  // const app = await NestFactory.create(FilesMicroserviceModule);
-  // const configService = app.get(ConfigService);
-
+  console.log(process.env.RABBIT_MQ);
   const microserviceRMQ =
     await NestFactory.createMicroservice<MicroserviceOptions>(
       FilesMicroserviceModule,
