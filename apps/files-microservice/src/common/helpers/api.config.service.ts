@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService as NestConfigService } from '@nestjs/config';
-import * as process from 'process';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ApiConfigService {
-  constructor(private configService: NestConfigService) {}
+  constructor(private configService: ConfigService) {}
 
   get accessKeyId(): string {
     return this.configService.get('ACCESS_KEY_ID');
