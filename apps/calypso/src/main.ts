@@ -9,6 +9,9 @@ import { settings } from './settings';
 import { createApp } from './common/helpers/createApp';
 import * as process from 'process';
 
+console.log(process.env.DATABASE_URL);
+console.log({ url: process.env.DATABASE_URL });
+
 export async function bootstrap() {
   // const microserviceRMQ =
   //   await NestFactory.createMicroservice<MicroserviceOptions>(
