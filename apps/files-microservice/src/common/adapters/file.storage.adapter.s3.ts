@@ -7,18 +7,18 @@ import {
   S3Client,
 } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
-import { ApiConfigService } from '../helpers/api.config.service';
+import { settings } from '../../settings';
 
 @Injectable()
 export class FileStorageAdapterS3 {
   s3Client: S3Client;
-  constructor(private apiConfigService: ApiConfigService) {
+  constructor() {
     this.s3Client = new S3Client({
-      region: apiConfigService.s3Region,
-      endpoint: apiConfigService.baseUrlAws,
+      region: settings.S3_REGION,
+      endpoint: settings.BASE_URL_AWS,
       credentials: {
-        accessKeyId: apiConfigService.accessKeyId,
-        secretAccessKey: apiConfigService.secretAccessKey,
+        accessKeyId: settings.ACCESS_KEY_ID,
+        secretAccessKey: settings.SECRET_ACCESS_KEY,
       },
     });
   }
@@ -28,7 +28,7 @@ export class FileStorageAdapterS3 {
 
     const command = new PutObjectCommand({
       Key: key,
-      Bucket: this.apiConfigService.bucketName,
+      Bucket: settings.BUCKET_NAME,
       Body: buffer,
       ContentType: 'image/png',
     });
@@ -38,7 +38,7 @@ export class FileStorageAdapterS3 {
         id: randomUUID(),
         key: key,
         createdAt: new Date(),
-        bucket: this.apiConfigService.bucketName,
+        bucket: settings.BUCKET_NAME,
       };
     } catch (err) {
       console.error(err);
@@ -52,7 +52,7 @@ export class FileStorageAdapterS3 {
   ): Promise<any> {
     const randomName = randomUUID();
     const command = new PutObjectCommand({
-      Bucket: this.apiConfigService.bucketName,
+      Bucket: settings.BUCKET_NAME,
       Key: `${userId}/posts/${postId}/${randomName}_post.png`,
       Body: buffer,
       ContentType: 'image/png',
@@ -64,7 +64,7 @@ export class FileStorageAdapterS3 {
         key: `${userId}/posts/${postId}/${randomName}_post.png`,
         postId: postId,
         createdAt: new Date(),
-        bucket: this.apiConfigService.bucketName,
+        bucket: settings.BUCKET_NAME,
       };
     } catch (err) {
       console.error(err);

@@ -17,10 +17,10 @@ import { GetImagesForPostUseCase } from './features/pictures/application/use-cas
 import { CqrsModule } from '@nestjs/cqrs';
 import { DeleteProfileUseCase } from './features/pictures/application/use-cases/delete.profile.use.case';
 import { DeleteAllUserProfileUseCase } from './features/pictures/application/use-cases/delete.all.user.profile.use.case';
-import { ApiConfigService } from './common/helpers/api.config.service';
 
 @Module({
   imports: [
+    ConfigModule,
     ConfigModule.forRoot({
       isGlobal: true, // ?
     }),
@@ -56,7 +56,6 @@ import { ApiConfigService } from './common/helpers/api.config.service';
     DeletePostImagesUseCase,
     DeleteProfileUseCase,
     DeleteAllUserProfileUseCase,
-    ApiConfigService,
   ],
 })
 export class FilesMicroserviceModule {}

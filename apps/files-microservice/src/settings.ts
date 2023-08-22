@@ -7,7 +7,7 @@ export const settings = {
   SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
   S3_REGION: process.env.S3_REGION,
   BASE_URL_AWS: process.env.BASE_URL_AWS,
-  BACKET_NAME: process.env.BACKET_NAME,
+  BUCKET_NAME: process.env.BUCKET_NAME,
   RABBIT_MQ: process.env.RABBIT_MQ,
   MONGO_DB: process.env.MONGO_DB,
   DDDD: process.env.DDDD,
