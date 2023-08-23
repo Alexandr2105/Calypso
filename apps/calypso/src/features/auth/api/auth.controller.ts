@@ -133,7 +133,7 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: false,
       secure: false,
-      domain: '.vercel.com',
+      // domain: '.vercel.com',
     });
 
     res.send({ ...accessToken, profile: info });
@@ -230,7 +230,7 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: false,
       secure: false,
-      domain: '.vercel.com',
+      // domain: '.vercel.com',
       // sameSite: 'None',
     });
     res.send(accessToken);
