@@ -51,15 +51,21 @@ export class QueryRepository {
     };
   }
 
-  // async getPostsAndPhotosCursor(userId: string, postId: string, queryParam) {
+  // async getPostsAndPhotos(userId: string, postId: string, queryParam) {
   //   const totalCount = await this.prisma.post.count({
   //     where: { userId: userId },
   //   });
+  //
+  //   let cursorOptions;
+  //   if (postId !== '0') {
+  //     cursorOptions = { cursor: { id: postId } };
+  //   }
+  //
   //   const posts = await this.prisma.post.findMany({
   //     where: { userId: userId },
-  //     cursor: { id: postId },
+  //     ...cursorOptions,
   //     orderBy: { [queryParam.sortBy]: queryParam.sortDirection },
-  //     skip: 1,
+  //     skip: postId ? 1 : 0,
   //     take: queryParam.pageSize,
   //   });
   //   return {
