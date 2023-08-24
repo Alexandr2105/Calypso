@@ -109,9 +109,9 @@ const Repositories = [
         name: 'FILES_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
-          // host: 'files-microservice-service',
-          // port: 3043,
-          port: 3001,
+          host: 'files-microservice-service',
+          port: 3043,
+          // port: 3001,
         },
       },
       {
