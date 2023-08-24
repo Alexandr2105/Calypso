@@ -247,7 +247,7 @@ window.onload = function() {
               "description": "Even if the current email address is not registered (to prevent the user's email from being detected)"
             },
             "400": {
-              "description": "Invalid email address",
+              "description": "List of possible errors:<br>1.Invalid email address<br>2.Incorrect recaptcha code",
               "content": {
                 "application/json": {
                   "schema": {

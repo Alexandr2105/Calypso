@@ -133,6 +133,7 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: false,
       secure: false,
+      // domain: '.vercel.com',
     });
 
     res.send({ ...accessToken, profile: info });
@@ -145,12 +146,14 @@ export class AuthController {
     HttpStatus.NO_CONTENT,
     "Even if the current email address is not registered (to prevent the user's email from being detected)",
   )
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Invalid email address')
+  @ApiResponseForSwagger(
+    HttpStatus.BAD_REQUEST,
+    'List of possible errors:<br>1.Invalid email address<br>2.Incorrect recaptcha code',
+  )
   async passwordRecovery(@Body() body: EmailResendingDto) {
     await this.commandBus.execute(
       new SendPasswordRecoveryLinkCommand(body.email),
     );
-
     return;
   }
 
@@ -166,10 +169,7 @@ export class AuthController {
     description:
       'List of possible errors:<br>1.Wrong length newPassword<br> 2.Incorrect confirmation code',
   })
-  async createNewPassword(
-    @Body() body: NewPasswordDto,
-    // @Recaptcha() recaptchaToken,
-  ) {
+  async createNewPassword(@Body() body: NewPasswordDto) {
     await this.commandBus.execute(
       new ChangePasswordCommand(body.recoveryCode, body.newPassword),
     );

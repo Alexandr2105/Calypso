@@ -7,4 +7,7 @@ export class EmailResendingDto {
   @IsEmail({}, { message: 'Invalid email' })
   @ApiProperty({ type: 'string' })
   email: string;
+  // @ApiProperty({ type: 'string' })
+  // @Validate(RecaptchaValidator)
+  // recaptchaValue: string;
 }

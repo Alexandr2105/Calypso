@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser';
 export const createApp = (app: INestApplication) => {
   app.use(cookieParser());
   // app.enableCors({
-  //   origin: 'http://localhost:3000',
+  //   origin: 'https://kusto-git-stage-gord.vercel.app/',
   //   methods: ['GET', 'POST'],
   //   allowedHeaders: ['Content-Type', 'Authorization'],
   //   credentials: true,
