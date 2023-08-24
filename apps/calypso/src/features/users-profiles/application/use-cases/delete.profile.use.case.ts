@@ -14,7 +14,7 @@ export class DeleteProfileUseCase
 {
   constructor(
     private usersProfileRepository: UsersProfilesRepository,
-    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
+    @Inject('FILES_SERVICE_TCP') private clientTCP: ClientProxy,
   ) {}
 
   async execute(command: DeleteProfileCommand): Promise<boolean> {
@@ -24,7 +24,7 @@ export class DeleteProfileUseCase
     );
     if (!profile) throw new NotFoundException();
     await this.usersProfileRepository.deleteProfile(command.userId);
-    await firstValueFrom(this.clientRMQ.send(pattern, command.userId));
+    await firstValueFrom(this.clientTCP.send(pattern, command.userId));
     return true;
   }
 }
