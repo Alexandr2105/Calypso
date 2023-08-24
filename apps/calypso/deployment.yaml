@@ -87,6 +87,16 @@ spec:
                  secretKeyRef:
                    name: calypso-config-secret
                    key: GITHUB_REDIRECT_URL
+             - name: FILES_SERVICE_HOST
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: FILES_SERVICE_HOST
+             - name: FILES_SERVICE_PORT
+               valueFrom:
+                 secretKeyRef:
+                   name: calypso-config-secret
+                   key: FILES_SERVICE_PORT
              - name: SHADOW_DATABASE_URL
                valueFrom:
                  secretKeyRef:

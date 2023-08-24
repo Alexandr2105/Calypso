@@ -27,14 +27,12 @@ export async function bootstrap() {
         transport: Transport.TCP,
         options: {
           host: '0.0.0.0',
-          port: 3043,
-          // port: 3001,
+          port: Number(process.env.PORT),
         },
       },
     );
   await microserviceTCP.listen();
 
-  console.log(parseInt(process.env.PORT));
-  console.log('Microservices are starting');
+  console.log('Microservices are starting ' + process.env.PORT);
 }
 bootstrap();
