@@ -3,13 +3,13 @@ pipeline {
     agent any
     environment {
         ENV_TYPE = "production"
-        PORT = 3040
+        PORT = 3062
         NAMESPACE = "kustogram-site"
         REGISTRY_HOSTNAME = "alex2105"
-        PROJECT = "calypso"
+        PROJECT = "back-end"
         SERVICE="calypso"
         REGISTRY = "registry.hub.docker.com"
-        DEPLOYMENT_NAME = "calypso-deployment"
+        DEPLOYMENT_NAME = "back-end-deployment"
         IMAGE_NAME = "${env.BUILD_ID}_${env.ENV_TYPE}_${env.GIT_COMMIT}"
         DOCKER_BUILD_NAME = "${env.REGISTRY_HOSTNAME}/${env.PROJECT}:${env.IMAGE_NAME}"
     }
