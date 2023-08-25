@@ -1,6 +1,8 @@
 import * as nodemailer from 'nodemailer';
 import { ApiConfigService } from '../helpers/api.config.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class EmailAdapter {
   constructor(private apiConfigService: ApiConfigService) {}
 

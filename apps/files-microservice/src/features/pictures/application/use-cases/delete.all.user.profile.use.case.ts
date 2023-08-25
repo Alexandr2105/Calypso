@@ -21,7 +21,7 @@ export class DeleteAllUserProfileUseCase
 
   async execute(command: DeleteAllUserProfileCommand): Promise<any> {
     await this.avatarRepository.deleteAvatarInfo(command.userId);
-    await this.fileStorage.deleteFolder(
+    await this.fileStorage.deleteUserFolders(
       this.apiConfigService.bucketName,
       command.userId,
     );

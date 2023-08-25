@@ -5,7 +5,7 @@ import {
   HttpStatus,
   Inject,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma-service';
+import { PrismaService } from '../../common/prisma/prisma-service';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 

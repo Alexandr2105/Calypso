@@ -4,12 +4,9 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  // url               = env("DATABASE_URL")
-  // directUrl         = env("DIRECT_URL")
-  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  url               = "postgres://VladislavShults:XhD8Osri1KYt@ep-yellow-surf-886939.eu-central-1.aws.neon.tech/neondb?options=project%3Dep-yellow-surf-886939"
-  directUrl         = "postgres://VladislavShults:XhD8Osri1KYt@ep-yellow-surf-886939.eu-central-1.aws.neon.tech/neondb?connect_timeout=10"
-  shadowDatabaseUrl = "postgres://VladislavShults:XhD8Osri1KYt@ep-yellow-surf-886939.eu-central-1.aws.neon.tech:5432/neondb"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model User {

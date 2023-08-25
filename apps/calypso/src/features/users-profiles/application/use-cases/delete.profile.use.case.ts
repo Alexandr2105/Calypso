@@ -2,7 +2,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersProfilesRepository } from '../../infrastructure/users.profiles.repository';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
 
 export class DeleteProfileCommand {
   constructor(public userId: string) {}
@@ -14,7 +13,7 @@ export class DeleteProfileUseCase
 {
   constructor(
     private usersProfileRepository: UsersProfilesRepository,
-    @Inject('FILES_SERVICE_TCP') private clientTCP: ClientProxy,
+    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
   ) {}
 
   async execute(command: DeleteProfileCommand): Promise<boolean> {
@@ -24,7 +23,7 @@ export class DeleteProfileUseCase
     );
     if (!profile) throw new NotFoundException();
     await this.usersProfileRepository.deleteProfile(command.userId);
-    await firstValueFrom(this.clientTCP.send(pattern, command.userId));
+    this.clientRMQ.emit(pattern, command.userId);
     return true;
   }
 }

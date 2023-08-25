@@ -12,6 +12,7 @@ import { ApiConfigService } from '../helpers/api.config.service';
 @Injectable()
 export class FileStorageAdapterS3 {
   s3Client: S3Client;
+
   constructor(private apiConfigService: ApiConfigService) {
     this.s3Client = new S3Client({
       region: apiConfigService.s3Region,
@@ -80,9 +81,16 @@ export class FileStorageAdapterS3 {
     }
   }
 
-  async deleteFolder(bucket: string, folderName: string): Promise<boolean> {
+  async deletePostFolder(
+    bucket: string,
+    folderName: string,
+    userId: string,
+  ): Promise<boolean> {
     const objects = await this.s3Client.send(
-      new ListObjectsCommand({ Bucket: bucket, Prefix: folderName }),
+      new ListObjectsCommand({
+        Bucket: bucket,
+        Prefix: `${userId}/posts/${folderName}`,
+      }),
     );
 
     if (objects.Contents && objects.Contents.length > 0) {
@@ -99,6 +107,30 @@ export class FileStorageAdapterS3 {
     } else {
       return true;
       // console.log(`Папка "${folderName}" пустая или не существует.`);
+    }
+  }
+
+  async deleteUserFolders(bucket: string, userId: string): Promise<boolean> {
+    const objects = await this.s3Client.send(
+      new ListObjectsCommand({
+        Bucket: bucket,
+        Prefix: userId,
+      }),
+    );
+
+    if (objects.Contents && objects.Contents.length > 0) {
+      const objectsToDelete = objects.Contents.map((obj) => ({
+        Key: obj.Key,
+      }));
+      await this.s3Client.send(
+        new DeleteObjectsCommand({
+          Bucket: bucket,
+          Delete: { Objects: objectsToDelete },
+        }),
+      );
+      return true;
+    } else {
+      return true;
     }
   }
 }

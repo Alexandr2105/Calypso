@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { CommandBus } from '@nestjs/cqrs';
 import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.use.case';
 import { AvatarsDto } from '../dto/avatars.dto';
@@ -9,6 +9,7 @@ import { GetImagesForPostCommand } from '../application/use-cases/get.images.for
 import { DeletePostImagesCommand } from '../application/use-cases/delete.post.images.use.case';
 import { DeleteProfileCommand } from '../application/use-cases/delete.profile.use.case';
 import { DeleteAllUserProfileCommand } from '../application/use-cases/delete.all.user.profile.use.case';
+import { DelPostsDto } from '../dto/del.posts.dto';
 
 @Controller('saveAvatars')
 export class PictureController {
@@ -31,21 +32,18 @@ export class PictureController {
     return this.commandBus.execute(new GetImagesForPostCommand(data));
   }
 
-  @MessagePattern({ cmd: 'deletePost' })
-  async deleteImages(data: string) {
+  @EventPattern({ cmd: 'deletePost' })
+  async deleteImages(data: DelPostsDto) {
     await this.commandBus.execute(new DeletePostImagesCommand(data));
-    return true;
   }
 
-  @MessagePattern({ cmd: 'deleteProfile' })
+  @EventPattern({ cmd: 'deleteProfile' })
   async deleteProfile(id: string) {
     await this.commandBus.execute(new DeleteProfileCommand(id));
-    return true;
   }
 
-  @MessagePattern({ cmd: 'deleteUser' })
+  @EventPattern({ cmd: 'deleteUser' })
   async deleteAllUserProfile(userId: string) {
     await this.commandBus.execute(new DeleteAllUserProfileCommand(userId));
-    return true;
   }
 }

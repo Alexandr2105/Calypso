@@ -15,7 +15,7 @@ import { BcryptService } from './common/bcript/bcript.service';
 import { UsersRepository } from './features/users/infrastructure/users.repository';
 import { EmailAdapter } from './common/SMTP-adapter/email-adapter';
 import { CheckEmailInDb } from './features/users/validation/check-email-in-db.service';
-import { TestingController } from './common/testing/testing.controller';
+import { TestingController } from './features/testing/testing.controller';
 import { SendPasswordRecoveryLinkUseCase } from './features/auth/application/use-cases/send-password-recovery-link.use-case';
 import { UsersService } from './features/users/application/users.service';
 import { ChangePasswordUseCase } from './features/auth/application/use-cases/change-password.use-case';
@@ -109,8 +109,9 @@ const Repositories = [
         name: 'FILES_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
-          host: process.env.FILES_SERVICE_HOST || 'files-microservice-service',
-          port: Number(process.env.FILES_SERVICE_PORT || '3043'),
+          // host: process.env.FILES_SERVICE_HOST || 'files-microservice-service',
+          // port: Number(process.env.FILES_SERVICE_PORT || '3043'),
+          port: 3001,
         },
       },
       {
