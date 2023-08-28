@@ -97,6 +97,11 @@ spec:
                  secretKeyRef:
                    name: back-end-config-secret
                    key: FILES_SERVICE_PORT
+             - name: NODE_ENV
+               valueFrom:
+                 secretKeyRef:
+                   name: back-end-config-secret
+                   key: NODE_ENV
              - name: SHADOW_DATABASE_URL
                valueFrom:
                  secretKeyRef:
