@@ -11,6 +11,7 @@ export class RecaptchaValidator implements ValidatorConstraintInterface {
   constructor(private apiConfigService: ApiConfigService) {}
 
   async validate(value: any): Promise<boolean> {
+    console.log(value);
     const secretKey = this.apiConfigService.recaptchaSecretKey;
 
     const result = await fetch(
