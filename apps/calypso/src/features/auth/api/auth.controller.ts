@@ -470,13 +470,13 @@ export class AuthController {
     }
   }
 
-  // @Get('callback/google')
-  // async getGoogleCode() {
-  //   console.log('code');
-  // }
-  //
-  // @Get('callback/github')
-  // async getGithubCode() {
-  //   console.log('code');
-  // }
+  @Get('callback/google')
+  async getGoogleCode() {
+    console.log('code');
+  }
+
+  @Get('callback/github')
+  async getGithubCode() {
+    console.log('code');
+  }
 }
