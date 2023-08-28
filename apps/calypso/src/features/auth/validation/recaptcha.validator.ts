@@ -14,6 +14,8 @@ export class RecaptchaValidator implements ValidatorConstraintInterface {
     console.log(value);
     const secretKey = this.apiConfigService.recaptchaSecretKey;
 
+    console.log(secretKey);
+
     const result = await fetch(
       'https://www.google.com/recaptcha/api/siteverify',
       {
