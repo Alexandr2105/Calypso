@@ -147,7 +147,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Password recovery' })
   @ApiResponseForSwagger(
     HttpStatus.NO_CONTENT,
-    "Even if the current email address is not registered (to prevent the user's email from being detected)",
+    "Even if the current email address is not registered (to prevent the user's email from being detected)  ",
   )
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
