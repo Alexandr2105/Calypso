@@ -11,10 +11,7 @@ export class RecaptchaValidator implements ValidatorConstraintInterface {
   constructor(private apiConfigService: ApiConfigService) {}
 
   async validate(value: any): Promise<boolean> {
-    console.log(value);
     const secretKey = this.apiConfigService.recaptchaSecretKey;
-
-    console.log(secretKey);
 
     const result = await fetch(
       'https://www.google.com/recaptcha/api/siteverify',
@@ -26,8 +23,6 @@ export class RecaptchaValidator implements ValidatorConstraintInterface {
     );
 
     const response = await result.json();
-
-    console.log(response);
 
     return response.success;
   }
