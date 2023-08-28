@@ -36,7 +36,7 @@ import { DeleteProfileCommand } from '../application/use-cases/delete.profile.us
 @Controller('users/profiles')
 export class UsersProfilesController {
   constructor(
-    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
+    @Inject('FILES_SERVICE_TCP') private clientTCP: ClientProxy,
     private commandBus: CommandBus,
   ) {}
 
@@ -85,7 +85,7 @@ export class UsersProfilesController {
       new GetUserByIdCommand(req.user.id),
     );
     const url = await firstValueFrom(
-      this.clientRMQ.send(pattern, {
+      this.clientTCP.send(pattern, {
         userId: user.id,
         avatar: avatar.buffer,
       }),

@@ -63,8 +63,11 @@ export class AuthController {
     'List of possible errors:<br>1.User with this email is already registered<br> ' +
       '2.Wrong length\n',
   )
-  async registrationUsers(@Body() body: CreateUserDto): Promise<void> {
-    // res.status(204).json({});
+  async registrationUsers(
+    @Body() body: CreateUserDto,
+    @Res() res,
+  ): Promise<void> {
+    res.status(204).json({});
     await this.commandBus.execute(new RegistrationUserCommand(body));
   }
 

@@ -147,7 +147,7 @@ export class PostsController {
       new DeletePostCommand(param.postId, req.user.id),
     );
     const pattern = { cmd: 'deletePost' };
-    await firstValueFrom(this.clientRMQ.send(pattern, param.postId));
+    this.clientRMQ.emit(pattern, { userId: req.user.id, postId: param.postId });
   }
 
   @UseGuards(JwtAuthGuard)
@@ -185,9 +185,14 @@ export class PostsController {
     @Req() req,
     @Param('userId') userId: string,
     @Query() query,
+    // @Body() body: IdForCursorDto,
   ) {
     if (req.user.id !== userId) throw new ForbiddenException();
     const queryParam = this.queryHelper.queryParamHelper(query);
-    return this.queryRepository.getPostsAndPhotos(req.user.id, queryParam);
+    return this.queryRepository.getPostsAndPhotos(
+      req.user.id,
+      // body.postId,
+      queryParam,
+    );
   }
 }

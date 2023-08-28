@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: DEPLOYMENT_NAME
+  namespace: NAMESPACE
+  labels:
+    app: PROJECT
+spec:
+  selector:
+    matchLabels:
+      project: PROJECT
+  template:
+    metadata:
+      namespace: NAMESPACE
+      labels:
+        project: PROJECT
+    spec:
+      containers:
+         - name: PROJECT
+           image: REGISTRY_HOSTNAME/PROJECT:TAG_VERSION
+           ports:
+             - containerPort: PORT_CONTAINER
+
+           env:
+             - name: SECRET_ACCESS_KEY
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: SECRET_ACCESS_KEY
+             - name: S3_REGION
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: S3_REGION
+             - name: BASE_URL_AWS
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: BASE_URL_AWS
+             - name: BUCKET_NAME
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: BUCKET_NAME
+             - name: MONGO_DB
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: MONGO_DB
+             - name: RABBIT_MQ
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: RABBIT_MQ
+             - name: ACCESS_KEY_ID
+               valueFrom:
+                 secretKeyRef:
+                   name: files-microservice-config-secret
+                   key: ACCESS_KEY_ID

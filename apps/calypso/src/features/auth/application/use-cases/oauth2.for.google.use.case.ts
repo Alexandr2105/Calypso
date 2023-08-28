@@ -1,9 +1,9 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { settings } from '../../../../settings';
 import axios from 'axios';
 import { Jwt } from '../../../../common/jwt/jwt';
 import { OauthUserInfoDto } from '../../dto/oauth.user.info.dto';
 import { BadRequestException } from '@nestjs/common';
+import { ApiConfigService } from '../../../../common/helpers/api.config.service';
 
 export class OAuth2ForGoogleCommand {
   constructor(public code: string) {}
@@ -13,16 +13,16 @@ export class OAuth2ForGoogleCommand {
 export class OAuth2ForGoogleUseCase
   implements ICommandHandler<OAuth2ForGoogleCommand>
 {
-  constructor(private jwt: Jwt) {}
+  constructor(private jwt: Jwt, private apiConfigService: ApiConfigService) {}
 
   async execute(
     command: OAuth2ForGoogleCommand,
   ): Promise<Promise<OauthUserInfoDto> | false> {
     const data = {
       code: command.code,
-      client_id: settings.GOOGLE_ID,
-      client_secret: settings.GOOGLE_SECRET,
-      redirect_uri: settings.GOOGLE_REDIRECT_URL,
+      client_id: this.apiConfigService.googleId,
+      client_secret: this.apiConfigService.googleSecret,
+      redirect_uri: this.apiConfigService.googleRedirectUrl,
       grant_type: 'authorization_code',
     };
     const tokenUrl = 'https://oauth2.googleapis.com/token';

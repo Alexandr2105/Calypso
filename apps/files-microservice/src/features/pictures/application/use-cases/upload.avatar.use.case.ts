@@ -6,7 +6,7 @@ import { AvatarDocument } from '../../schemas/avatar.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import sharp from 'sharp';
-import { settings } from '../../../../settings';
+import { ApiConfigService } from '../../../../common/helpers/api.config.service';
 
 export class UploadAvatarCommand {
   constructor(public userId: string, public avatar: Buffer) {}
@@ -19,6 +19,7 @@ export class UploadAvatarUseCase
   constructor(
     private fileStorageAdapter: FileStorageAdapterS3,
     private avatarsRepository: AvatarsRepository,
+    private apiConfigService: ApiConfigService,
     @InjectModel('avatar') private avatar: Model<AvatarDocument>,
   ) {}
 
@@ -31,6 +32,7 @@ export class UploadAvatarUseCase
         userAvatar.key,
       );
     }
+
     const avatar = await resizePhoto(command.avatar);
     const infoAboutSaveAvatar = await this.fileStorageAdapter.saveAvatar(
       command.userId,
@@ -40,7 +42,7 @@ export class UploadAvatarUseCase
 
     const avatarDocument: AvatarDocument = new this.avatar();
     avatarDocument.id = infoAboutSaveAvatar.id;
-    avatarDocument.url = `${settings.BASE_URL_AWS}/${settings.BACKET_NAME}/${infoAboutSaveAvatar.key}`;
+    avatarDocument.url = `${this.apiConfigService.baseUrlAws}/${this.apiConfigService.bucketName}/${infoAboutSaveAvatar.key}`;
     avatarDocument.bucket = infoAboutSaveAvatar.bucket;
     avatarDocument.userId = command.userId;
     avatarDocument.key = infoAboutSaveAvatar.key;

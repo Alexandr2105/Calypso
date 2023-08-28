@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { settings } from '../../../../settings';
 import axios from 'axios';
 import { BadRequestException } from '@nestjs/common';
+import { ApiConfigService } from '../../../../common/helpers/api.config.service';
 
 export class OAuth2ForGithubCommand {
   constructor(public code: string) {}
@@ -11,12 +11,14 @@ export class OAuth2ForGithubCommand {
 export class OAuth2ForGithubUseCase
   implements ICommandHandler<OAuth2ForGithubCommand>
 {
+  constructor(private apiConfigService: ApiConfigService) {}
+
   async execute(command: OAuth2ForGithubCommand) {
     const data = {
       code: command.code,
-      client_id: settings.GITHUB_ID,
-      client_secret: settings.GITHUB_SECRET,
-      redirect_uri: settings.GITHUB_REDIRECT_URL,
+      client_id: this.apiConfigService.githubId,
+      client_secret: this.apiConfigService.githubSecret,
+      redirect_uri: this.apiConfigService.githubRedirectUrl,
       grant_type: 'authorization_code',
     };
     const tokenUrl = 'https://github.com/login/oauth/access_token';

@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { FilesMicroserviceModule } from './files-microservice.module';
-import { settings } from './settings';
+import * as process from 'process';
 
 export async function bootstrap() {
   const microserviceRMQ =
@@ -10,7 +10,7 @@ export async function bootstrap() {
       {
         transport: Transport.RMQ,
         options: {
-          urls: [settings.RABBIT_MQ],
+          urls: [process.env.RABBIT_MQ],
           queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
@@ -25,11 +25,15 @@ export async function bootstrap() {
       FilesMicroserviceModule,
       {
         transport: Transport.TCP,
-        options: { port: 3001 },
+        options: {
+          host: '0.0.0.0',
+          port: Number(process.env.PORT),
+          // port: 3001,
+        },
       },
     );
   await microserviceTCP.listen();
 
-  console.log('Microservices are starting');
+  console.log('Microservices are starting ' + process.env.PORT);
 }
 bootstrap();

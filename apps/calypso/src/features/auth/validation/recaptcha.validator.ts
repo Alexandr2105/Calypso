@@ -3,13 +3,15 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { Injectable } from '@nestjs/common';
-import { settings } from '../../../settings';
+import { ApiConfigService } from '../../../common/helpers/api.config.service';
 
 @ValidatorConstraint({ name: 'recaptchaValidator', async: true })
 @Injectable()
 export class RecaptchaValidator implements ValidatorConstraintInterface {
+  constructor(private apiConfigService: ApiConfigService) {}
+
   async validate(value: any): Promise<boolean> {
-    const secretKey = settings.RECAPTCHA_SECRET_KEY;
+    const secretKey = this.apiConfigService.recaptchaSecretKey;
 
     const result = await fetch(
       'https://www.google.com/recaptcha/api/siteverify',

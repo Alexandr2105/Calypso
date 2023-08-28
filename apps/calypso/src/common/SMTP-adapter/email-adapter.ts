@@ -1,7 +1,11 @@
 import * as nodemailer from 'nodemailer';
-import { settings } from '../../settings';
+import { ApiConfigService } from '../helpers/api.config.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class EmailAdapter {
+  constructor(private apiConfigService: ApiConfigService) {}
+
   async sendEmailConfirmationLink(email: string, code: string) {
     const transporter = this.createTransport();
     await transporter.sendMail({
@@ -9,7 +13,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Confirmation link',
       text: 'Для подтверждения регистрации пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}/auth/registration/check?code=${code}">ссылка</a> для подтверждения почты</p>`,
+      html: `<p>Привет, вот <a href="${this.apiConfigService.addressSiteForConfirmation}/auth/registration/check?code=${code}">ссылка</a> для подтверждения почты</p>`,
     });
   }
 
@@ -20,7 +24,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Password recovery link',
       text: 'Для изменения пароля пройдите по ссылке',
-      html: `<p>Привет, вот <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}/auth/new_password?code=${code}">ссылка</a> для обновления пароля</p>`,
+      html: `<p>Привет, вот <a href="${this.apiConfigService.addressSiteForConfirmation}/auth/new_password?code=${code}">ссылка</a> для обновления пароля</p>`,
     });
   }
 
@@ -41,7 +45,7 @@ export class EmailAdapter {
       to: email,
       subject: 'Merge accounts',
       text: 'Для объединения аккаунтов пройдите по ссылке',
-      html: `<p>Пользователь с таким ${email} уже зарегистрирован. Если это вы, то пройдите по <a href="${settings.ADDRESS_SITE_FOR_CONFIRMATION}?code=${code}">ссылке</a></p>`,
+      html: `<p>Пользователь с таким ${email} уже зарегистрирован. Если это вы, то пройдите по <a href="${this.apiConfigService.addressSiteForConfirmation}?code=${code}">ссылке</a></p>`,
     });
   }
 
@@ -50,8 +54,8 @@ export class EmailAdapter {
       service: 'gmail',
       host: 'smtp.gmail.com',
       auth: {
-        user: process.env.NODEMAILER_USER,
-        pass: process.env.NODEMAILER_PASSWORD,
+        user: this.apiConfigService.nodeMailerUser,
+        pass: this.apiConfigService.nodeMailerPassword,
       },
     });
   }

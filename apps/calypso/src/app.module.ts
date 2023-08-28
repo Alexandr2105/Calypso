@@ -15,7 +15,7 @@ import { BcryptService } from './common/bcript/bcript.service';
 import { UsersRepository } from './features/users/infrastructure/users.repository';
 import { EmailAdapter } from './common/SMTP-adapter/email-adapter';
 import { CheckEmailInDb } from './features/users/validation/check-email-in-db.service';
-import { TestingController } from './common/testing/testing.controller';
+import { TestingController } from './features/testing/testing.controller';
 import { SendPasswordRecoveryLinkUseCase } from './features/auth/application/use-cases/send-password-recovery-link.use-case';
 import { UsersService } from './features/users/application/users.service';
 import { ChangePasswordUseCase } from './features/auth/application/use-cases/change-password.use-case';
@@ -57,9 +57,18 @@ import { MergeGoogleAccountUseCase } from './features/auth/application/use-cases
 import { UpdateConfirmationCodeUseCase } from './features/auth/application/use-cases/update.confirmation.code.use.case';
 import { OAuth2ForGithubUseCase } from './features/auth/application/use-cases/oauth2ForGithubUseCase';
 import { MergeGithubAccountUseCase } from './features/auth/application/use-cases/merge.github.account.use.case';
+import { ApiConfigService } from './common/helpers/api.config.service';
+import { ConfigModule } from '@nestjs/config';
+import * as process from 'process';
+import { RecaptchaValidator } from './features/auth/validation/recaptcha.validator';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
-const Validators = [CheckEmailInDb, CheckConfirmationCode, CheckPostId];
+const Validators = [
+  CheckEmailInDb,
+  CheckConfirmationCode,
+  CheckPostId,
+  RecaptchaValidator,
+];
 const UseCases = [
   RegistrationUserUseCase,
   CreateConfirmationInfoForUserUseCase,
@@ -98,19 +107,24 @@ const Repositories = [
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ClientsModule.register([
       {
         name: 'FILES_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
-          port: 3001,
+          host: process.env.FILES_SERVICE_HOST || 'files-microservice-service',
+          port: Number(process.env.FILES_SERVICE_PORT || '3043'),
+          // port: 3001,
         },
       },
       {
         name: 'FILES_SERVICE_RMQ',
         transport: Transport.RMQ,
         options: {
-          urls: [settings.RABBIT_MQ],
+          urls: [process.env.RABBIT_MQ],
           queue: 'FILES_SERVICE_RMQ',
           queueOptions: {
             durable: false,
@@ -146,6 +160,7 @@ const Repositories = [
     ...Repositories,
     Jwt,
     QueryHelper,
+    ApiConfigService,
   ],
 })
 export class AppModule {}
