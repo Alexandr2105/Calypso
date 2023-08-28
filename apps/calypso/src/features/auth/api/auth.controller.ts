@@ -136,6 +136,7 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: false,
       secure: false,
+      sameSite: 'none',
       // domain: '.vercel.com',
     });
 
