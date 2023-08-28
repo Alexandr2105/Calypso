@@ -25,6 +25,8 @@ export class RecaptchaValidator implements ValidatorConstraintInterface {
 
     const response = await result.json();
 
+    console.log(response);
+
     return response.success;
   }
 
