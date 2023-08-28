@@ -11,13 +11,19 @@ import cookieParser from 'cookie-parser';
 export const createApp = (app: INestApplication) => {
   app.use(cookieParser());
   app.enableCors({
-    origin: [
-      'https://kusto-git-stage-gord.vercel.app/',
-      'http://localhost:3000',
-    ],
+    origin: ['http://localhost:3000', '*'],
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+    allowedHeaders: ['Accept', 'Content-Type', 'Authorization'],
+    // origin: [
+    //   'https://kusto-git-stage-gord.vercel.app/',
+    //   'http://localhost:3000',
+    // ],
     // methods: ['GET', 'POST'],
     // allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
+    // credentials: true,
   });
   // app.enableCors();
   app.useGlobalPipes(
