@@ -60,9 +60,15 @@ import { MergeGithubAccountUseCase } from './features/auth/application/use-cases
 import { ApiConfigService } from './common/helpers/api.config.service';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
+import { RecaptchaValidator } from './features/auth/validation/recaptcha.validator';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
-const Validators = [CheckEmailInDb, CheckConfirmationCode, CheckPostId];
+const Validators = [
+  CheckEmailInDb,
+  CheckConfirmationCode,
+  CheckPostId,
+  RecaptchaValidator,
+];
 const UseCases = [
   RegistrationUserUseCase,
   CreateConfirmationInfoForUserUseCase,

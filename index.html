@@ -11,7 +11,7 @@ recaptcha testing
   <br/>
   <button id="reset-password-button"
           class="g-recaptcha"
-          data-sitekey="6Le96RMnAAAAAE9dOL6eVQHJ1HYsNAo4OUbDGWIg"
+          data-sitekey="6LfzA8wnAAAAAA57MQH3xVO0jhHQjAn4iTJyo8tv"
           data-callback='onSubmit'
           data-action='submit'>Submit</button>
 </form>
@@ -22,7 +22,7 @@ recaptcha testing
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    fetch('http://localhost:3000/auth/password-recovery',{
+    fetch('http://localhost:3000/api/v1/auth/password-recovery',{
       headers:headers,
       method:"POST",
       body:JSON.stringify({

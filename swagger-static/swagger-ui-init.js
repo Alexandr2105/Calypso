@@ -1218,10 +1218,14 @@ window.onload = function() {
           "properties": {
             "email": {
               "type": "string"
+            },
+            "recaptchaValue": {
+              "type": "string"
             }
           },
           "required": [
-            "email"
+            "email",
+            "recaptchaValue"
           ]
         },
         "NewPasswordDto": {
