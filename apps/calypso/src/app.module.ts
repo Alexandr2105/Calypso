@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { RegistrationUserUseCase } from './features/auth/application/use-cases/registration-user.use-case';
 import { CreateConfirmationInfoForUserUseCase } from './features/auth/application/use-cases/create-confirmation-info.use-case';
 import { SendConfirmationLinkUseCase } from './features/auth/application/use-cases/send-confirmation-link.use-case';
@@ -19,7 +17,6 @@ import { TestingController } from './features/testing/testing.controller';
 import { SendPasswordRecoveryLinkUseCase } from './features/auth/application/use-cases/send-password-recovery-link.use-case';
 import { UsersService } from './features/users/application/users.service';
 import { ChangePasswordUseCase } from './features/auth/application/use-cases/change-password.use-case';
-import { settings } from './settings';
 import { LocalStrategy } from './common/strategies/local.strategy';
 import { Jwt } from './common/jwt/jwt';
 import { JwtModule } from '@nestjs/jwt';
@@ -136,10 +133,10 @@ const Repositories = [
     CqrsModule,
     JwtModule.register({}),
     PassportModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', '..', 'swagger-static'),
-      serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', '..', '..', 'swagger-static'),
+    //   serveRoot: settings.SWAGGER === 'development' ? '/' : '/swagger',
+    // }),
   ],
   controllers: [
     AppController,
