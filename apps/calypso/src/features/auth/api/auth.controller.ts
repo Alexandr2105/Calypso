@@ -231,10 +231,10 @@ export class AuthController {
       ),
     );
     res.cookie('refreshToken', refreshToken, {
-      httpOnly: false,
-      secure: false,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
       // domain: '.vercel.com',
-      // sameSite: 'None',
     });
     res.send(accessToken);
   }
@@ -298,8 +298,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
@@ -350,8 +351,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
@@ -408,8 +410,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
@@ -461,8 +464,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
