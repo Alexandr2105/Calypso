@@ -45,7 +45,6 @@ import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google
 import { OauthCodeDto } from '../dto/oauth.code.dto';
 import { OAuth2ForGithubCommand } from '../application/use-cases/oauth2ForGithubUseCase';
 import { MergeGithubAccountCommand } from '../application/use-cases/merge.github.account.use.case';
-import e from 'express';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -133,9 +132,6 @@ export class AuthController {
         req.headers['user-agent'],
       ),
     );
-
-    const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 30);
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
