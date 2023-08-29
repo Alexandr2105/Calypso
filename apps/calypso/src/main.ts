@@ -1,11 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { createWriteStream } from 'fs';
-import { get } from 'http';
 import { HttpExceptionFilter } from './exception.filter';
 import { useContainer } from 'class-validator';
-import { settings } from './settings';
 import { createApp } from './common/helpers/createApp';
 import * as process from 'process';
 
@@ -29,8 +26,6 @@ export async function bootstrap() {
   await app.listen(process.env.PORT, () => {
     console.log(`App started at ${process.env.PORT} port`);
   });
-
-  console.log(process.env.NODE_ENV);
 
   // get the swagger json file (if app is running in development mode)
   // if (process.env.NODE_ENV === 'development') {
