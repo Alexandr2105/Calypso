@@ -39,13 +39,19 @@ export class OAuth2ForGithubUseCase
           { message: 'Bad verification code', field: 'accessToken' },
         ]);
       });
-    if (!userInfo.data.email) {
-      throw new BadRequestException([
-        { message: 'Email not specified or private', field: 'email' },
-      ]);
-    }
+    const userEmailsInfo = await axios
+      .get('https://api.github.com/user/emails', {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException([
+          { message: 'Bad verification code', field: 'accessToken' },
+        ]);
+      });
     return {
-      email: userInfo.data.email,
+      email: userEmailsInfo.data[0].email,
       avatar: userInfo.data.avatar_url,
       login: userInfo.data.login,
     };

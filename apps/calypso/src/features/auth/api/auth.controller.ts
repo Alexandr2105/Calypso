@@ -475,14 +475,4 @@ export class AuthController {
       await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
     }
   }
-
-  // @Get('callback/google')
-  // async getGoogleCode() {
-  //   console.log('code');
-  // }
-  //
-  // @Get('callback/github')
-  // async getGithubCode() {
-  //   console.log('code');
-  // }
 }
