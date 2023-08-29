@@ -223,6 +223,7 @@ export class AuthController {
   @UseGuards(RefreshAuthGuard)
   @Post('refresh-token')
   async updateRefreshToken(@Req() req, @Res() res) {
+    console.log(req.user.deviceId);
     const { accessToken, refreshToken } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
         req.user.userId,

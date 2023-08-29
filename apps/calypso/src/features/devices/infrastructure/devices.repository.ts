@@ -19,6 +19,7 @@ export class DevicesRepository {
   }
 
   async saveInfoRefreshToken(info: RefreshTokenDataEntity) {
+    console.log(info);
     await this.prisma.refreshTokenData.create({ data: info });
   }
 

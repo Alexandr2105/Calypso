@@ -2,6 +2,7 @@ import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Jwt } from '../../../../common/jwt/jwt';
 import { UsersProfilesRepository } from '../../../users-profiles/infrastructure/users.profiles.repository';
 import { SaveInfoAboutDevicesUserCommand } from '../../../devices/application/use-cases/save.info.about.devices.user.use.case';
+import { UpdateInfoAboutDevicesUserCommand } from '../../../devices/application/use-cases/update.info.about.devices.user.use.case';
 
 export class CreateAccessAndRefreshTokensCommand {
   constructor(
@@ -29,8 +30,16 @@ export class CreateAccessAndRefreshTokensUseCase
     );
     const profile = await this.profileRepo.getProfile(command.userId);
 
+    // await this.commandBus.execute(
+    //   new SaveInfoAboutDevicesUserCommand(
+    //     refreshToken,
+    //     command.ip,
+    //     command.deviceName,
+    //   ),
+    // );
+
     await this.commandBus.execute(
-      new SaveInfoAboutDevicesUserCommand(
+      new UpdateInfoAboutDevicesUserCommand(
         refreshToken,
         command.ip,
         command.deviceName,
