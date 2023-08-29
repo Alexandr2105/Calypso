@@ -223,8 +223,7 @@ export class AuthController {
   @UseGuards(RefreshAuthGuard)
   @Post('refresh-token')
   async updateRefreshToken(@Req() req, @Res() res) {
-    console.log(req.user.deviceId);
-    const { accessToken, refreshToken } = await this.commandBus.execute(
+    const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
         req.user.userId,
         req.user.deviceId,
@@ -236,9 +235,9 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      // domain: '.vercel.com',
+      // domain: '.vercel.app',
     });
-    res.send(accessToken);
+    res.send({ ...accessToken, profile: info });
   }
 
   @HttpCode(HttpStatus.OK)
