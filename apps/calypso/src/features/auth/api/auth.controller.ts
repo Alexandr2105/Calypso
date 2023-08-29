@@ -141,7 +141,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      expires: expirationDate,
+      // expires: expirationDate,
       // domain: '.vercel.app',
     });
 
