@@ -30,21 +30,21 @@ export class CreateAccessAndRefreshTokensUseCase
     );
     const profile = await this.profileRepo.getProfile(command.userId);
 
-    // await this.commandBus.execute(
-    //   new SaveInfoAboutDevicesUserCommand(
-    //     refreshToken,
-    //     command.ip,
-    //     command.deviceName,
-    //   ),
-    // );
-
     await this.commandBus.execute(
-      new UpdateInfoAboutDevicesUserCommand(
+      new SaveInfoAboutDevicesUserCommand(
         refreshToken,
         command.ip,
         command.deviceName,
       ),
     );
+
+    // await this.commandBus.execute(
+    //   new UpdateInfoAboutDevicesUserCommand(
+    //     refreshToken,
+    //     command.ip,
+    //     command.deviceName,
+    //   ),
+    // );
 
     return { accessToken, refreshToken, info: profile !== null };
   }
