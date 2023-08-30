@@ -136,8 +136,9 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: 'None',
-      // domain: '.vercel.com',
+      sameSite: 'none',
+      // expires: expirationDate,
+      // domain: '.vercel.app',
     });
 
     res.send({ ...accessToken, profile: info });
@@ -222,7 +223,7 @@ export class AuthController {
   @UseGuards(RefreshAuthGuard)
   @Post('refresh-token')
   async updateRefreshToken(@Req() req, @Res() res) {
-    const { accessToken, refreshToken } = await this.commandBus.execute(
+    const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
         req.user.userId,
         req.user.deviceId,
@@ -231,12 +232,12 @@ export class AuthController {
       ),
     );
     res.cookie('refreshToken', refreshToken, {
-      httpOnly: false,
-      secure: false,
-      // domain: '.vercel.com',
-      // sameSite: 'None',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      // domain: '.vercel.app',
     });
-    res.send(accessToken);
+    res.send({ ...accessToken, profile: info });
   }
 
   @HttpCode(HttpStatus.OK)
@@ -298,8 +299,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
@@ -350,8 +352,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
@@ -381,8 +384,7 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.Bad auth code<br> 2.Bad verification code' +
-      '<br> 3. Email not specified or private',
+    'List of possible errors:<br>1.Bad auth code<br> 2.Bad verification code',
   )
   @Post('github')
   async getAccessTokenForGithub(
@@ -408,8 +410,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
@@ -461,8 +464,9 @@ export class AuthController {
       );
 
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: false,
-        secure: false,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
       });
 
       res.send({ ...accessToken, profile: info });
@@ -470,14 +474,4 @@ export class AuthController {
       await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
     }
   }
-
-  // @Get('callback/google')
-  // async getGoogleCode() {
-  //   console.log('code');
-  // }
-  //
-  // @Get('callback/github')
-  // async getGithubCode() {
-  //   console.log('code');
-  // }
 }

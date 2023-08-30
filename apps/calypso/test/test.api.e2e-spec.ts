@@ -187,6 +187,7 @@ describe('Create test for auth', () => {
   //   const response2 = await test
   //     .post('/auth/refresh-token')
   //     .set('Cookie', refreshToken)
+  //     .set('user-agent', 'Chrome')
   //     .expect(200);
   //   const refreshToken2 = response2.headers['set-cookie'];
   //   expect(response2.body.accessToken).not.toEqual(response.body.accessToken);

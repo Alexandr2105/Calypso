@@ -16,6 +16,7 @@ export const createApp = (app: INestApplication) => {
       'http://localhost:3000',
       'http://localhost:63342',
       'https://kusto-git-stage-gord.vercel.app',
+      'https://kusto-gamma.vercel.app',
     ],
     methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
     preflightContinue: false,

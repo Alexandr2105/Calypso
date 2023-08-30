@@ -46,7 +46,6 @@ import { checkPhotoSum } from '../validation/check.photo.sum';
 @Controller('/posts')
 export class PostsController {
   constructor(
-    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
     @Inject('FILES_SERVICE_TCP') private clientTCP: ClientProxy,
     private commandBus: CommandBus,
     private postsRepository: PostsRepository,
@@ -81,7 +80,7 @@ export class PostsController {
       new CreatePostCommand(body.description, req.user.id),
     );
     const data = await firstValueFrom(
-      this.clientRMQ.send(pattern, {
+      this.clientTCP.send(pattern, {
         arrayImages: posts,
         postId: post.id,
         userId: post.userId,
@@ -147,7 +146,7 @@ export class PostsController {
       new DeletePostCommand(param.postId, req.user.id),
     );
     const pattern = { cmd: 'deletePost' };
-    this.clientRMQ.emit(pattern, { userId: req.user.id, postId: param.postId });
+    this.clientTCP.emit(pattern, { userId: req.user.id, postId: param.postId });
   }
 
   @UseGuards(JwtAuthGuard)
