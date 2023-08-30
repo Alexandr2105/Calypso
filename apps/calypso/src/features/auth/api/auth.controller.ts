@@ -384,8 +384,7 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
   @ApiResponseForSwagger(
     HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.Bad auth code<br> 2.Bad verification code' +
-      '<br> 3. Email not specified or private',
+    'List of possible errors:<br>1.Bad auth code<br> 2.Bad verification code',
   )
   @Post('github')
   async getAccessTokenForGithub(
