@@ -11,7 +11,7 @@ import { DeleteProfileCommand } from '../application/use-cases/delete.profile.us
 import { DeleteAllUserProfileCommand } from '../application/use-cases/delete.all.user.profile.use.case';
 import { DelPostsDto } from '../dto/del.posts.dto';
 
-@Controller('saveAvatars')
+@Controller('saveImages')
 export class PictureController {
   constructor(private commandBus: CommandBus) {}
 
