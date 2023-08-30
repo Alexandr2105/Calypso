@@ -25,7 +25,10 @@
     "start:dev:calypso": "nest start calypso --watch",
     "build:files-microservice": "nest build files-microservice",
     "start:files-microservice": "node dist/apps/files-microservice/main",
-    "start:dev:files-microservice": "nest start files-microservice --watch"
+    "start:dev:files-microservice": "nest start files-microservice --watch",
+    "build:payments-microservice": "nest build payments-microservice",
+    "start:payments-microservice": "node dist/apps/payments-microservice/main",
+    "start:dev:payments-microservice": "nest start payments-microservice --watch"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.363.0",
@@ -65,6 +68,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "sharp": "^0.32.1",
+    "stripe": "^13.3.0",
     "studio": "^0.13.5",
     "yarn": "^1.22.19"
   },

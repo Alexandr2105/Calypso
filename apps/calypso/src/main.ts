@@ -23,8 +23,8 @@ export async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/v1/swagger', app, document);
 
-  await app.listen(process.env.PORT, () => {
-    console.log(`App started at ${process.env.PORT} port`);
+  await app.listen(process.env.PORT || 3000, () => {
+    console.log(`App started at ${process.env.PORT || 3000} port`);
   });
 }
 bootstrap();

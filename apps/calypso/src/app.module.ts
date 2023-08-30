@@ -58,6 +58,8 @@ import { ApiConfigService } from './common/helpers/api.config.service';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
 import { RecaptchaValidator } from './features/auth/validation/recaptcha.validator';
+import { PaymentsController } from './features/payments/api/payments.controller';
+import { HttpModule } from '@nestjs/axios';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -114,6 +116,7 @@ const Repositories = [
         options: {
           host: process.env.FILES_SERVICE_HOST || 'files-microservice-service',
           port: Number(process.env.FILES_SERVICE_PORT || '3043'),
+          // host: '0.0.0.0',
           // port: 3001,
         },
       },
@@ -133,6 +136,7 @@ const Repositories = [
     CqrsModule,
     JwtModule.register({}),
     PassportModule,
+    HttpModule,
   ],
   controllers: [
     AppController,
@@ -141,6 +145,7 @@ const Repositories = [
     TestingController,
     UsersProfilesController,
     PostsController,
+    PaymentsController,
   ],
   providers: [
     AppService,
