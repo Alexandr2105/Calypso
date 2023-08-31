@@ -50,9 +50,6 @@ export class OAuth2ForGithubUseCase
           { message: 'Bad verification code', field: 'accessToken' },
         ]);
       });
-    console.log(userInfo.data);
-    console.log('-----------------');
-    console.log(userEmailsInfo.data);
     return {
       userId: userInfo.data.id.toString(),
       email: userEmailsInfo.data[0].email,

@@ -278,12 +278,10 @@ export class AuthController {
     @Req() req,
     @Res() res,
   ) {
-    console.log('Code ' + body.code);
     const code = decodeURIComponent(body.code);
     const userInfo: OauthUserInfoDto = await this.commandBus.execute(
       new OAuth2ForGoogleCommand(code),
     );
-    console.log('INfo' + userInfo);
     const userId = await this.commandBus.execute(
       new CreateUserOauth20Command(userInfo, 'google'),
     );

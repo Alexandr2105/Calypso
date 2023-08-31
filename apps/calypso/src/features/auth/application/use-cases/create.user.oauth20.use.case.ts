@@ -23,13 +23,10 @@ export class CreateUserOauth20UseCase
   ) {}
 
   async execute(command: CreateUserOauth20Command) {
-    console.log(command);
     const user: UserEntity = await this.usersRepository.getUserByEmail(
       command.userInfo.email,
     );
-    console.log('NO User');
     if (!user) {
-      console.log('eeeeeeeeeeeeeeeeeeeeeeee');
       const userId = randomUUID();
       const createdAt = new Date();
 
@@ -63,7 +60,7 @@ export class CreateUserOauth20UseCase
       return user.id;
     } else if (
       user.githubAuthId &&
-      user.googleAuthId !== 'false' &&
+      user.githubAuthId !== 'false' &&
       command.method === 'github'
     ) {
       return user.id;

@@ -33,11 +33,6 @@ export class OAuth2ForGoogleUseCase
     });
     const token = oauthClient.data.id_token;
     const userInfo: any = this.jwt.decodeUserByToken(token);
-    console.log(userInfo.data);
-    console.log('-----------------');
-    console.log(userInfo);
-    console.log('-----------------');
-    console.log(JSON.stringify(userInfo));
     return {
       userId: userInfo.sub,
       email: userInfo.email,
