@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "accountType" TEXT NOT NULL DEFAULT 'Personal',
+ALTER COLUMN "googleAuth" DROP NOT NULL,
+ALTER COLUMN "googleAuth" SET DATA TYPE TEXT,
+ALTER COLUMN "githubAuth" DROP NOT NULL,
+ALTER COLUMN "githubAuth" SET DATA TYPE TEXT;

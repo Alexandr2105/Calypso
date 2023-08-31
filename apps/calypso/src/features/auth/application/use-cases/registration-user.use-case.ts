@@ -33,8 +33,7 @@ export class RegistrationUserUseCase
       command.body.email,
       createdAt,
       false,
-      false,
-      false,
+      'Personal',
       hash,
     );
 

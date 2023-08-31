@@ -28,7 +28,7 @@ export class EmailAdapter {
     });
   }
 
-  async sendEmailGoogleRegistration(email: string) {
+  async sendEmailGoogleOrGithubRegistration(email: string) {
     const transporter = this.createTransport();
     await transporter.sendMail({
       from: '"KustoGram" <kustogram@gmail.com>',
@@ -38,16 +38,16 @@ export class EmailAdapter {
     });
   }
 
-  async sendEmailForMergeAccount(email: string, code: string) {
-    const transporter = this.createTransport();
-    await transporter.sendMail({
-      from: '"KustoGram" <kustogram@gmail.com>',
-      to: email,
-      subject: 'Merge accounts',
-      text: 'Для объединения аккаунтов пройдите по ссылке',
-      html: `<p>Пользователь с таким ${email} уже зарегистрирован. Если это вы, то пройдите по <a href="${this.apiConfigService.addressSiteForConfirmation}?code=${code}">ссылке</a></p>`,
-    });
-  }
+  // async sendEmailForMergeAccount(email: string, code: string) {
+  //   const transporter = this.createTransport();
+  //   await transporter.sendMail({
+  //     from: '"KustoGram" <kustogram@gmail.com>',
+  //     to: email,
+  //     subject: 'Merge accounts',
+  //     text: 'Для объединения аккаунтов пройдите по ссылке',
+  //     html: `<p>Пользователь с таким ${email} уже зарегистрирован. Если это вы, то пройдите по <a href="${this.apiConfigService.addressSiteForConfirmation}?code=${code}">ссылке</a></p>`,
+  //   });
+  // }
 
   private createTransport() {
     return nodemailer.createTransport({

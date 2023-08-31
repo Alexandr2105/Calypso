@@ -40,11 +40,8 @@ import { UserEntity } from '../../users/entities/user.entity';
 import { OauthUserInfoDto } from '../dto/oauth.user.info.dto';
 import { CreateUserOauth20Command } from '../application/use-cases/create.user.oauth20.use.case';
 import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
-import { ConfirmationInfoEntity } from '../../users/entities/confirmation-info.entity';
-import { MergeGoogleAccountCommand } from '../application/use-cases/merge.google.account.use.case';
 import { OauthCodeDto } from '../dto/oauth.code.dto';
 import { OAuth2ForGithubCommand } from '../application/use-cases/oauth2ForGithubUseCase';
-import { MergeGithubAccountCommand } from '../application/use-cases/merge.github.account.use.case';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -305,61 +302,6 @@ export class AuthController {
       });
 
       res.send({ ...accessToken, profile: info });
-    } else {
-      res.sendStatus(HttpStatus.NO_CONTENT);
-    }
-  }
-
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        accessToken: {
-          type: 'string',
-          description: 'Access token for authentication.',
-        },
-        profile: {
-          type: 'boolean',
-          description: 'Indicates if a profile exists.',
-        },
-      },
-    },
-  })
-  @ApiOperation({ summary: 'Merge accounts for google' })
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Incorrect confirmation code')
-  @Post('merge/google')
-  async mergeAccountsForGoogle(
-    @Body() body: RegistrationConformationDto,
-    @Req() req,
-    @Res() res,
-  ) {
-    if (body.status) {
-      const infoUser: ConfirmationInfoEntity = await this.commandBus.execute(
-        new ConfirmationEmailCommand(body.code),
-      );
-      await this.commandBus.execute(
-        new MergeGoogleAccountCommand(infoUser.userId),
-      );
-      const { accessToken, refreshToken, info } = await this.commandBus.execute(
-        new CreateAccessAndRefreshTokensCommand(
-          infoUser.userId,
-          randomUUID(),
-          req.ip,
-          req.headers['user-agent'],
-        ),
-      );
-
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-      });
-
-      res.send({ ...accessToken, profile: info });
-    } else {
-      await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
     }
   }
 
@@ -416,62 +358,7 @@ export class AuthController {
       });
 
       res.send({ ...accessToken, profile: info });
-    } else {
-      res.sendStatus(HttpStatus.NO_CONTENT);
     }
     return true;
-  }
-
-  @HttpCode(HttpStatus.OK)
-  @ApiResponse({
-    status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        accessToken: {
-          type: 'string',
-          description: 'Access token for authentication.',
-        },
-        profile: {
-          type: 'boolean',
-          description: 'Indicates if a profile exists.',
-        },
-      },
-    },
-  })
-  @ApiOperation({ summary: 'Merge accounts for github' })
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Incorrect confirmation code')
-  @Post('merge/github')
-  async mergeAccountsForGithub(
-    @Body() body: RegistrationConformationDto,
-    @Req() req,
-    @Res() res,
-  ) {
-    if (body.status) {
-      const infoUser: ConfirmationInfoEntity = await this.commandBus.execute(
-        new ConfirmationEmailCommand(body.code),
-      );
-      await this.commandBus.execute(
-        new MergeGithubAccountCommand(infoUser.userId),
-      );
-      const { accessToken, refreshToken, info } = await this.commandBus.execute(
-        new CreateAccessAndRefreshTokensCommand(
-          infoUser.userId,
-          randomUUID(),
-          req.ip,
-          req.headers['user-agent'],
-        ),
-      );
-
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-      });
-
-      res.send({ ...accessToken, profile: info });
-    } else {
-      await this.commandBus.execute(new ConfirmationEmailCommand(body.code));
-    }
   }
 }

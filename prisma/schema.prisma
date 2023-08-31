@@ -3,10 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  directUrl         = env("DIRECT_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -16,12 +15,13 @@ model User {
   createdAt         DateTime
   passwordHash      String?
   isDeleted         Boolean
-  googleAuth        Boolean
-  githubAuth        Boolean
+  googleAuthId      String?
+  githubAuthId      String?
+  accountType       String              @default("Personal")
   emailConfirmation EmailConfirmation?
+  userPost          Post[]
   refreshTokenData  RefreshTokenData[]
   userProfile       UserProfile?
-  userPost          Post[]
 }
 
 model EmailConfirmation {
@@ -32,18 +32,18 @@ model EmailConfirmation {
   user             User     @relation(fields: [userId], references: [id])
 }
 
-model RefreshTokenData{
+model RefreshTokenData {
   iat        Int
   exp        Int
   deviceId   String @id
   ip         String
   deviceName String
   userId     String
-  user       User   @relation(fields: [userId],references: [id])
+  user       User   @relation(fields: [userId], references: [id])
 }
 
-model UserProfile{
-  userId         String    @id
+model UserProfile {
+  userId         String  @id
   login          String
   firstName      String?
   lastName       String?
@@ -51,13 +51,13 @@ model UserProfile{
   city           String?
   userInfo       String?
   photo          String?
-  user           User      @relation(fields: [userId],references: [id])
+  user           User    @relation(fields: [userId], references: [id])
 }
 
-model Post{
-  id          String  @id
+model Post {
+  id          String   @id
   userId      String
   description String?
   createdAt   DateTime
-  user        User    @relation(fields: [userId],references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 }
