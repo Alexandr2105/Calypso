@@ -18,6 +18,7 @@ export class OAuth2ForGoogleUseCase
   async execute(
     command: OAuth2ForGoogleCommand,
   ): Promise<Promise<OauthUserInfoDto> | false> {
+    console.log(command.code);
     const data = {
       code: command.code,
       client_id: this.apiConfigService.googleId,
@@ -32,9 +33,11 @@ export class OAuth2ForGoogleUseCase
       ]);
     });
     const token = oauthClient.data.id_token;
+    console.log('Token ' + token);
     const userInfo: any = this.jwt.decodeUserByToken(token);
     console.log(userInfo.data);
     console.log('-----------------');
+    console.log(userInfo);
     return {
       userId: userInfo.sub,
       email: userInfo.email,
