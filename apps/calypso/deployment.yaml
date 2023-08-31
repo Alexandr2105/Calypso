@@ -97,8 +97,8 @@ spec:
                  secretKeyRef:
                    name: back-end-config-secret
                    key: FILES_SERVICE_PORT
-#             - name: SHADOW_DATABASE_URL
-#               valueFrom:
-#                 secretKeyRef:
-#                   name: back-end-config-secret
-#                   key: SHADOW_DATABASE_URL
+             - name: SHADOW_DATABASE_URL
+               valueFrom:
+                 secretKeyRef:
+                   name: back-end-config-secret
+                   key: SHADOW_DATABASE_URL
