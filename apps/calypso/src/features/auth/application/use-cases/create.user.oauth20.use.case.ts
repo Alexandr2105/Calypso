@@ -26,7 +26,9 @@ export class CreateUserOauth20UseCase
     const user: UserEntity = await this.usersRepository.getUserByEmail(
       command.userInfo.email,
     );
+    console.log('NO User');
     if (!user) {
+      console.log('eeeeeeeeeeeeeeeeeeeeeeee');
       const userId = randomUUID();
       const createdAt = new Date();
 
