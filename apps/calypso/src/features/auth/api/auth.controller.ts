@@ -283,9 +283,11 @@ export class AuthController {
     const userInfo: OauthUserInfoDto = await this.commandBus.execute(
       new OAuth2ForGoogleCommand(code),
     );
+    console.log('11111111111111111');
     const userId = await this.commandBus.execute(
       new CreateUserOauth20Command(userInfo, 'google'),
     );
+    console.log('22222222222222222222');
     if (userId) {
       const { accessToken, refreshToken, info } = await this.commandBus.execute(
         new CreateAccessAndRefreshTokensCommand(
