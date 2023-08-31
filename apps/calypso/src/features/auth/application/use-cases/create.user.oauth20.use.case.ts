@@ -23,6 +23,7 @@ export class CreateUserOauth20UseCase
   ) {}
 
   async execute(command: CreateUserOauth20Command) {
+    console.log(command);
     const user: UserEntity = await this.usersRepository.getUserByEmail(
       command.userInfo.email,
     );
