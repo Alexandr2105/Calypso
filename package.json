@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "prisma generate --schema=apps/calypso/prisma/schema.prisma",
+    "postinstall": "prisma generate --schema=calypso/prisma/schema.prisma",
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
