@@ -20,7 +20,7 @@ export class UpdateConfirmationCodeUseCase
       userId: command.userId,
       confirmationCode: code,
       expirationDate: expDate,
-      isConfirmed: false,
+      isConfirmed: true,
     });
     return code;
   }

@@ -42,7 +42,7 @@ export class UsersRepository {
 
   async getUserByEmail(email: string) {
     return this.prisma.user.findUnique({
-      where: { email },
+      where: { email: email },
       include: { emailConfirmation: true },
     });
   }
@@ -95,17 +95,21 @@ export class UsersRepository {
     });
   }
 
-  async updateStatusForMergeGoogle(userId: string) {
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { googleAuth: true },
-    });
-  }
-
-  async updateStatusForMergeGithub(userId: string) {
-    await this.prisma.user.update({
-      where: { id: userId },
-      data: { githubAuth: true },
-    });
+  async addInfoAboutOAuthRegistration(
+    userId: string,
+    serviceId: string,
+    method: string,
+  ) {
+    if (method === 'google') {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { googleAuthId: serviceId },
+      });
+    } else {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { githubAuthId: serviceId },
+      });
+    }
   }
 }

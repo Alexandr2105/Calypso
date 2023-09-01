@@ -14,9 +14,11 @@ export class UserEntity {
 
   isDeleted: boolean;
 
-  googleAuth: boolean;
+  googleAuthId?: string;
 
-  githubAuth: boolean;
+  githubAuthId?: string;
+
+  accountType: string;
 
   constructor(
     id: string,
@@ -24,9 +26,10 @@ export class UserEntity {
     email: string,
     createdAt: Date,
     isDeleted: boolean,
-    googleAuth: boolean,
-    githubAuth: boolean,
+    accountType: string,
     passwordHash?: string,
+    googleAuthId?: string,
+    githubAuthId?: string,
   ) {
     this.id = id;
     this.login = login;
@@ -34,7 +37,8 @@ export class UserEntity {
     this.createdAt = createdAt;
     this.passwordHash = passwordHash;
     this.isDeleted = isDeleted;
-    this.googleAuth = googleAuth;
-    this.githubAuth = githubAuth;
+    this.googleAuthId = googleAuthId;
+    this.githubAuthId = githubAuthId;
+    this.accountType = accountType;
   }
 }

@@ -50,14 +50,14 @@ import { DeleteUserUseCase } from './features/users/application/use-case/delete.
 import { BasicStrategy } from './common/strategies/basic.strategy';
 import { CreateUserOauth20UseCase } from './features/auth/application/use-cases/create.user.oauth20.use.case';
 import { OAuth2ForGoogleUseCase } from './features/auth/application/use-cases/oauth2.for.google.use.case';
-import { MergeGoogleAccountUseCase } from './features/auth/application/use-cases/merge.google.account.use.case';
 import { UpdateConfirmationCodeUseCase } from './features/auth/application/use-cases/update.confirmation.code.use.case';
 import { OAuth2ForGithubUseCase } from './features/auth/application/use-cases/oauth2ForGithubUseCase';
-import { MergeGithubAccountUseCase } from './features/auth/application/use-cases/merge.github.account.use.case';
 import { ApiConfigService } from './common/helpers/api.config.service';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
 import { RecaptchaValidator } from './features/auth/validation/recaptcha.validator';
+import { PaymentsController } from './features/payments/api/payments.controller';
+import { HttpModule } from '@nestjs/axios';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -89,10 +89,8 @@ const UseCases = [
   DeleteUserUseCase,
   OAuth2ForGoogleUseCase,
   CreateUserOauth20UseCase,
-  MergeGoogleAccountUseCase,
   UpdateConfirmationCodeUseCase,
   OAuth2ForGithubUseCase,
-  MergeGithubAccountUseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -114,6 +112,7 @@ const Repositories = [
         options: {
           host: process.env.FILES_SERVICE_HOST || 'files-microservice-service',
           port: Number(process.env.FILES_SERVICE_PORT || '3043'),
+          // host: '0.0.0.0',
           // port: 3001,
         },
       },
@@ -133,6 +132,7 @@ const Repositories = [
     CqrsModule,
     JwtModule.register({}),
     PassportModule,
+    HttpModule,
   ],
   controllers: [
     AppController,
@@ -141,6 +141,7 @@ const Repositories = [
     TestingController,
     UsersProfilesController,
     PostsController,
+    PaymentsController,
   ],
   providers: [
     AppService,

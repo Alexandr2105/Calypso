@@ -36,11 +36,13 @@ export class CreateUserOauth20UseCase
         command.userInfo.email,
         createdAt,
         false,
-        command.method === 'google',
-        command.method === 'github',
+        'Personal',
+        '',
+        command.method === 'google' ? command.userInfo.userId : '',
+        command.method === 'github' ? command.userInfo.userId : '',
       );
       await this.usersRepository.createUser(newUser);
-      await this.emailAdapter.sendEmailGoogleRegistration(
+      await this.emailAdapter.sendEmailGoogleOrGithubRegistration(
         command.userInfo.email,
       );
       await this.usersProfilesRepository.saveUsersProfiles({
@@ -48,21 +50,27 @@ export class CreateUserOauth20UseCase
         login: newUser.login,
         photo: command.userInfo.avatar,
       });
+      await this.commandBus.execute(new UpdateConfirmationCodeCommand(userId));
       return newUser.id;
-    } else if (user.googleAuth === true && command.method === 'google') {
+    } else if (
+      user.googleAuthId &&
+      user.googleAuthId !== 'false' &&
+      command.method === 'google'
+    ) {
       return user.id;
-    } else if (user.githubAuth === true && command.method === 'github') {
+    } else if (
+      user.githubAuthId &&
+      user.githubAuthId !== 'false' &&
+      command.method === 'github'
+    ) {
       return user.id;
     } else {
-      const createConfirmationInfoAndReturnConfirmationCode =
-        await this.commandBus.execute(
-          new UpdateConfirmationCodeCommand(user.id),
-        );
-      await this.emailAdapter.sendEmailForMergeAccount(
-        command.userInfo.email,
-        createConfirmationInfoAndReturnConfirmationCode,
+      await this.usersRepository.addInfoAboutOAuthRegistration(
+        user.id,
+        command.userInfo.userId,
+        command.method,
       );
-      return false;
+      return user.id;
     }
   }
 }
