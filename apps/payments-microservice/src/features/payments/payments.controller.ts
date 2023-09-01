@@ -10,7 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Payments')
-@Controller('payments')
+@Controller('api/v1/payments')
 export class PaymentsController {
   @Get('get')
   async getInfo(@Body() body, @Req() req) {

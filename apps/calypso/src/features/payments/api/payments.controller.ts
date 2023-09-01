@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import { Req } from '@nestjs/common/decorators/http/route-params.decorator';
 import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 
 // @ApiTags('Payments')
 @Controller('payments')
@@ -26,14 +27,14 @@ export class PaymentsController {
 
     // const url = `https://kustogram.site${req.path}`;
 
-    const response2 = await this.httpService
-      .request({
+    const response2 = await firstValueFrom(
+      this.httpService.request({
         url,
         method: req.method,
         data: { body: req.body, headers: req.headers },
         params: req.query,
-      })
-      .toPromise();
+      }),
+    );
 
     console.log(response2.data);
 
