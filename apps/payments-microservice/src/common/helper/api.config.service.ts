@@ -8,4 +8,8 @@ export class ApiConfigService {
   get stripeSecretKey(): string {
     return this.configService.get('STRIPE_SECRET_KEY');
   }
+
+  get signingSecret(): string {
+    return this.configService.get('SIGNING_SECRET');
+  }
 }

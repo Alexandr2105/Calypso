@@ -63,17 +63,25 @@ model Post {
 }
 
 model Payments {
-  userId                 String   @id
+  userId                 String        @id
   paymentsId             String
   dateOfPayments         DateTime
   endDateOfSubscription  DateTime
   price                  Int
   subscriptionType       String
   paymentsType           String
-  allDataPayments        Json
+  allDataPayment         Json?
+  paymentStatus          PaymentStatus @default(Pending)
 }
 
 enum AccountType{
   Personal
   Business
+}
+
+enum PaymentStatus{
+  Pending
+  Success
+  Declined
+  Canceled
 }
