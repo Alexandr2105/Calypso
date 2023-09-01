@@ -28,7 +28,8 @@
     "start:dev:files-microservice": "nest start files-microservice --watch",
     "build:payments-microservice": "nest build payments-microservice",
     "start:payments-microservice": "node dist/apps/payments-microservice/main",
-    "start:dev:payments-microservice": "nest start payments-microservice --watch"
+    "start:dev:payments-microservice": "nest start payments-microservice --watch",
+    "ngrok": "ngrok http 3002"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.363.0",
