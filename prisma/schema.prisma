@@ -17,7 +17,7 @@ model User {
   isDeleted         Boolean
   googleAuthId      String?
   githubAuthId      String?
-  accountType       String              @default("Personal")
+  accountType       AccountType        @default(Personal)
   emailConfirmation EmailConfirmation?
   userPost          Post[]
   refreshTokenData  RefreshTokenData[]
@@ -60,4 +60,20 @@ model Post {
   description String?
   createdAt   DateTime
   user        User     @relation(fields: [userId], references: [id])
+}
+
+model Payments {
+  userId                 String   @id
+  paymentsId             String
+  dateOfPayments         DateTime
+  endDateOfSubscription  DateTime
+  price                  Int
+  subscriptionType       String
+  paymentsType           String
+  allDataPayments        Json
+}
+
+enum AccountType{
+  Personal
+  Business
 }
