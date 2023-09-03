@@ -75,7 +75,7 @@ model Payments {
 }
 
 model Products{
-  idProduct         String  @id
+  idProduct         String  @id() @default(cuid())
   nameSubscription  String
   price             Int
 
