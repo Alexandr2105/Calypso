@@ -15,7 +15,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     });
   }
   async validate(email: string, password: string): Promise<any> {
-    const user = await this.userRepo.getUserByEmail(email);
+    const user = await this.userRepo.getUserByEmail(email.toLowerCase());
 
     if (!user || user.emailConfirmation.isConfirmed === false) return false;
 

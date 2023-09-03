@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { RecaptchaValidator } from '../validation/recaptcha.validator';
 
 export class EmailResendingDto {
-  @Transform(({ value }) => String(value).trim())
+  @Transform(({ value }) => String(value).trim().toLowerCase())
   @IsEmail({}, { message: 'Invalid email' })
   @ApiProperty({ type: 'string' })
   email: string;
