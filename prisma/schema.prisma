@@ -74,6 +74,13 @@ model Payments {
   paymentStatus          PaymentStatus @default(Pending)
 }
 
+model Products{
+  idProduct         String  @id
+  nameSubscription  String
+  price             Int
+
+}
+
 enum AccountType{
   Personal
   Business
