@@ -75,10 +75,9 @@ model Payments {
 }
 
 model Products{
-  idProduct         String  @id() @default(cuid())
+  idProduct         String  @id()
   nameSubscription  String
-  price             Int
-
+  price             Decimal @db.Decimal(6,2)
 }
 
 enum AccountType{
