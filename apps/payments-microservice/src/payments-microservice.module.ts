@@ -3,9 +3,16 @@ import { PaymentsMicroserviceController } from './payments-microservice.controll
 import { PaymentsMicroserviceService } from './payments-microservice.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import process from 'process';
-import { PaymentsController } from './features/payments/payments.controller';
+import { PaymentsController } from './features/payments/api/payments.controller';
 import { ApiConfigService } from './common/helper/api.config.service';
 import { ConfigModule } from '@nestjs/config';
+import { PaypalAdapter } from './common/adapters/paypal.adapter';
+import { StripeAdapter } from './common/adapters/stripe.adapter';
+import { PaymentManager } from './common/managers/payment.manager';
+import { PaymentsRepository } from './features/payments/infrastructure/payments.repository';
+import { PrismaModule } from './common/prisma/prisma.module';
+import { CqrsModule } from '@nestjs/cqrs';
+import { CheckProductInDbUseCase } from './features/payments/aplication/use-case/check.product.in.db.use.case';
 
 @Module({
   imports: [
@@ -25,8 +32,24 @@ import { ConfigModule } from '@nestjs/config';
         },
       },
     ]),
+    PrismaModule,
+    CqrsModule,
   ],
   controllers: [PaymentsMicroserviceController, PaymentsController],
-  providers: [PaymentsMicroserviceService, ApiConfigService],
+  providers: [
+    PaymentsMicroserviceService,
+    ApiConfigService,
+    PaymentManager,
+    PaymentsRepository,
+    CheckProductInDbUseCase,
+    {
+      provide: 'PaypalAdapter',
+      useClass: PaypalAdapter,
+    },
+    {
+      provide: 'StripeAdapter',
+      useClass: StripeAdapter,
+    },
+  ],
 })
 export class PaymentsMicroserviceModule {}

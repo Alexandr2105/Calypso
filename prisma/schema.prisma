@@ -63,31 +63,46 @@ model Post {
 }
 
 model Payments {
+  paymentsId             String        @id
+  userId                 String        @unique
+  price                  Int
+  paymentSystem          PaymentType
+  paymentStatus          PaymentStatus @default(Pending)
+  createdAt              DateTime
+  updatedAt              DateTime?
+  allDataPayment         Json
+  allDataPaymentConfirm  Json?
+}
+
+model Subscriptions {
   userId                 String        @id
-  paymentsId             String
+  paymentsId             String        @unique
   dateOfPayments         DateTime
   endDateOfSubscription  DateTime
   price                  Int
-  subscriptionType       String
-  paymentsType           String
-  allDataPayment         Json?
-  paymentStatus          PaymentStatus @default(Pending)
+  subscriptionType       AccountType
+  paymentsType           PaymentStatus
 }
 
-model Products{
+model Products {
   idProduct         String  @id()
   nameSubscription  String
   price             Int
 }
 
-enum AccountType{
+enum AccountType {
   Personal
   Business
 }
 
-enum PaymentStatus{
+enum PaymentStatus {
   Pending
   Success
   Declined
   Canceled
+}
+
+enum PaymentType {
+  Stripe
+  Paypall
 }
