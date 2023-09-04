@@ -68,11 +68,11 @@ export class PaymentsController {
         this.apiConfigService.signingSecret,
       );
       if (event.type === 'checkout.session.completed') {
-        const client_reference_id = event.data
-          .object as Stripe.Checkout.Session;
+        const dataPayment = event.data.object as Stripe.Checkout.Session;
         console.log('=====================');
-        console.log(client_reference_id);
+        console.log(dataPayment);
         console.log('+++++++++++++++++++++');
+        console.log(dataPayment.client_reference_id);
       }
     } catch (err) {
       console.log('ERRORS');

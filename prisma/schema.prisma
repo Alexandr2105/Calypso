@@ -77,7 +77,7 @@ model Payments {
 model Products{
   idProduct         String  @id()
   nameSubscription  String
-  price             Decimal @db.Decimal(6,2)
+  price             Int
 }
 
 enum AccountType{
