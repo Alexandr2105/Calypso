@@ -52,7 +52,7 @@ export class OAuth2ForGithubUseCase
       });
     return {
       userId: userInfo.data.id.toString(),
-      email: userEmailsInfo.data[0].email,
+      email: userEmailsInfo.data[0].email.toLowerCase(),
       avatar: userInfo.data.avatar_url,
       login: userInfo.data.login,
     };
