@@ -1,9 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { PaymentsRepository } from '../../infrastructure/payments.repository';
 import { ProductsEntity } from '../../entities/products.entity';
+import { PaymentsDto } from '../../dto/payments.dto';
+import { BadRequestException } from '@nestjs/common';
 
 export class CheckProductInDbCommand {
-  constructor(public productId: string[]) {}
+  constructor(public body: PaymentsDto[]) {}
 }
 
 @CommandHandler(CheckProductInDbCommand)
@@ -16,10 +18,17 @@ export class CheckProductInDbUseCase
     command: CheckProductInDbCommand,
   ): Promise<ProductsEntity[] | boolean> {
     const products: ProductsEntity[] = [];
-    for (const id of command.productId) {
-      const product = await this.paymentsRepository.getProductById(id);
-      if (!product) return false;
-      products.push(product);
+    for (const product of command.body) {
+      const productInfo = await this.paymentsRepository.getProductById(
+        product.productId,
+      );
+      if (!productInfo)
+        throw new BadRequestException({
+          field: 'product',
+          message: 'Products not found',
+        });
+      productInfo.quantity = product.quantity;
+      products.push(productInfo);
     }
 
     return products;

@@ -8,9 +8,8 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: ['https://kustogram.site/api/v1', 'http://localhost:3001'],
+    origin: ['https://kustogram.site/api/v1', 'http://localhost:3000'],
   });
-  app;
 
   await app.listen(process.env.PORT || 3002, () => {
     console.log(`App started at ${process.env.PORT || 3002} port`);

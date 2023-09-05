@@ -64,10 +64,10 @@ model Post {
 
 model Payments {
   paymentsId             String        @id
-  userId                 String        @unique
+  userId                 String
   price                  Int
   paymentSystem          PaymentType
-  paymentStatus          PaymentStatus @default(Pending)
+  paymentStatus          PaymentStatus
   createdAt              DateTime
   updatedAt              DateTime?
   allDataPayment         Json
@@ -77,17 +77,20 @@ model Payments {
 model Subscriptions {
   userId                 String        @id
   paymentsId             String        @unique
-  dateOfPayments         DateTime
-  endDateOfSubscription  DateTime
+  dateOfPayments         DateTime?
+  endDateOfSubscription  DateTime?
   price                  Int
   subscriptionType       AccountType
   paymentsType           PaymentStatus
+  theAmountOfHours       Int
 }
 
 model Products {
-  idProduct         String  @id()
-  nameSubscription  String
-  price             Int
+  idProduct             String  @id()
+  nameSubscription      String
+  price                 Int
+  subscriptionTimeHours Int
+  quantity              Int?
 }
 
 enum AccountType {

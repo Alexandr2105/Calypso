@@ -1,4 +1,6 @@
 interface IPaymentAdapter {
-  createPayment(payment: any): Promise<{ data: any; url: string }>;
+  createPayment(
+    payment: any,
+  ): Promise<{ data: any; url: string; subscriptionTimeHours: number }>;
   validatePayment(payment: any): Promise<{ data: any }>;
 }

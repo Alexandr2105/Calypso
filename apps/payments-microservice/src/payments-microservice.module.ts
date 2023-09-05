@@ -13,6 +13,8 @@ import { PaymentsRepository } from './features/payments/infrastructure/payments.
 import { PrismaModule } from './common/prisma/prisma.module';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CheckProductInDbUseCase } from './features/payments/aplication/use-case/check.product.in.db.use.case';
+import { SavePaymentsDataUseCase } from './features/payments/aplication/use-case/save.payments.data.use.case';
+import { UpdatePaymentDataUseCase } from './features/payments/aplication/use-case/update.payment.data.use.case';
 
 @Module({
   imports: [
@@ -21,11 +23,11 @@ import { CheckProductInDbUseCase } from './features/payments/aplication/use-case
     }),
     ClientsModule.register([
       {
-        name: 'FILES_SERVICE_RMQ',
+        name: 'PAYMENTS_SERVICE_RMQ',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBIT_MQ],
-          queue: 'FILES_SERVICE_RMQ',
+          queue: 'PAYMENTS_SERVICE_RMQ',
           queueOptions: {
             durable: false,
           },
@@ -42,6 +44,8 @@ import { CheckProductInDbUseCase } from './features/payments/aplication/use-case
     PaymentManager,
     PaymentsRepository,
     CheckProductInDbUseCase,
+    SavePaymentsDataUseCase,
+    UpdatePaymentDataUseCase,
     {
       provide: 'PaypalAdapter',
       useClass: PaypalAdapter,

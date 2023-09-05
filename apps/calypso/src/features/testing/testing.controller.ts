@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma-service';
 import { ClientProxy } from '@nestjs/microservices';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 
 @Controller('delete-all-data')
 export class TestingController {
@@ -14,6 +15,7 @@ export class TestingController {
     private readonly prisma: PrismaService,
     @Inject('FILES_SERVICE_TCP') private client: ClientProxy,
   ) {}
+  @ApiExcludeEndpoint()
   @Delete()
   @HttpCode(204)
   async clearAllData(): Promise<HttpStatus> {

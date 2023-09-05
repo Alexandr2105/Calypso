@@ -1,5 +1,5 @@
 export class PaymentsDto {
   userId: string;
-  productId: string[];
+  productId: string;
   quantity: number;
 }
