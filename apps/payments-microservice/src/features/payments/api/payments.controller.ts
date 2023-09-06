@@ -25,7 +25,7 @@ export class PaymentsController {
     private commandBus: CommandBus,
   ) {}
 
-  @Post('get')
+  @Post('stripe')
   async getInfo(
     @Body('body') body: PaymentsDto[],
     @Body('userId') userId: string,
@@ -57,7 +57,7 @@ export class PaymentsController {
     return 'All bad';
   }
 
-  @Post('hook')
+  @Post('stripeHook')
   async getHook(@Req() req: RawBodyRequest<Request>) {
     await this.paymentManager.adapters.stripe.validatePayment(req);
   }
