@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../common/prisma/prisma-service';
 import { UserEntity } from '../entities/user.entity';
 import { ConfirmationInfoEntity } from '../entities/confirmation-info.entity';
+import { AccountType } from '@prisma/client';
 
 @Injectable()
 export class UsersRepository {
@@ -111,5 +112,14 @@ export class UsersRepository {
         data: { githubAuthId: serviceId },
       });
     }
+  }
+  async updateAccountTypeForUser(
+    userId: string,
+    accountType: AccountType,
+  ): Promise<UserEntity> {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { accountType: accountType },
+    });
   }
 }

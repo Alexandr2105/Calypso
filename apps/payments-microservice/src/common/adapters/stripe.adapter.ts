@@ -29,8 +29,8 @@ export class StripeAdapter implements IPaymentAdapter {
 
     const session: Stripe.Response<Stripe.Checkout.Session> =
       await stripe.checkout.sessions.create({
-        success_url: 'http://localhost:3002/payments/success',
-        cancel_url: 'http://localhost:3002/payments/error',
+        success_url: this.apiConfigService.success_url,
+        cancel_url: this.apiConfigService.cancel_url,
         line_items: [
           {
             price_data: {
@@ -51,7 +51,7 @@ export class StripeAdapter implements IPaymentAdapter {
     };
   }
 
-  async validatePayment(req: any): Promise<{ data: any }> {
+  async validatePayment(req: any): Promise<void> {
     const stripe = new Stripe(this.apiConfigService.stripeSecretKey, {
       apiVersion: '2023-08-16',
     });
@@ -64,13 +64,10 @@ export class StripeAdapter implements IPaymentAdapter {
       );
       if (event.type === 'checkout.session.completed') {
         const dataPayment = event.data.object as Stripe.Checkout.Session;
-        const data = await this.command.execute(
-          new UpdatePaymentDataCommand(dataPayment),
-        );
+        await this.command.execute(new UpdatePaymentDataCommand(dataPayment));
       }
     } catch (err) {
       throw new BadRequestException({ field: 'webHook', message: err.message });
     }
-    return { data: undefined };
   }
 }

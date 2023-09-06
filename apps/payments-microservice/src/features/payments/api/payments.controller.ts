@@ -17,7 +17,7 @@ import { CheckProductInDbCommand } from '../aplication/use-case/check.product.in
 import { SavePaymentsDataCommand } from '../aplication/use-case/save.payments.data.use.case';
 
 @ApiTags('Payments')
-@Controller('payments')
+@Controller('api/v1/payments')
 export class PaymentsController {
   constructor(
     private apiConfigService: ApiConfigService,
@@ -48,7 +48,7 @@ export class PaymentsController {
   }
 
   @Get('success')
-  async postInfo(@Body() body, @Req() req) {
+  async postInfo() {
     return 'All right';
   }
 

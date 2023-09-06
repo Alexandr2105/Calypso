@@ -29,8 +29,9 @@ export class PaymentsRepository {
     paymentStatus: PaymentStatus,
     endDateOfSubscription: Date,
   ) {
+    let infoPayment: SubscriptionsEntity;
     await this.prisma.$transaction(async (prisma) => {
-      const infoPayment: PaymentsEntity = await prisma.payments.update({
+      await prisma.payments.update({
         where: { paymentsId: paymentsId },
         data: {
           paymentStatus: paymentStatus,
@@ -38,7 +39,7 @@ export class PaymentsRepository {
           updatedAt: updatedAt,
         },
       });
-      await prisma.subscriptions.update({
+      infoPayment = await prisma.subscriptions.update({
         where: { paymentsId: paymentsId },
         data: {
           paymentsType: paymentStatus,
@@ -46,8 +47,8 @@ export class PaymentsRepository {
           endDateOfSubscription: endDateOfSubscription,
         },
       });
-      return infoPayment.userId;
     });
+    return infoPayment;
   }
 
   async getSubscriptionById(paymentsId: string): Promise<SubscriptionsEntity> {

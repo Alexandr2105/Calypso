@@ -48,4 +48,8 @@ export class ApiConfigService {
   get nodeMailerPassword(): string {
     return this.configService.get('NODEMAILER_PASSWORD');
   }
+
+  get paymentsMicroservice(): string {
+    return this.configService.get('PAYMENTS_MICROSERVICE');
+  }
 }

@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from './exception.filter';
 import { useContainer } from 'class-validator';
 import { createApp } from './common/helpers/createApp';
 import * as process from 'process';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 export async function bootstrap() {
   const rawApp = await NestFactory.create(AppModule);
@@ -22,6 +23,19 @@ export async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/v1/swagger', app, document);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [process.env.RABBIT_MQ],
+      queue: 'PAYMENTS_SERVICE_RMQ',
+      queueOptions: {
+        durable: false,
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
 
   await app.listen(process.env.PORT || 3000, () => {
     console.log(`App started at ${process.env.PORT || 3000} port`);

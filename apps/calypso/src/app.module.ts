@@ -58,6 +58,8 @@ import * as process from 'process';
 import { RecaptchaValidator } from './features/auth/validation/recaptcha.validator';
 import { PaymentsController } from './features/payments/api/payments.controller';
 import { HttpModule } from '@nestjs/axios';
+import { ChangeAccountTypeAndSendMessageUseCase } from './features/payments/application/use-cases/change.account.type.and.send.message.use.case';
+import { FormatDate } from './common/helpers/format.date';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -91,6 +93,7 @@ const UseCases = [
   CreateUserOauth20UseCase,
   UpdateConfirmationCodeUseCase,
   OAuth2ForGithubUseCase,
+  ChangeAccountTypeAndSendMessageUseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -155,6 +158,7 @@ const Repositories = [
     Jwt,
     QueryHelper,
     ApiConfigService,
+    FormatDate,
   ],
 })
 export class AppModule {}

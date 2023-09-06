@@ -12,4 +12,12 @@ export class ApiConfigService {
   get signingSecret(): string {
     return this.configService.get('SIGNING_SECRET');
   }
+
+  get success_url(): string {
+    return this.configService.get('SUCCESS_URL');
+  }
+
+  get cancel_url(): string {
+    return this.configService.get('CANCEL_URL');
+  }
 }
