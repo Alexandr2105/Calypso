@@ -13,11 +13,19 @@ export class ApiConfigService {
     return this.configService.get('SIGNING_SECRET');
   }
 
-  get success_url(): string {
+  get successUrl(): string {
     return this.configService.get('SUCCESS_URL');
   }
 
-  get cancel_url(): string {
+  get cancelUrl(): string {
     return this.configService.get('CANCEL_URL');
+  }
+
+  get clientIdForPaypal(): string {
+    return this.configService.get('CLIENT_ID');
+  }
+
+  get clientSecretForPaypal(): string {
+    return this.configService.get('CLIENT_SECRET');
   }
 }

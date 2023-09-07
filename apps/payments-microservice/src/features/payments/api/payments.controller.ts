@@ -15,6 +15,7 @@ import { PaymentsDto } from '../dto/payments.dto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CheckProductInDbCommand } from '../aplication/use-case/check.product.in.db.use.case';
 import { SavePaymentsDataCommand } from '../aplication/use-case/save.payments.data.use.case';
+import { DataPaymentsType } from '../../../../../calypso/src/common/types/data.payments.type';
 
 @ApiTags('Payments')
 @Controller('api/v1/payments')
@@ -26,7 +27,7 @@ export class PaymentsController {
   ) {}
 
   @Post('stripe')
-  async getInfo(
+  async createStripePayment(
     @Body('body') body: PaymentsDto[],
     @Body('userId') userId: string,
   ) {
@@ -36,9 +37,14 @@ export class PaymentsController {
     const data = await this.paymentManager.adapters.stripe.createPayment(
       products,
     );
+    const dataPayments: DataPaymentsType = {
+      paymentsId: data.data.client_reference_id,
+      price: data.data.amount_total,
+    };
     await this.commandBus.execute(
       new SavePaymentsDataCommand(
         data.data,
+        dataPayments,
         userId,
         'Stripe',
         data.subscriptionTimeHours,
@@ -58,7 +64,39 @@ export class PaymentsController {
   }
 
   @Post('stripeHook')
-  async getHook(@Req() req: RawBodyRequest<Request>) {
+  async getStripeHook(@Req() req: RawBodyRequest<Request>) {
     await this.paymentManager.adapters.stripe.validatePayment(req);
+  }
+
+  @Post('paypal')
+  async createPaypalPayment(
+    @Body('body') body: PaymentsDto[],
+    @Body('userId') userId: string,
+  ) {
+    const products = await this.commandBus.execute(
+      new CheckProductInDbCommand(body),
+    );
+    const data = await this.paymentManager.adapters.paypal.createPayment(
+      products,
+    );
+    const dataPayments: DataPaymentsType = {
+      paymentsId: data.data.id,
+      price: data.data.transactions[0].amount.total * 100,
+    };
+    await this.commandBus.execute(
+      new SavePaymentsDataCommand(
+        data.data,
+        dataPayments,
+        userId,
+        'Paypall',
+        data.subscriptionTimeHours,
+      ),
+    );
+    return data.url;
+  }
+
+  @Post('paypalHook')
+  async getPaypalHook(@Body() body) {
+    await this.paymentManager.adapters.paypal.validatePayment(body);
   }
 }
