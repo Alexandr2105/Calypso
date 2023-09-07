@@ -18,7 +18,7 @@ import { SavePaymentsDataCommand } from '../aplication/use-case/save.payments.da
 import { DataPaymentsType } from '../../../../../calypso/src/common/types/data.payments.type';
 
 @ApiTags('Payments')
-@Controller('api/v1/payments')
+@Controller('/payments')
 export class PaymentsController {
   constructor(
     private apiConfigService: ApiConfigService,
