@@ -26,8 +26,8 @@ export class PaymentsController {
   @UseGuards(JwtAuthGuard)
   @All('*')
   private async forwardPaymentRequest(@Req() req, @Body() body) {
-    const url = `http://localhost:3002${req.path}`;
-    // const url = `http://localhost:3002/payments/get`;
+    // const url = `http://localhost:3002${req.path}`;
+    const url = `https://payments.kustogram.site/api/v1/${req.path}`;
     const response = await firstValueFrom(
       this.httpService.request({
         url,
