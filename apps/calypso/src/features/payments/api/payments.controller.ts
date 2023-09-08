@@ -48,7 +48,6 @@ export class PaymentsController {
     try {
       // const url = `http://localhost:3002${req.path}`;
       const url = `${this.apiConfigService.paymentsMicroservice + req.path}`;
-      console.log(url);
       const response = await firstValueFrom(
         this.httpService.request({
           url,
