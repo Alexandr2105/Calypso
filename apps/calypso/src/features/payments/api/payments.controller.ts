@@ -30,6 +30,7 @@ import { PaymentsDto } from '../../../../../payments-microservice/src/features/p
 import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
 import { UrlForSwaggerType } from '../../../common/types/url.for.swagger.type';
 import { AllSubscriptionsForSwaggerType } from '../../../common/types/all.subscriptions.for.swagger.type';
+import { ApiConfigService } from '../../../common/helpers/api.config.service';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -37,6 +38,7 @@ export class PaymentsController {
   constructor(
     private httpService: HttpService,
     private commandBus: CommandBus,
+    private apiConfigService: ApiConfigService,
   ) {}
 
   @ApiExcludeEndpoint()
@@ -45,7 +47,8 @@ export class PaymentsController {
   private async forwardPaymentRequest(@Req() req, @Body() body) {
     try {
       // const url = `http://localhost:3002${req.path}`;
-      const url = `https://payments.kustogram.site${req.path}`;
+      const url = `${this.apiConfigService.paymentsMicroservice + req.path}`;
+      console.log(url);
       const response = await firstValueFrom(
         this.httpService.request({
           url,
