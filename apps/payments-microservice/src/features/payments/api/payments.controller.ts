@@ -134,6 +134,7 @@ export class PaymentsController {
     await this.paymentManager.adapters.paypal.validatePayment(body);
   }
 
+  @ApiOperation({ summary: 'All subscriptions' })
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: [ProductsEntity] })
   @Get('subscriptions')
