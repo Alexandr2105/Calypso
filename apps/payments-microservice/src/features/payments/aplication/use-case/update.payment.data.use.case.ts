@@ -24,18 +24,46 @@ export class UpdatePaymentDataUseCase
     const paymentsId = command.dataPayments.paymentsId;
     const subscription =
       await this.paymentsRepository.getSubscriptionByPaymentsId(paymentsId);
-    const endDateOfSubscription = new Date(updatedAt);
-    endDateOfSubscription.setHours(
-      endDateOfSubscription.getHours() + subscription.theAmountOfHours,
-    );
-    const data: SubscriptionsEntity =
-      await this.paymentsRepository.updatePayment(
+    let data: SubscriptionsEntity;
+    if (!subscription.dateOfPayments && !subscription.endDateOfSubscription) {
+      const endDateOfSubscription = new Date(updatedAt);
+      endDateOfSubscription.setHours(
+        endDateOfSubscription.getHours() + subscription.theAmountOfHours,
+      );
+      data = await this.paymentsRepository.updatePayment(
         paymentsId,
         allDataPaymentConfirm,
         updatedAt,
         'Success',
         endDateOfSubscription,
       );
+    } else if (subscription.endDateOfSubscription > updatedAt) {
+      const endDateOfSubscription = new Date(
+        subscription.endDateOfSubscription,
+      );
+      endDateOfSubscription.setHours(
+        endDateOfSubscription.getHours() + subscription.theAmountOfHours,
+      );
+      data = await this.paymentsRepository.updatePayment(
+        paymentsId,
+        allDataPaymentConfirm,
+        updatedAt,
+        'Success',
+        endDateOfSubscription,
+      );
+    } else {
+      const endDateOfSubscription = new Date(updatedAt);
+      endDateOfSubscription.setHours(
+        endDateOfSubscription.getHours() + subscription.theAmountOfHours,
+      );
+      data = await this.paymentsRepository.updatePayment(
+        paymentsId,
+        allDataPaymentConfirm,
+        updatedAt,
+        'Success',
+        endDateOfSubscription,
+      );
+    }
     const pattern = { cmd: 'successPayment' };
     this.clientRMQ.emit(pattern, {
       userId: data.userId,

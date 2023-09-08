@@ -39,6 +39,15 @@ export class SavePaymentsDataUseCase
       subscriptionType: 'Business',
       theAmountOfHours: command.quantity,
     };
-    await this.paymentsRepository.savePayment(payment, subscription);
+    const oldSubscription =
+      await this.paymentsRepository.getSubscriptionCurrentUser(command.userId);
+    if (oldSubscription) {
+      await this.paymentsRepository.cretePaymentAndUpdateSubscription(
+        payment,
+        subscription,
+      );
+    } else {
+      await this.paymentsRepository.savePayment(payment, subscription);
+    }
   }
 }
