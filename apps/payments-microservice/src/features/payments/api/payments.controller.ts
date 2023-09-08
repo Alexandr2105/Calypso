@@ -22,8 +22,11 @@ import { PaymentsDto } from '../dto/payments.dto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CheckProductInDbCommand } from '../aplication/use-case/check.product.in.db.use.case';
 import { SavePaymentsDataCommand } from '../aplication/use-case/save.payments.data.use.case';
-import { DataPaymentsType } from '../../../../../calypso/src/common/types/data.payments.type';
-import { ApiResponseForSwagger } from '../../../../../calypso/src/common/helpers/api-response-for-swagger';
+import { DataPaymentsType } from '../../../common/types/data.payments.type';
+import { UrlForSwaggerType } from '../../../common/types/url.for.swagger.type';
+import { ErrorsMessageForSwaggerType } from '../../../common/types/errors.message.for.swagger.type';
+import { GetAllSubscriptionsCommand } from '../aplication/use-case/get.all.subscriptions.use.case';
+import { ProductsEntity } from '../entities/products.entity';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -39,17 +42,12 @@ export class PaymentsController {
   @ApiBody({ type: [PaymentsDto] })
   @ApiResponse({
     status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        url: {
-          type: 'string',
-          description: 'Payment link',
-        },
-      },
-    },
+    type: UrlForSwaggerType,
   })
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Products not found')
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Products not found',
+  })
   @Post('stripe')
   async createStripePayment(
     @Body('body') body: PaymentsDto[],
@@ -100,17 +98,9 @@ export class PaymentsController {
   @ApiBody({ type: [PaymentsDto] })
   @ApiResponse({
     status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        url: {
-          type: 'string',
-          description: 'Payment link',
-        },
-      },
-    },
+    type: UrlForSwaggerType,
   })
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Products not found')
+  @ApiResponse({ type: ErrorsMessageForSwaggerType })
   @Post('paypal')
   async createPaypalPayment(
     @Body('body') body: PaymentsDto[],
@@ -142,5 +132,12 @@ export class PaymentsController {
   @Post('paypalHook')
   async getPaypalHook(@Body() body) {
     await this.paymentManager.adapters.paypal.validatePayment(body);
+  }
+
+  @ApiBearerAuth()
+  @ApiResponse({ status: HttpStatus.OK, type: [ProductsEntity] })
+  @Get('subscriptions')
+  async getCurrentUserSubscription() {
+    return this.commandBus.execute(new GetAllSubscriptionsCommand());
   }
 }

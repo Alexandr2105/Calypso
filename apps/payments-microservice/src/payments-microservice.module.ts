@@ -15,6 +15,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { CheckProductInDbUseCase } from './features/payments/aplication/use-case/check.product.in.db.use.case';
 import { SavePaymentsDataUseCase } from './features/payments/aplication/use-case/save.payments.data.use.case';
 import { UpdatePaymentDataUseCase } from './features/payments/aplication/use-case/update.payment.data.use.case';
+import { GetAllSubscriptionsUseCase } from './features/payments/aplication/use-case/get.all.subscriptions.use.case';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { UpdatePaymentDataUseCase } from './features/payments/aplication/use-cas
     CheckProductInDbUseCase,
     SavePaymentsDataUseCase,
     UpdatePaymentDataUseCase,
+    GetAllSubscriptionsUseCase,
     {
       provide: 'PaypalAdapter',
       useClass: PaypalAdapter,

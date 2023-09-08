@@ -51,9 +51,17 @@ export class PaymentsRepository {
     return infoPayment;
   }
 
-  async getSubscriptionById(paymentsId: string): Promise<SubscriptionsEntity> {
+  async getSubscriptionByPaymentsId(
+    paymentsId: string,
+  ): Promise<SubscriptionsEntity> {
     return this.prisma.subscriptions.findUnique({
       where: { paymentsId: paymentsId },
+    });
+  }
+
+  async getProductsSubscriptions() {
+    return this.prisma.products.findMany({
+      select: { idProduct: true, price: true, nameSubscription: true },
     });
   }
 }

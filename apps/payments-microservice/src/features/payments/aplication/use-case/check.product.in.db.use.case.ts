@@ -14,9 +14,7 @@ export class CheckProductInDbUseCase
 {
   constructor(private paymentsRepository: PaymentsRepository) {}
 
-  async execute(
-    command: CheckProductInDbCommand,
-  ): Promise<ProductsEntity[] | boolean> {
+  async execute(command: CheckProductInDbCommand) {
     const products: ProductsEntity[] = [];
     for (const product of command.body) {
       const productInfo = await this.paymentsRepository.getProductById(

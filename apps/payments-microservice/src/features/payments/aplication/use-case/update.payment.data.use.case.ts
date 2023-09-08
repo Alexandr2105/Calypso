@@ -22,9 +22,8 @@ export class UpdatePaymentDataUseCase
     const allDataPaymentConfirm = JSON.parse(JSON.stringify(command.data));
     const updatedAt = new Date();
     const paymentsId = command.dataPayments.paymentsId;
-    const subscription = await this.paymentsRepository.getSubscriptionById(
-      paymentsId,
-    );
+    const subscription =
+      await this.paymentsRepository.getSubscriptionByPaymentsId(paymentsId);
     const endDateOfSubscription = new Date(updatedAt);
     endDateOfSubscription.setHours(
       endDateOfSubscription.getHours() + subscription.theAmountOfHours,

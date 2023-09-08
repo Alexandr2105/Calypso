@@ -41,6 +41,12 @@ import { QueryHelper } from '../../../common/helpers/query.helper';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { checkPhotoSum } from '../validation/check.photo.sum';
+import {
+  pageNumberQuery,
+  pageSizeQuery,
+  sortByQuery,
+  sortDirectionQuery,
+} from '../../../common/types/paging.and.sorting.query.for.swagger.type';
 
 @ApiTags('Posts')
 @Controller('/posts')
@@ -153,30 +159,10 @@ export class PostsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get post for current user' })
   @ApiResponse({ status: HttpStatus.OK, type: PostQueryType })
-  @ApiQuery({
-    name: 'pageSize',
-    description: 'Number of elements to return',
-    required: false,
-    schema: { default: 9, type: 'integer' },
-  })
-  @ApiQuery({
-    name: 'pageNumber',
-    description: 'Page number to return',
-    required: false,
-    schema: { default: 1, type: 'integer' },
-  })
-  @ApiQuery({
-    name: 'sortDirection',
-    required: false,
-    schema: { type: 'string', default: 'desc' },
-    enum: ['asc', 'desc'],
-  })
-  @ApiQuery({
-    name: 'sortBy',
-    description: 'What field to sort by',
-    required: false,
-    schema: { default: 'createdAt' },
-  })
+  @ApiQuery(pageSizeQuery)
+  @ApiQuery(pageNumberQuery)
+  @ApiQuery(sortDirectionQuery)
+  @ApiQuery(sortByQuery)
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
   @Get('/:userId')
