@@ -27,6 +27,8 @@ import { UrlForSwaggerType } from '../../../common/types/url.for.swagger.type';
 import { ErrorsMessageForSwaggerType } from '../../../common/types/errors.message.for.swagger.type';
 import { GetAllSubscriptionsCommand } from '../aplication/use-case/get.all.subscriptions.use.case';
 import { ProductsEntity } from '../entities/products.entity';
+import { GetCurrentSubscriptionCommand } from '../aplication/use-case/get.current.subscription.use.case';
+import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -138,7 +140,16 @@ export class PaymentsController {
   @ApiBearerAuth()
   @ApiResponse({ status: HttpStatus.OK, type: [ProductsEntity] })
   @Get('subscriptions')
-  async getCurrentUserSubscription() {
+  async getSubscriptions() {
     return this.commandBus.execute(new GetAllSubscriptionsCommand());
+  }
+
+  @ApiOperation({ summary: 'All subscriptions for current user' })
+  @ApiBearerAuth()
+  @ApiResponse({ status: HttpStatus.OK, type: SubscriptionForSwaggerType })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
+  @Get('current-subscription')
+  async getCurrentUserSubscription(@Body('userId') userId: string) {
+    return this.commandBus.execute(new GetCurrentSubscriptionCommand(userId));
   }
 }

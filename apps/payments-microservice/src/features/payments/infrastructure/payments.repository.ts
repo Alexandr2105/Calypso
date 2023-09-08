@@ -83,25 +83,4 @@ export class PaymentsRepository {
       });
     });
   }
-
-  async updateSubscriptionForCurrentUser(
-    payment: PaymentsEntity,
-    subscription: SubscriptionsEntity,
-    oldSubscription: SubscriptionsEntity,
-  ) {
-    await this.prisma.$transaction(async (prisma) => {
-      await prisma.payments.create({ data: payment });
-      await prisma.subscriptions.update({
-        where: { userId: payment.userId },
-        data: {
-          price: subscription.price + oldSubscription.price,
-          paymentsId: subscription.paymentsId,
-          endDateOfSubscription: new Date(
-            oldSubscription.endDateOfSubscription.getHours() +
-              subscription.theAmountOfHours,
-          ),
-        },
-      });
-    });
-  }
 }

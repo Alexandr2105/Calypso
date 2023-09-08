@@ -16,6 +16,7 @@ import { CheckProductInDbUseCase } from './features/payments/aplication/use-case
 import { SavePaymentsDataUseCase } from './features/payments/aplication/use-case/save.payments.data.use.case';
 import { UpdatePaymentDataUseCase } from './features/payments/aplication/use-case/update.payment.data.use.case';
 import { GetAllSubscriptionsUseCase } from './features/payments/aplication/use-case/get.all.subscriptions.use.case';
+import { GetCurrentSubscriptionUseCase } from './features/payments/aplication/use-case/get.current.subscription.use.case';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { GetAllSubscriptionsUseCase } from './features/payments/aplication/use-c
     SavePaymentsDataUseCase,
     UpdatePaymentDataUseCase,
     GetAllSubscriptionsUseCase,
+    GetCurrentSubscriptionUseCase,
     {
       provide: 'PaypalAdapter',
       useClass: PaypalAdapter,
