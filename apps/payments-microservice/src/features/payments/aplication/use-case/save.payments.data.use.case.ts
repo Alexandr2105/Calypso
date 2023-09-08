@@ -3,7 +3,7 @@ import { PaymentsEntity } from '../../entities/payments.entity';
 import { PaymentType } from '@prisma/client';
 import { PaymentsRepository } from '../../infrastructure/payments.repository';
 import { SubscriptionsEntity } from '../../entities/subscriptions.entity';
-import { DataPaymentsType } from '../../../../../../calypso/src/common/types/data.payments.type';
+import { DataPaymentsType } from '../../../../common/types/data.payments.type';
 
 export class SavePaymentsDataCommand {
   constructor(

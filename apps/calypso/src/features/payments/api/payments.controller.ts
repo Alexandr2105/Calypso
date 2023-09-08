@@ -26,11 +26,11 @@ import { EventPattern } from '@nestjs/microservices';
 import { CommandBus } from '@nestjs/cqrs';
 import { ChangeAccountTypeAndSendMessageCommand } from '../application/use-cases/change.account.type.and.send.message.use.case';
 import { SubscriptionsType } from '../../../common/types/subscriptions.type';
-import { PaymentsDto } from '../../../../../payments-microservice/src/features/payments/dto/payments.dto';
 import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
 import { UrlForSwaggerType } from '../../../common/types/url.for.swagger.type';
 import { AllSubscriptionsForSwaggerType } from '../../../common/types/all.subscriptions.for.swagger.type';
 import { ApiConfigService } from '../../../common/helpers/api.config.service';
+import { DataPaymentsType } from '../../../common/types/data.payments.type';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -77,7 +77,7 @@ export class PaymentsController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Payment by stipe' })
-  @ApiBody({ type: [PaymentsDto] })
+  @ApiBody({ type: [DataPaymentsType] })
   @ApiResponse({
     status: HttpStatus.OK,
     type: UrlForSwaggerType,
@@ -90,7 +90,7 @@ export class PaymentsController {
 
   @ApiOperation({ summary: 'Payment by paypal' })
   @ApiBearerAuth()
-  @ApiBody({ type: [PaymentsDto] })
+  @ApiBody({ type: [DataPaymentsType] })
   @ApiResponse({
     status: HttpStatus.OK,
     type: UrlForSwaggerType,
