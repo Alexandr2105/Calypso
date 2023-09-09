@@ -1,7 +1,7 @@
 import { AccountType, PaymentType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PaymentsType {
+export class PaymentsTypeForSwagger {
   @ApiProperty({ type: 'string', description: 'Subscription payment date' })
   dateOfPayments: Date;
   @ApiProperty({ type: 'string', description: 'Date end of subscription' })

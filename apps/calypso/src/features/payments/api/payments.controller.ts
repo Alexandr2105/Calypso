@@ -32,6 +32,7 @@ import { AllSubscriptionsForSwaggerType } from '../../../common/types/all.subscr
 import { ApiConfigService } from '../../../common/helpers/api.config.service';
 import { DataPaymentsType } from '../../../common/types/data.payments.type';
 import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
+import { PaymentsQueryTypeForSwagger } from '../../../common/types/payments.query.type.for.swagger';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -120,6 +121,14 @@ export class PaymentsController {
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
   @Get('current-subscription')
   fakeMethod4ForSwagger() {
+    return;
+  }
+
+  @ApiOperation({ summary: 'All payments for current user' })
+  @ApiBearerAuth()
+  @ApiResponse({ status: HttpStatus.OK, type: PaymentsQueryTypeForSwagger })
+  @Get('payments')
+  fakeMethod5ForSwagger() {
     return;
   }
 }

@@ -159,6 +159,9 @@ export class PaymentsController {
     return this.commandBus.execute(new GetCurrentSubscriptionCommand(userId));
   }
 
+  @ApiOperation({ summary: 'All payments for current user' })
+  @ApiBearerAuth()
+  @ApiResponse({ status: HttpStatus.OK, type: PaymentsQueryType })
   @Get('payments')
   async getPaymentsCurrentUser(
     @Body('userId') userId: string,
