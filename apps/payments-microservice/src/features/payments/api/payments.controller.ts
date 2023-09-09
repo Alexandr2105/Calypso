@@ -152,4 +152,7 @@ export class PaymentsController {
   async getCurrentUserSubscription(@Body('userId') userId: string) {
     return this.commandBus.execute(new GetCurrentSubscriptionCommand(userId));
   }
+
+  @Get('payments')
+  async getPaymentsCurrentUser(@Body('userId') userId: string) {}
 }

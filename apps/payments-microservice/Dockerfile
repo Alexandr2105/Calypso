@@ -22,6 +22,7 @@ WORKDIR /home/node/dist/${SERVICE}
 COPY --chown=node package*.json ./
 COPY --chown=node yarn.lock ./
 COPY --chown=node prisma ./
+COPY --chown=node libraries ./
 
 RUN yarn install
 

@@ -41,7 +41,7 @@ import { PostsRepository } from './features/posts/infrastructure/posts.repositor
 import { CheckPostId } from './features/posts/validation/check.post.id';
 import { UpdateDescriptionForPostUseCase } from './features/posts/application/use-cases/update.description.for.post.use.case';
 import { DeletePostUseCase } from './features/posts/application/use-cases/delete.post.use.case';
-import { QueryRepository } from './features/query-repository.ts/query.repository';
+import { QueryRepository } from './features/query-repository/query.repository';
 import { QueryHelper } from './common/helpers/query.helper';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GetUserByIdUseCase } from './features/users-profiles/application/use-cases/get.user.by.id.use.case';

@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma-service';
-import { QueryHelper } from '../../common/helpers/query.helper';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { QueryHelper } from '../../../../../libraries/helpers/query.helper';
 
 @Injectable()
 export class QueryRepository {

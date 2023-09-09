@@ -34,10 +34,9 @@ import { PostIdDto } from '../dto/post.id.dto';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostsEntity } from '../entities/posts.entity';
 import { DeletePostCommand } from '../application/use-cases/delete.post.use.case';
-import { QueryRepository } from '../../query-repository.ts/query.repository';
+import { QueryRepository } from '../../query-repository/query.repository';
 import { PostQueryType } from '../../../common/query-types/post.query.type';
 import { PostEntityWithImage } from '../../../common/query-types/post.entity.with.image';
-import { QueryHelper } from '../../../common/helpers/query.helper';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { checkPhotoSum } from '../validation/check.photo.sum';
@@ -47,6 +46,7 @@ import {
   sortByQuery,
   sortDirectionQuery,
 } from '../../../common/types/paging.and.sorting.query.for.swagger.type';
+import { QueryHelper } from '../../../../../../libraries/helpers/query.helper';
 
 @ApiTags('Posts')
 @Controller('/posts')
