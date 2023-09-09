@@ -37,6 +37,7 @@ export class PaymentsRepository {
           paymentStatus: paymentStatus,
           allDataPaymentConfirm: allDataPaymentConfirm,
           updatedAt: updatedAt,
+          endDateOfSubscription: endDateOfSubscription,
         },
       });
       infoPayment = await prisma.subscriptions.update({

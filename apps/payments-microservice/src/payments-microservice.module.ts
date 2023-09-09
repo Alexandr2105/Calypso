@@ -17,6 +17,8 @@ import { SavePaymentsDataUseCase } from './features/payments/aplication/use-case
 import { UpdatePaymentDataUseCase } from './features/payments/aplication/use-case/update.payment.data.use.case';
 import { GetAllSubscriptionsUseCase } from './features/payments/aplication/use-case/get.all.subscriptions.use.case';
 import { GetCurrentSubscriptionUseCase } from './features/payments/aplication/use-case/get.current.subscription.use.case';
+import { QueryRepository } from './features/query-repository/query.repository';
+import { QueryHelper } from '../../../libraries/helpers/query.helper';
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { GetCurrentSubscriptionUseCase } from './features/payments/aplication/us
     UpdatePaymentDataUseCase,
     GetAllSubscriptionsUseCase,
     GetCurrentSubscriptionUseCase,
+    QueryRepository,
+    QueryHelper,
     {
       provide: 'PaypalAdapter',
       useClass: PaypalAdapter,

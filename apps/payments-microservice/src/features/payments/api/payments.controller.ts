@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import {
   Body,
+  Query,
   Req,
 } from '@nestjs/common/decorators/http/route-params.decorator';
 import {
@@ -29,6 +30,9 @@ import { GetAllSubscriptionsCommand } from '../aplication/use-case/get.all.subsc
 import { ProductsEntity } from '../entities/products.entity';
 import { GetCurrentSubscriptionCommand } from '../aplication/use-case/get.current.subscription.use.case';
 import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
+import { QueryHelper } from '../../../../../../libraries/helpers/query.helper';
+import { QueryRepository } from '../../query-repository/query.repository';
+import { PaymentsQueryType } from '../../../common/query-types/payments.query.type';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -37,6 +41,8 @@ export class PaymentsController {
     private apiConfigService: ApiConfigService,
     private paymentManager: PaymentManager,
     private commandBus: CommandBus,
+    private queryRepository: QueryRepository,
+    private queryHelper: QueryHelper,
   ) {}
 
   @ApiBearerAuth()
@@ -154,5 +160,11 @@ export class PaymentsController {
   }
 
   @Get('payments')
-  async getPaymentsCurrentUser(@Body('userId') userId: string) {}
+  async getPaymentsCurrentUser(
+    @Body('userId') userId: string,
+    @Query() query,
+  ): Promise<PaymentsQueryType> {
+    const queryParam = this.queryHelper.queryParamHelper(query);
+    return this.queryRepository.getPaymentsCurrentUser(userId, queryParam);
+  }
 }

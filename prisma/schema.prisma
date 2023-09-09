@@ -69,7 +69,9 @@ model Payments {
   paymentSystem          PaymentType
   paymentStatus          PaymentStatus
   createdAt              DateTime
+  subscriptionType       AccountType   @default(Business)
   updatedAt              DateTime?
+  endDateOfSubscription  DateTime?
   allDataPayment         Json
   allDataPaymentConfirm  Json?
 }
