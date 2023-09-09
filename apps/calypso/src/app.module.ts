@@ -42,7 +42,6 @@ import { CheckPostId } from './features/posts/validation/check.post.id';
 import { UpdateDescriptionForPostUseCase } from './features/posts/application/use-cases/update.description.for.post.use.case';
 import { DeletePostUseCase } from './features/posts/application/use-cases/delete.post.use.case';
 import { QueryRepository } from './features/query-repository/query.repository';
-import { QueryHelper } from './common/helpers/query.helper';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GetUserByIdUseCase } from './features/users-profiles/application/use-cases/get.user.by.id.use.case';
 import { DeleteProfileUseCase } from './features/users-profiles/application/use-cases/delete.profile.use.case';
@@ -60,6 +59,7 @@ import { PaymentsController } from './features/payments/api/payments.controller'
 import { HttpModule } from '@nestjs/axios';
 import { ChangeAccountTypeAndSendMessageUseCase } from './features/payments/application/use-cases/change.account.type.and.send.message.use.case';
 import { FormatDate } from './common/helpers/format.date';
+import { QueryHelper } from '../../../libraries/helpers/query.helper';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
