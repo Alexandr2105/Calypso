@@ -38,16 +38,16 @@ export class EmailAdapter {
     });
   }
 
-  // async sendEmailForMergeAccount(email: string, code: string) {
-  //   const transporter = this.createTransport();
-  //   await transporter.sendMail({
-  //     from: '"KustoGram" <kustogram@gmail.com>',
-  //     to: email,
-  //     subject: 'Merge accounts',
-  //     text: 'Для объединения аккаунтов пройдите по ссылке',
-  //     html: `<p>Пользователь с таким ${email} уже зарегистрирован. Если это вы, то пройдите по <a href="${this.apiConfigService.addressSiteForConfirmation}?code=${code}">ссылке</a></p>`,
-  //   });
-  // }
+  async sendEmailForPayments(email: string, date: string) {
+    const transporter = this.createTransport();
+    await transporter.sendMail({
+      from: '"KustoGram" <kustogram@gmail.com>',
+      to: email,
+      subject: 'Business account',
+      text: 'You have switched to a business account',
+      html: `Congratulations! You have switched to a business account! The current subscription is valid until ${date}`,
+    });
+  }
 
   private createTransport() {
     return nodemailer.createTransport({

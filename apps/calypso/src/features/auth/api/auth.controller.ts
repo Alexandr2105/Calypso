@@ -42,6 +42,7 @@ import { CreateUserOauth20Command } from '../application/use-cases/create.user.o
 import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
 import { OauthCodeDto } from '../dto/oauth.code.dto';
 import { OAuth2ForGithubCommand } from '../application/use-cases/oauth2ForGithubUseCase';
+import { LoginForSwaggerType } from '../../../common/types/login.for.swagger.type';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -105,19 +106,7 @@ export class AuthController {
   @ApiOperation({ summary: 'User authorization' })
   @ApiResponse({
     status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        accessToken: {
-          type: 'string',
-          description: 'Access token for authentication.',
-        },
-        profile: {
-          type: 'boolean',
-          description: 'Indicates if a profile exists.',
-        },
-      },
-    },
+    type: LoginForSwaggerType,
   })
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   async loginUser(@Body() body: EmailDto, @Res() res, @Req() req) {
@@ -199,17 +188,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Generate new pair of access and refresh tokens' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description:
-      'Returns JWT accessToken in body and JWT refreshToken in cookie ',
-    schema: {
-      type: 'object',
-      properties: {
-        accessToken: {
-          type: 'string',
-          description: 'Access token for authentication.',
-        },
-      },
-    },
+    type: LoginForSwaggerType,
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
@@ -256,19 +235,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Google OAuth registration and login' })
   @ApiResponse({
     status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        accessToken: {
-          type: 'string',
-          description: 'Access token for authentication.',
-        },
-        profile: {
-          type: 'boolean',
-          description: 'Indicates if a profile exists.',
-        },
-      },
-    },
+    type: LoginForSwaggerType,
   })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
   @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Bad auth code')
@@ -309,19 +276,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Github OAuth registration and login' })
   @ApiResponse({
     status: HttpStatus.OK,
-    schema: {
-      type: 'object',
-      properties: {
-        accessToken: {
-          type: 'string',
-          description: 'Access token for authentication.',
-        },
-        profile: {
-          type: 'boolean',
-          description: 'Indicates if a profile exists.',
-        },
-      },
-    },
+    type: LoginForSwaggerType,
   })
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
   @ApiResponseForSwagger(

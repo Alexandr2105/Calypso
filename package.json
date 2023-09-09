@@ -20,6 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/calypso/test/jest-e2e.json",
     "start:microservice1": "nest start files-microservice --debug --watch",
+    "start:microservice2": "nest start payments-microservice --debug --watch",
     "build:calypso": "nest build calypso",
     "start:calypso": "node dist/apps/calypso/main",
     "start:dev:calypso": "nest start calypso --watch",
@@ -28,7 +29,8 @@
     "start:dev:files-microservice": "nest start files-microservice --watch",
     "build:payments-microservice": "nest build payments-microservice",
     "start:payments-microservice": "node dist/apps/payments-microservice/main",
-    "start:dev:payments-microservice": "nest start payments-microservice --watch"
+    "start:dev:payments-microservice": "nest start payments-microservice --watch",
+    "ngrok": "ngrok http 3002"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.363.0",
@@ -59,11 +61,13 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "mongoose": "^7.4.1",
+    "ngrok": "^5.0.0-beta.2",
     "nodemailer": "^6.9.3",
     "passport": "^0.6.0",
     "passport-http": "^0.3.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "paypal-rest-sdk": "^1.8.1",
     "pg": "^8.11.0",
     "prisma": "^4.16.2",
     "reflect-metadata": "^0.1.13",

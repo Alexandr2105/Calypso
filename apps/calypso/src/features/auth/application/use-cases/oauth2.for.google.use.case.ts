@@ -35,7 +35,7 @@ export class OAuth2ForGoogleUseCase
     const userInfo: any = this.jwt.decodeUserByToken(token);
     return {
       userId: userInfo.sub,
-      email: userInfo.email,
+      email: userInfo.email.toLowerCase(),
       avatar: userInfo.picture,
       login: userInfo.name,
     };

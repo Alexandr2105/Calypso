@@ -97,6 +97,11 @@ spec:
                  secretKeyRef:
                    name: back-end-config-secret
                    key: FILES_SERVICE_PORT
+             - name: PAYMENTS_MICROSERVICE
+               valueFrom:
+                 secretKeyRef:
+                   name: back-end-config-secret
+                   key: PAYMENTS_MICROSERVICE
              - name: SHADOW_DATABASE_URL
                valueFrom:
                  secretKeyRef:

@@ -28,7 +28,7 @@ export class CreateUserDto {
     },
     { message: 'Invalid email' },
   )
-  @Transform(({ value }) => String(value).trim())
+  @Transform(({ value }) => String(value).trim().toLowerCase())
   @ApiProperty({ type: 'string' })
   @Validate(CheckEmailInDb, {
     message: 'User with this email is already registered',

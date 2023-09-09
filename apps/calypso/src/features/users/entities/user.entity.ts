@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { AccountType } from '@prisma/client';
 
 export class UserEntity {
   @ApiProperty({ type: 'string', description: 'User id' })
@@ -18,7 +19,7 @@ export class UserEntity {
 
   githubAuthId?: string;
 
-  accountType: string;
+  accountType: AccountType;
 
   constructor(
     id: string,
@@ -26,7 +27,7 @@ export class UserEntity {
     email: string,
     createdAt: Date,
     isDeleted: boolean,
-    accountType: string,
+    accountType: AccountType,
     passwordHash?: string,
     googleAuthId?: string,
     githubAuthId?: string,
