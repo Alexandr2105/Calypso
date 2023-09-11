@@ -117,7 +117,7 @@ export class PaymentsController {
   @ApiOperation({ summary: 'All subscriptions' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: AllSubscriptionsForSwaggerType,
+    type: [AllSubscriptionsForSwaggerType],
   })
   @ApiBearerAuth()
   @Get('subscriptions')
