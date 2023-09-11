@@ -20,14 +20,7 @@ import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DescriptionDto } from '../dto/description.dto';
 import { CommandBus } from '@nestjs/cqrs';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
-import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { CreatePostCommand } from '../application/use-cases/create.post.use.case';
 import { UpdateDescriptionForPostCommand } from '../application/use-cases/update.description.for.post.use.case';
 import { PostIdDto } from '../dto/post.id.dto';
@@ -35,18 +28,19 @@ import { PostsRepository } from '../infrastructure/posts.repository';
 import { PostsEntity } from '../entities/posts.entity';
 import { DeletePostCommand } from '../application/use-cases/delete.post.use.case';
 import { QueryRepository } from '../../query-repository/query.repository';
-import { PostQueryType } from '../../../common/query-types/post.query.type';
 import { PostEntityWithImage } from '../../../common/query-types/post.entity.with.image';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { checkPhotoSum } from '../validation/check.photo.sum';
-import {
-  pageSizeQuery,
-  sortByQuery,
-  sortDirectionQuery,
-} from '../../../common/types/paging.and.sorting.query.for.swagger.type';
 import { QueryHelper } from '../../../../../../libraries/helpers/query.helper';
 import { IdForCursorDto } from '../dto/id.for.cursor.dto';
+import {
+  SwaggerDecoratorByCreatePost,
+  SwaggerDecoratorByDeletePostPostId,
+  SwaggerDecoratorByGetPostPostId,
+  SwaggerDecoratorByGetUserId,
+  SwaggerDecoratorByPutPostPostId,
+} from '../swagger/swagger.posts.decorators';
 
 @ApiTags('Posts')
 @Controller('/posts')
@@ -61,18 +55,7 @@ export class PostsController {
 
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create post. "fieldName" must be "posts"' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'Post created',
-    type: PostEntityWithImage,
-  })
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.Wrong length<br>2.More than 10 photos',
-  )
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
+  @SwaggerDecoratorByCreatePost()
   @Post('post')
   @UseInterceptors(FilesInterceptor('posts'))
   async createPosts(
@@ -97,13 +80,7 @@ export class PostsController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update description for post' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Post updated')
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Wrong length')
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
-  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
-  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
+  @SwaggerDecoratorByPutPostPostId()
   @Put('post/:postId')
   async updatePost(
     @Body() body: DescriptionDto,
@@ -120,14 +97,7 @@ export class PostsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get info for post' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: PostEntityWithImage,
-  })
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
-  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
+  @SwaggerDecoratorByGetPostPostId()
   @Get('post/:postId')
   async getPost(@Param() param: PostIdDto): Promise<PostEntityWithImage> {
     const pattern = { cmd: 'getImages' };
@@ -140,12 +110,7 @@ export class PostsController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete post' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Post deleted')
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
-  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
-  @ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found')
+  @SwaggerDecoratorByDeletePostPostId()
   @Delete('post/:postId')
   async deletePost(@Param() param: PostIdDto, @Req() req) {
     await this.commandBus.execute(
@@ -156,14 +121,7 @@ export class PostsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get post for current user' })
-  @ApiResponse({ status: HttpStatus.OK, type: PostQueryType })
-  @ApiQuery(pageSizeQuery)
-  @ApiQuery(sortDirectionQuery)
-  @ApiQuery(sortByQuery)
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
-  @ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden')
+  @SwaggerDecoratorByGetUserId()
   @Get('/:userId')
   async getPostsCurrentUser(
     @Req() req,

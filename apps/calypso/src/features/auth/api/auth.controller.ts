@@ -10,18 +10,12 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { RegistrationConformationDto } from '../dto/registration-confirmation.dto';
 import { EmailDto } from '../dto/email.dto';
 import { EmailResendingDto } from '../dto/email-resending.dto';
 import { NewPasswordDto } from '../dto/new-password.dto';
-import { ApiResponseForSwagger } from '../../../common/helpers/api-response-for-swagger';
 import { CommandBus } from '@nestjs/cqrs';
 import { RegistrationUserCommand } from '../application/use-cases/registration-user.use-case';
 import { ConfirmationEmailCommand } from '../application/use-cases/confirmation-email.use-case';
@@ -36,13 +30,24 @@ import { LogoutUserCommand } from '../../devices/application/use-cases/logout.us
 import { randomUUID } from 'crypto';
 import { JwtAuthGuard } from '../../../common/guards/jwt.auth.guard';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
-import { UserEntity } from '../../users/entities/user.entity';
 import { OauthUserInfoDto } from '../dto/oauth.user.info.dto';
 import { CreateUserOauth20Command } from '../application/use-cases/create.user.oauth20.use.case';
 import { OAuth2ForGoogleCommand } from '../application/use-cases/oauth2.for.google.use.case';
 import { OauthCodeDto } from '../dto/oauth.code.dto';
 import { OAuth2ForGithubCommand } from '../application/use-cases/oauth2ForGithubUseCase';
-import { LoginForSwaggerType } from '../../../common/types/login.for.swagger.type';
+import {
+  SwaggerDecoratorByConfirmationCode,
+  SwaggerDecoratorByGetInformationMe,
+  SwaggerDecoratorByLogin,
+  SwaggerDecoratorByLogout,
+  SwaggerDecoratorByNewPassword,
+  SwaggerDecoratorByOAuthGitHub,
+  SwaggerDecoratorByOAuthGoogle,
+  SwaggerDecoratorByPasswordRecovery,
+  SwaggerDecoratorByRefreshLink,
+  SwaggerDecoratorByRefreshToken,
+  SwaggerDecoratorByRegistration,
+} from '../swagger/swagger.auth.decorators';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -54,13 +59,7 @@ export class AuthController {
 
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Registration users' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email confirmation link sent')
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.User with this email is already registered<br> ' +
-      '2.Wrong length\n',
-  )
+  @SwaggerDecoratorByRegistration()
   async registrationUsers(
     @Body() body: CreateUserDto,
     @Res() res,
@@ -71,9 +70,7 @@ export class AuthController {
 
   @Get('email-confirmation/:code')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Email confirmation' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Email successfully verified')
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Incorrect confirmation code')
+  @SwaggerDecoratorByConfirmationCode()
   async registrationConfirmation(
     @Param() params: RegistrationConformationDto,
   ): Promise<void> {
@@ -84,12 +81,7 @@ export class AuthController {
   @Post('refresh-link')
   // @UseGuards(IpRestrictionGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Refresh confirmation link' })
-  @ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Link updated')
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.Bad request<br>2.Invalid email',
-  )
+  @SwaggerDecoratorByRefreshLink()
   async refreshConfirmationLink(
     @Body() inputModel: RegistrationEmailResendingDto,
   ): Promise<HttpStatus> {
@@ -102,13 +94,8 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
+  @SwaggerDecoratorByLogin()
   @Post('login')
-  @ApiOperation({ summary: 'User authorization' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: LoginForSwaggerType,
-  })
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
   async loginUser(@Body() body: EmailDto, @Res() res, @Req() req) {
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
@@ -131,16 +118,8 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
+  @SwaggerDecoratorByPasswordRecovery()
   @Post('password-recovery')
-  @ApiOperation({ summary: 'Password recovery' })
-  @ApiResponseForSwagger(
-    HttpStatus.NO_CONTENT,
-    "Even if the current email address is not registered (to prevent the user's email from being detected)",
-  )
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.Invalid email address<br>2.Incorrect recaptcha code',
-  )
   async passwordRecovery(@Body() body: EmailResendingDto) {
     await this.commandBus.execute(
       new SendPasswordRecoveryLinkCommand(body.email),
@@ -149,17 +128,8 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
+  @SwaggerDecoratorByNewPassword()
   @Post('new-password')
-  @ApiOperation({ summary: 'Creating a new password' })
-  @ApiResponseForSwagger(
-    HttpStatus.NO_CONTENT,
-    'If the code is valid and the new password is accepted',
-  )
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description:
-      'List of possible errors:<br>1.Wrong length newPassword<br> 2.Incorrect confirmation code',
-  })
   async createNewPassword(@Body() body: NewPasswordDto) {
     await this.commandBus.execute(
       new ChangePasswordCommand(body.recoveryCode, body.newPassword),
@@ -169,15 +139,8 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
+  @SwaggerDecoratorByLogout()
   @Post('logout')
-  @ApiOperation({ summary: 'User logout' })
-  @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
-  })
-  @ApiResponseForSwagger(
-    HttpStatus.UNAUTHORIZED,
-    'The JWT refreshToken inside cookie is missing, expired or incorrect',
-  )
   @UseGuards(RefreshAuthGuard)
   async logout(@Req() req) {
     await this.commandBus.execute(new LogoutUserCommand(req.user.deviceId));
@@ -185,18 +148,9 @@ export class AuthController {
     return true;
   }
 
-  @ApiOperation({ summary: 'Generate new pair of access and refresh tokens' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: LoginForSwaggerType,
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description:
-      'The JWT refreshToken inside cookie is missing, expired or incorrect',
-  })
   @HttpCode(HttpStatus.OK)
   @UseGuards(RefreshAuthGuard)
+  @SwaggerDecoratorByRefreshToken()
   @Post('refresh-token')
   async updateRefreshToken(@Req() req, @Res() res) {
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
@@ -217,14 +171,8 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Returns user data' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: UserEntity,
-  })
-  @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
-  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
+  @SwaggerDecoratorByGetInformationMe()
   @Get('me')
   async getInfoAboutMe(@Req() req) {
     const user = await this.userRepo.getUserById(req.user.id);
@@ -232,13 +180,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Google OAuth registration and login' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: LoginForSwaggerType,
-  })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
-  @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Bad auth code')
+  @SwaggerDecoratorByOAuthGoogle()
   @Post('google')
   async getAccessTokenForGoogle(
     @Body() body: OauthCodeDto,
@@ -273,16 +215,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Github OAuth registration and login' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: LoginForSwaggerType,
-  })
-  @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'Email sent' })
-  @ApiResponseForSwagger(
-    HttpStatus.BAD_REQUEST,
-    'List of possible errors:<br>1.Bad auth code<br> 2.Bad verification code',
-  )
+  @SwaggerDecoratorByOAuthGitHub()
   @Post('github')
   async getAccessTokenForGithub(
     @Body() body: OauthCodeDto,
