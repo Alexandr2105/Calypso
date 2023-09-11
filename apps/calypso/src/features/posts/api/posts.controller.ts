@@ -41,12 +41,12 @@ import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { checkPhotoSum } from '../validation/check.photo.sum';
 import {
-  pageNumberQuery,
   pageSizeQuery,
   sortByQuery,
   sortDirectionQuery,
 } from '../../../common/types/paging.and.sorting.query.for.swagger.type';
 import { QueryHelper } from '../../../../../../libraries/helpers/query.helper';
+import { IdForCursorDto } from '../dto/id.for.cursor.dto';
 
 @ApiTags('Posts')
 @Controller('/posts')
@@ -160,7 +160,6 @@ export class PostsController {
   @ApiOperation({ summary: 'Get post for current user' })
   @ApiResponse({ status: HttpStatus.OK, type: PostQueryType })
   @ApiQuery(pageSizeQuery)
-  @ApiQuery(pageNumberQuery)
   @ApiQuery(sortDirectionQuery)
   @ApiQuery(sortByQuery)
   @ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized')
@@ -170,13 +169,13 @@ export class PostsController {
     @Req() req,
     @Param('userId') userId: string,
     @Query() query,
-    // @Body() body: IdForCursorDto,
+    @Body() body: IdForCursorDto,
   ) {
     if (req.user.id !== userId) throw new ForbiddenException();
     const queryParam = this.queryHelper.queryParamHelper(query);
     return this.queryRepository.getPostsAndPhotos(
       req.user.id,
-      // body.postId,
+      body.postId,
       queryParam,
     );
   }

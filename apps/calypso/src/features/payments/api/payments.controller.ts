@@ -34,6 +34,7 @@ import { DataPaymentsType } from '../../../common/types/data.payments.type';
 import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
 import { PaymentsQueryTypeForSwagger } from '../../../common/types/payments.query.type.for.swagger';
 import { CancelSubscriptionAndSendMessageCommand } from '../application/use-cases/cancel.subscription.and.send.message.use.case';
+import { DataPaymentsForSwagger } from '../../../common/types/data.payments.for.swagger';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -93,6 +94,7 @@ export class PaymentsController {
     type: UrlForSwaggerType,
   })
   @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Products not found')
+  @ApiBody({ type: [DataPaymentsForSwagger] })
   @Post('stripe')
   fakeMethod1ForSwagger() {
     return;
@@ -100,7 +102,7 @@ export class PaymentsController {
 
   @ApiOperation({ summary: 'Payment by paypal' })
   @ApiBearerAuth()
-  @ApiBody({ type: [DataPaymentsType] })
+  @ApiBody({ type: [DataPaymentsForSwagger] })
   @ApiResponse({
     status: HttpStatus.OK,
     type: UrlForSwaggerType,
@@ -118,7 +120,7 @@ export class PaymentsController {
     type: AllSubscriptionsForSwaggerType,
   })
   @ApiBearerAuth()
-  @Get()
+  @Get('subscriptions')
   fakeMethod3ForSwagger() {
     return;
   }
