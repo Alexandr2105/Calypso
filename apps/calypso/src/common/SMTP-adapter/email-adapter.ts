@@ -49,6 +49,17 @@ export class EmailAdapter {
     });
   }
 
+  async sendEmailForCancelSubscription(email: string) {
+    const transporter = this.createTransport();
+    await transporter.sendMail({
+      from: '"KustoGram" <kustogram@gmail.com>',
+      to: email,
+      subject: 'Cancel Subscription',
+      text: 'The subscription has expired',
+      html: `The subscription has expired. To renew your subscription, change your account type to business`,
+    });
+  }
+
   private createTransport() {
     return nodemailer.createTransport({
       service: 'gmail',

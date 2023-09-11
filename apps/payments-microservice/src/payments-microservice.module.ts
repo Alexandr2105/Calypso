@@ -19,6 +19,8 @@ import { GetAllSubscriptionsUseCase } from './features/payments/aplication/use-c
 import { GetCurrentSubscriptionUseCase } from './features/payments/aplication/use-case/get.current.subscription.use.case';
 import { QueryRepository } from './features/query-repository/query.repository';
 import { QueryHelper } from '../../../libraries/helpers/query.helper';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CheckSubscriptionsService } from './features/payments/aplication/check.subscriptions.service';
 
 @Module({
   imports: [
@@ -40,6 +42,7 @@ import { QueryHelper } from '../../../libraries/helpers/query.helper';
     ]),
     PrismaModule,
     CqrsModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [PaymentsMicroserviceController, PaymentsController],
   providers: [
@@ -54,6 +57,7 @@ import { QueryHelper } from '../../../libraries/helpers/query.helper';
     GetCurrentSubscriptionUseCase,
     QueryRepository,
     QueryHelper,
+    CheckSubscriptionsService,
     {
       provide: 'PaypalAdapter',
       useClass: PaypalAdapter,

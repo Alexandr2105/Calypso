@@ -33,6 +33,7 @@ import { ApiConfigService } from '../../../common/helpers/api.config.service';
 import { DataPaymentsType } from '../../../common/types/data.payments.type';
 import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
 import { PaymentsQueryTypeForSwagger } from '../../../common/types/payments.query.type.for.swagger';
+import { CancelSubscriptionAndSendMessageCommand } from '../application/use-cases/cancel.subscription.and.send.message.use.case';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -74,6 +75,13 @@ export class PaymentsController {
         data.subscriptionType,
         data.endDateOfSubscription,
       ),
+    );
+  }
+
+  @EventPattern({ cmd: 'cancelSubscription' })
+  private async cancelSubscriptionAndSendMessage(userId: string) {
+    await this.commandBus.execute(
+      new CancelSubscriptionAndSendMessageCommand(userId),
     );
   }
 

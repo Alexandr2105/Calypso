@@ -60,6 +60,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ChangeAccountTypeAndSendMessageUseCase } from './features/payments/application/use-cases/change.account.type.and.send.message.use.case';
 import { FormatDate } from './common/helpers/format.date';
 import { QueryHelper } from '../../../libraries/helpers/query.helper';
+import { CancelSubscriptionAndSendMessageUseCase } from './features/payments/application/use-cases/cancel.subscription.and.send.message.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -94,6 +95,7 @@ const UseCases = [
   UpdateConfirmationCodeUseCase,
   OAuth2ForGithubUseCase,
   ChangeAccountTypeAndSendMessageUseCase,
+  CancelSubscriptionAndSendMessageUseCase,
 ];
 const Repositories = [
   UsersRepository,
