@@ -66,7 +66,7 @@ export class PaymentsController {
         data.subscriptionTimeHours,
       ),
     );
-    return data.url.toString();
+    return { url: data.url };
   }
 
   @ApiExcludeEndpoint()
@@ -112,7 +112,7 @@ export class PaymentsController {
         data.subscriptionTimeHours,
       ),
     );
-    return data.url.toString();
+    return { url: data.url };
   }
 
   @ApiExcludeEndpoint()
