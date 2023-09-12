@@ -16,7 +16,7 @@ import { DeleteAvatarCommand } from '../application/use-cases/delete.avatar.use.
 export class PictureController {
   constructor(private commandBus: CommandBus) {}
 
-  @MessagePattern({ cmd: 'saveAvatar ' })
+  @MessagePattern({ cmd: 'saveAvatar' })
   async saveAvatars(data: AvatarsDto): Promise<string> {
     return this.commandBus.execute(
       new UploadAvatarCommand(data.userId, data.avatar),
