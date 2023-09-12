@@ -47,3 +47,11 @@ export function SwaggerDecoratorByDeleteProfile(): MethodDecorator {
     ApiResponseForSwagger(HttpStatus.NOT_FOUND, 'Not Found'),
   );
 }
+
+export function SwaggerDecoratorByDeleteAvatar(): MethodDecorator {
+  return applyDecorators(
+    ApiBearerAuth(),
+    ApiOperation({ summary: 'Delete avatar' }),
+    ApiResponseForSwagger(HttpStatus.NO_CONTENT, 'Avatar deleted'),
+  );
+}

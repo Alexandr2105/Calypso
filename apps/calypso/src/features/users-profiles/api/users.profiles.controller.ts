@@ -25,6 +25,7 @@ import { GetUserByIdCommand } from '../application/use-cases/get.user.by.id.use.
 import { UploadAvatarCommand } from '../application/use-cases/upload.avatar.user.case';
 import { DeleteProfileCommand } from '../application/use-cases/delete.profile.use.case';
 import {
+  SwaggerDecoratorByDeleteAvatar,
   SwaggerDecoratorByDeleteProfile,
   SwaggerDecoratorByGetProfile,
   SwaggerDecoratorByPostSaveAvatar,
@@ -89,6 +90,7 @@ export class UsersProfilesController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
+  @SwaggerDecoratorByDeleteAvatar()
   @Delete('avatar')
   async deleteAvatar(@Req() req) {
     const userId = req.user.id;
