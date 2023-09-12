@@ -30,6 +30,7 @@ import {
   SwaggerDecoratorByPostSaveAvatar,
   SwaggerDecoratorByPostSaveProfileInfo,
 } from '../swagger/swagger.users.profile.decorator';
+import { DeleteAvatarCommand } from '../application/use-cases/delete.avatar.use.case';
 
 @ApiTags('Profiles')
 @Controller('users/profiles')
@@ -84,5 +85,13 @@ export class UsersProfilesController {
   async deleteProfile(@Req() req) {
     const userId = req.user.id;
     await this.commandBus.execute(new DeleteProfileCommand(userId));
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(JwtAuthGuard)
+  @Delete('avatar')
+  async deleteAvatar(@Req() req) {
+    const userId = req.user.id;
+    await this.commandBus.execute(new DeleteAvatarCommand(userId));
   }
 }

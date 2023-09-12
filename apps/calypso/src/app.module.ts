@@ -61,6 +61,7 @@ import { ChangeAccountTypeAndSendMessageUseCase } from './features/payments/appl
 import { FormatDate } from './common/helpers/format.date';
 import { QueryHelper } from '../../../libraries/helpers/query.helper';
 import { CancelSubscriptionAndSendMessageUseCase } from './features/payments/application/use-cases/cancel.subscription.and.send.message.use.case';
+import { DeleteAvatarUseCase } from './features/users-profiles/application/use-cases/delete.avatar.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -96,6 +97,7 @@ const UseCases = [
   OAuth2ForGithubUseCase,
   ChangeAccountTypeAndSendMessageUseCase,
   CancelSubscriptionAndSendMessageUseCase,
+  DeleteAvatarUseCase,
 ];
 const Repositories = [
   UsersRepository,

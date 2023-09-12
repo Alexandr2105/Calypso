@@ -27,4 +27,8 @@ export class AvatarsRepository {
   async deleteAvatarInfo(userId: string): Promise<void> {
     await this.avatar.deleteOne({ userId: userId });
   }
+
+  async deleteAvatar(userId: string): Promise<void> {
+    await this.avatar.deleteOne({ userId: userId });
+  }
 }
