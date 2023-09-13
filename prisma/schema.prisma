@@ -35,11 +35,12 @@ model EmailConfirmation {
 model RefreshTokenData {
   iat        Int
   exp        Int
-  deviceId   String @id
+  deviceId   String   @id
   ip         String
   deviceName String
   userId     String
-  user       User   @relation(fields: [userId], references: [id])
+  dateCreate DateTime @default(dbgenerated("now()"))
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model UserProfile {

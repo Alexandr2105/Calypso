@@ -75,6 +75,11 @@ export function SwaggerDecoratorByGetUserId(): MethodDecorator {
     ApiQuery(pageSizeQuery),
     ApiQuery(sortDirectionQuery),
     ApiQuery(sortByQuery),
+    ApiQuery({
+      description: 'If the request is the first then postId="0"',
+      type: 'string',
+      name: 'postId',
+    }),
     ApiResponseForSwagger(HttpStatus.UNAUTHORIZED, 'Unauthorized'),
     ApiResponseForSwagger(HttpStatus.FORBIDDEN, 'Forbidden'),
   );

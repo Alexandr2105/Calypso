@@ -62,6 +62,10 @@ import { FormatDate } from './common/helpers/format.date';
 import { QueryHelper } from '../../../libraries/helpers/query.helper';
 import { CancelSubscriptionAndSendMessageUseCase } from './features/payments/application/use-cases/cancel.subscription.and.send.message.use.case';
 import { DeleteAvatarUseCase } from './features/users-profiles/application/use-cases/delete.avatar.use.case';
+import { DevicesController } from './features/devices/api/devices.controller';
+import { GetAllDevicesCurrentUserUseCase } from './features/devices/application/use-cases/get.all.devices.current.user.use.case';
+import { DeleteDeviceByIdUseCase } from './features/devices/application/delete.device.by.id.use.case';
+import { DeleteAllDevicesExceptTheCurrentDeviceUseCase } from './features/devices/application/use-cases/delete.all.devices.except.the.current.device.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -98,6 +102,9 @@ const UseCases = [
   ChangeAccountTypeAndSendMessageUseCase,
   CancelSubscriptionAndSendMessageUseCase,
   DeleteAvatarUseCase,
+  GetAllDevicesCurrentUserUseCase,
+  DeleteDeviceByIdUseCase,
+  DeleteAllDevicesExceptTheCurrentDeviceUseCase,
 ];
 const Repositories = [
   UsersRepository,
@@ -149,6 +156,7 @@ const Repositories = [
     UsersProfilesController,
     PostsController,
     PaymentsController,
+    DevicesController,
   ],
   providers: [
     AppService,

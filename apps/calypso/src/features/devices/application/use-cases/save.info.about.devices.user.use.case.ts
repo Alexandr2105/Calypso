@@ -32,6 +32,7 @@ export class SaveInfoAboutDevicesUserUseCase
       command.ip,
       command.deviceName,
       infoRefreshToken.userId,
+      new Date(),
     );
 
     await this.devicesRepository.saveInfoRefreshToken(data);

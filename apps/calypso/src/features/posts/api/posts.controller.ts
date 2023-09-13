@@ -33,7 +33,6 @@ import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { checkPhotoSum } from '../validation/check.photo.sum';
 import { QueryHelper } from '../../../../../../libraries/helpers/query.helper';
-import { IdForCursorDto } from '../dto/id.for.cursor.dto';
 import {
   SwaggerDecoratorByCreatePost,
   SwaggerDecoratorByDeletePostPostId,
@@ -127,13 +126,12 @@ export class PostsController {
     @Req() req,
     @Param('userId') userId: string,
     @Query() query,
-    @Body() body: IdForCursorDto,
   ) {
     if (req.user.id !== userId) throw new ForbiddenException();
     const queryParam = this.queryHelper.queryParamHelper(query);
     return this.queryRepository.getPostsAndPhotos(
       req.user.id,
-      body.postId,
+      query.postId,
       queryParam,
     );
   }
