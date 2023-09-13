@@ -36,3 +36,14 @@ export function SwaggerDecoratorByDeleteAllDevicesExceptTheCurrentDevice(): Meth
     }),
   );
 }
+
+export function SwaggerDecoratorByGetCurrentDevice(): MethodDecorator {
+  return applyDecorators(
+    ApiBearerAuth(),
+    ApiOperation({ summary: 'Get current device for current user' }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      type: RefreshTokenType,
+    }),
+  );
+}

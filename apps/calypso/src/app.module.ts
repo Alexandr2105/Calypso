@@ -66,6 +66,7 @@ import { DevicesController } from './features/devices/api/devices.controller';
 import { GetAllDevicesCurrentUserUseCase } from './features/devices/application/use-cases/get.all.devices.current.user.use.case';
 import { DeleteDeviceByIdUseCase } from './features/devices/application/delete.device.by.id.use.case';
 import { DeleteAllDevicesExceptTheCurrentDeviceUseCase } from './features/devices/application/use-cases/delete.all.devices.except.the.current.device.use.case';
+import { GetCurrentDeviceUseCase } from './features/devices/application/use-cases/get.current.device.use.case';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -105,6 +106,7 @@ const UseCases = [
   GetAllDevicesCurrentUserUseCase,
   DeleteDeviceByIdUseCase,
   DeleteAllDevicesExceptTheCurrentDeviceUseCase,
+  GetCurrentDeviceUseCase,
 ];
 const Repositories = [
   UsersRepository,

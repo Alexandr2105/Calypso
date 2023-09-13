@@ -8,12 +8,14 @@ import {
   SwaggerDecoratorByDeleteAllDevicesExceptTheCurrentDevice,
   SwaggerDecoratorByDeleteDevice,
   SwaggerDecoratorByGetAllDevicesCurrentUser,
+  SwaggerDecoratorByGetCurrentDevice,
 } from '../swagger/swagger.devices.decorators';
 import { RefreshTokenType } from '../../../common/types/refresh.token.type';
 import { DeviceDto } from '../dto/device.dto';
 import { DeleteDeviceByIdCommand } from '../application/delete.device.by.id.use.case';
 import { DeleteAllDevicesExceptTheCurrentDeviceCommand } from '../application/use-cases/delete.all.devices.except.the.current.device.use.case';
 import { Jwt } from '../../../common/jwt/jwt';
+import { GetCurrentDeviceCommand } from '../application/use-cases/get.current.device.use.case';
 
 @ApiTags('Devices')
 @Controller('devices')
@@ -50,6 +52,18 @@ export class DevicesController {
         infoAboutUser.deviceId,
         req.user.id,
       ),
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @SwaggerDecoratorByGetCurrentDevice()
+  @Get('current')
+  async getCurrentDevice(@Req() req): Promise<RefreshTokenType> {
+    const refreshToken = req.cookies.refreshToken;
+    const infoAboutUser: any =
+      this.jwtService.getUserByRefreshToken(refreshToken);
+    return this.commandBus.execute(
+      new GetCurrentDeviceCommand(infoAboutUser.deviceId),
     );
   }
 }
