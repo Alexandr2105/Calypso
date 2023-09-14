@@ -133,11 +133,11 @@ const Repositories = [
         },
       },
       {
-        name: 'FILES_SERVICE_RMQ',
+        name: 'PAYMENTS_SERVICE_RMQ',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBIT_MQ],
-          queue: 'FILES_SERVICE_RMQ',
+          queue: 'PAYMENTS_SERVICE_RMQ',
           queueOptions: {
             durable: false,
           },
