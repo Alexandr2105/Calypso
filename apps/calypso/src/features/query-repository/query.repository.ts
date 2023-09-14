@@ -65,7 +65,7 @@ export class QueryRepository {
       where: { userId: userId },
       ...cursorOptions,
       orderBy: { [queryParam.sortBy]: queryParam.sortDirection },
-      skip: postId ? 1 : 0,
+      skip: postId === '0' ? 0 : 1,
       take: queryParam.pageSize,
     });
     return {

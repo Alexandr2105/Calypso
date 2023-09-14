@@ -3,6 +3,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
 } from '@nestjs/swagger';
 import { PaymentsDto } from '../dto/payments.dto';
@@ -11,6 +12,12 @@ import { ErrorsMessageForSwaggerType } from '../../../common/types/errors.messag
 import { ProductsEntity } from '../entities/products.entity';
 import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
 import { PaymentsQueryType } from '../../../common/query-types/payments.query.type';
+import {
+  pageNumberQuery,
+  pageSizeQuery,
+  sortByQuery,
+  sortDirectionQuery,
+} from '../../../../../../libraries/types/paging.and.sorting.query.for.swagger.type';
 
 export function SwaggerDecoratorByPostStripe(): MethodDecorator {
   return applyDecorators(
@@ -65,6 +72,10 @@ export function SwaggerDecoratorByGetPayments(): MethodDecorator {
   return applyDecorators(
     ApiOperation({ summary: 'All payments for current user' }),
     ApiBearerAuth(),
+    ApiQuery(pageSizeQuery),
+    ApiQuery(pageNumberQuery),
+    ApiQuery(sortDirectionQuery),
+    ApiQuery(sortByQuery),
     ApiResponse({ status: HttpStatus.OK, type: PaymentsQueryType }),
   );
 }

@@ -41,7 +41,7 @@ import {
   pageSizeQuery,
   sortByQuery,
   sortDirectionQuery,
-} from '../../../common/types/paging.and.sorting.query.for.swagger.type';
+} from '../../../../../../libraries/types/paging.and.sorting.query.for.swagger.type';
 
 @ApiTags('Payments')
 @Controller('payments')

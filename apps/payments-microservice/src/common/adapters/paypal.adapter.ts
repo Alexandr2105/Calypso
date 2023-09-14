@@ -41,8 +41,8 @@ export class PaypalAdapter implements IPaymentAdapter {
         payment_method: 'paypal',
       },
       redirect_urls: {
-        return_url: 'http://localhost:3002/api/v1/payments/success',
-        cancel_url: 'http://localhost:3002/api/v1/payments/error',
+        return_url: this.apiConfigService.successUrl,
+        cancel_url: this.apiConfigService.cancelUrl,
       },
       transactions: [
         {
