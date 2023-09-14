@@ -37,6 +37,8 @@ import { CheckSubscriptionsService } from './features/payments/aplication/check.
           queueOptions: {
             durable: false,
           },
+          noAck: false,
+          prefetchCount: 1,
         },
       },
     ]),
