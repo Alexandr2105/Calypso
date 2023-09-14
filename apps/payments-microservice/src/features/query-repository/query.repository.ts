@@ -18,7 +18,7 @@ export class QueryRepository {
       where: { userId: userId, paymentStatus: 'Success' },
     });
     const payments = await this.prisma.payments.findMany({
-      where: { userId: userId },
+      where: { userId: userId, paymentStatus: 'Success' },
       orderBy: { [queryParam.sortBy]: queryParam.sortDirection },
       skip: this.queryHelper.skipHelper(
         queryParam.pageNumber,

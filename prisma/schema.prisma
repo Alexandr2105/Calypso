@@ -39,7 +39,7 @@ model RefreshTokenData {
   ip         String
   deviceName String
   userId     String
-  dateCreate DateTime @default(dbgenerated("now()"))
+  dateCreate DateTime
   user       User     @relation(fields: [userId], references: [id])
 }
 
