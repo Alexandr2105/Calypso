@@ -11,6 +11,7 @@ import {
   ApiBody,
   ApiExcludeEndpoint,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -35,6 +36,12 @@ import { SubscriptionForSwaggerType } from '../../../common/types/subscription.f
 import { PaymentsQueryTypeForSwagger } from '../../../common/types/payments.query.type.for.swagger';
 import { CancelSubscriptionAndSendMessageCommand } from '../application/use-cases/cancel.subscription.and.send.message.use.case';
 import { DataPaymentsForSwagger } from '../../../common/types/data.payments.for.swagger';
+import {
+  pageNumberQuery,
+  pageSizeQuery,
+  sortByQuery,
+  sortDirectionQuery,
+} from '../../../common/types/paging.and.sorting.query.for.swagger.type';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -136,6 +143,10 @@ export class PaymentsController {
 
   @ApiOperation({ summary: 'All payments for current user' })
   @ApiBearerAuth()
+  @ApiQuery(pageSizeQuery)
+  @ApiQuery(pageNumberQuery)
+  @ApiQuery(sortDirectionQuery)
+  @ApiQuery(sortByQuery)
   @ApiResponse({ status: HttpStatus.OK, type: PaymentsQueryTypeForSwagger })
   @Get('payments')
   fakeMethod5ForSwagger() {
