@@ -11,6 +11,7 @@ import {
   ApiBody,
   ApiExcludeEndpoint,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -32,6 +33,15 @@ import { AllSubscriptionsForSwaggerType } from '../../../common/types/all.subscr
 import { ApiConfigService } from '../../../common/helpers/api.config.service';
 import { DataPaymentsType } from '../../../common/types/data.payments.type';
 import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
+import { PaymentsQueryTypeForSwagger } from '../../../common/types/payments.query.type.for.swagger';
+import { CancelSubscriptionAndSendMessageCommand } from '../application/use-cases/cancel.subscription.and.send.message.use.case';
+import { DataPaymentsForSwagger } from '../../../common/types/data.payments.for.swagger';
+import {
+  pageNumberQuery,
+  pageSizeQuery,
+  sortByQuery,
+  sortDirectionQuery,
+} from '../../../../../../libraries/types/paging.and.sorting.query.for.swagger.type';
 
 @ApiTags('Payments')
 @Controller('payments')
@@ -76,6 +86,13 @@ export class PaymentsController {
     );
   }
 
+  @EventPattern({ cmd: 'cancelSubscription' })
+  private async cancelSubscriptionAndSendMessage(userId: string) {
+    await this.commandBus.execute(
+      new CancelSubscriptionAndSendMessageCommand(userId),
+    );
+  }
+
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Payment by stipe' })
   @ApiBody({ type: [DataPaymentsType] })
@@ -84,6 +101,7 @@ export class PaymentsController {
     type: UrlForSwaggerType,
   })
   @ApiResponseForSwagger(HttpStatus.BAD_REQUEST, 'Products not found')
+  @ApiBody({ type: [DataPaymentsForSwagger] })
   @Post('stripe')
   fakeMethod1ForSwagger() {
     return;
@@ -91,7 +109,7 @@ export class PaymentsController {
 
   @ApiOperation({ summary: 'Payment by paypal' })
   @ApiBearerAuth()
-  @ApiBody({ type: [DataPaymentsType] })
+  @ApiBody({ type: [DataPaymentsForSwagger] })
   @ApiResponse({
     status: HttpStatus.OK,
     type: UrlForSwaggerType,
@@ -106,10 +124,10 @@ export class PaymentsController {
   @ApiOperation({ summary: 'All subscriptions' })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: AllSubscriptionsForSwaggerType,
+    type: [AllSubscriptionsForSwaggerType],
   })
   @ApiBearerAuth()
-  @Get()
+  @Get('subscriptions')
   fakeMethod3ForSwagger() {
     return;
   }
@@ -120,6 +138,18 @@ export class PaymentsController {
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
   @Get('current-subscription')
   fakeMethod4ForSwagger() {
+    return;
+  }
+
+  @ApiOperation({ summary: 'All payments for current user' })
+  @ApiBearerAuth()
+  @ApiQuery(pageSizeQuery)
+  @ApiQuery(pageNumberQuery)
+  @ApiQuery(sortDirectionQuery)
+  @ApiQuery(sortByQuery)
+  @ApiResponse({ status: HttpStatus.OK, type: PaymentsQueryTypeForSwagger })
+  @Get('payments')
+  fakeMethod5ForSwagger() {
     return;
   }
 }

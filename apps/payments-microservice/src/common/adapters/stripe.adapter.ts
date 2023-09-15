@@ -29,6 +29,7 @@ export class StripeAdapter implements IPaymentAdapter {
           product_data: { name: product.nameSubscription },
           currency: 'USD',
           unit_amount: product.price,
+          // recurring: { interval: 'day' },
         },
         quantity: product.quantity,
       });
@@ -40,6 +41,9 @@ export class StripeAdapter implements IPaymentAdapter {
         cancel_url: this.apiConfigService.cancelUrl,
         line_items: array,
         mode: 'payment',
+        // subscription_data: {             тестил возможность подписки
+        //   billing_cycle_anchor: Math.floor(Date.now() / 1000) + 86400,
+        // },
         client_reference_id: 'pt_' + randomUUID(),
       });
     return {

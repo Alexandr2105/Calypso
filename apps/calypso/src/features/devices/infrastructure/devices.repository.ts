@@ -38,4 +38,31 @@ export class DevicesRepository {
       data: { iat: info.iat, exp: info.exp },
     });
   }
+
+  async getInfoAboutCurrentUserDevices(
+    userId: string,
+  ): Promise<RefreshTokenDataEntity[]> {
+    return this.prisma.refreshTokenData.findMany({ where: { userId: userId } });
+  }
+
+  async getInfoAboutDevice(deviceId: string): Promise<RefreshTokenDataEntity> {
+    return this.prisma.refreshTokenData.findUnique({
+      where: { deviceId: deviceId },
+    });
+  }
+
+  async deleteDevice(deviceId: string): Promise<void> {
+    await this.prisma.refreshTokenData.delete({
+      where: { deviceId: deviceId },
+    });
+  }
+
+  async deleteAllDevicesExceptTheCurrentDevice(
+    deviceId: string,
+    uerId: string,
+  ) {
+    await this.prisma.refreshTokenData.deleteMany({
+      where: { userId: uerId, NOT: { deviceId: deviceId } },
+    });
+  }
 }

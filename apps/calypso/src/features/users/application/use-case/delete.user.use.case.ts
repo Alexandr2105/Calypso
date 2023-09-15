@@ -13,12 +13,12 @@ export class DeleteUserUseCase implements ICommandHandler<DeleteUserCommand> {
   constructor(
     private usersRepository: UsersRepository,
     private postsRepository: PostsRepository,
-    @Inject('FILES_SERVICE_RMQ') private clientRMQ: ClientProxy,
+    @Inject('FILES_SERVICE_TCP') private clientTCP: ClientProxy,
   ) {}
 
   async execute(command: DeleteUserCommand): Promise<void> {
     const pattern = { cmd: 'deleteUser' };
-    this.clientRMQ.emit(pattern, command.userId);
+    this.clientTCP.emit(pattern, command.userId);
     await this.usersRepository.deleteUser(command.userId);
   }
 }

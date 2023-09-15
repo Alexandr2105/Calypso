@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../common/prisma/prisma-service';
 import { PaymentsEntity } from '../entities/payments.entity';
 import { ProductsEntity } from '../entities/products.entity';
-import { PaymentStatus, Prisma } from '@prisma/client';
+import { AccountType, PaymentStatus, Prisma } from '@prisma/client';
 import { SubscriptionsEntity } from '../entities/subscriptions.entity';
 
 @Injectable()
@@ -22,6 +22,7 @@ export class PaymentsRepository {
       await prisma.subscriptions.create({ data: subscription });
     });
   }
+
   async updatePayment(
     paymentsId: string,
     allDataPaymentConfirm: Prisma.JsonValue,
@@ -37,6 +38,7 @@ export class PaymentsRepository {
           paymentStatus: paymentStatus,
           allDataPaymentConfirm: allDataPaymentConfirm,
           updatedAt: updatedAt,
+          endDateOfSubscription: endDateOfSubscription,
         },
       });
       infoPayment = await prisma.subscriptions.update({
@@ -81,6 +83,25 @@ export class PaymentsRepository {
         where: { userId: subscription.userId },
         data: subscription,
       });
+    });
+  }
+
+  async getOldSubscriptions(date: Date): Promise<SubscriptionsEntity[]> {
+    return this.prisma.subscriptions.findMany({
+      where: {
+        endDateOfSubscription: { lte: date },
+        subscriptionType: 'Business',
+      },
+    });
+  }
+
+  async updateSubscriptionType(
+    userId: string,
+    type: AccountType,
+  ): Promise<void> {
+    await this.prisma.subscriptions.update({
+      where: { userId: userId },
+      data: { subscriptionType: type },
     });
   }
 }

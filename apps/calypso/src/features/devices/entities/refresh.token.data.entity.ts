@@ -5,6 +5,7 @@ export class RefreshTokenDataEntity {
   ip: string;
   deviceName: string;
   userId: string;
+  dateCreate: Date;
 
   constructor(
     iat: number,
@@ -13,12 +14,14 @@ export class RefreshTokenDataEntity {
     ip: string,
     deviceName: string,
     userId: string,
+    dateCreate: Date,
   ) {
-    this.exp = exp;
     this.iat = iat;
-    this.userId = userId;
+    this.exp = exp;
+    this.deviceId = deviceId;
     this.ip = ip;
     this.deviceName = deviceName;
-    this.deviceId = deviceId;
+    this.userId = userId;
+    this.dateCreate = dateCreate;
   }
 }

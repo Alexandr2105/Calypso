@@ -30,6 +30,7 @@ export class UpdateInfoAboutDevicesUserUseCase implements ICommandHandler {
       command.ip,
       command.deviceName,
       infoRefreshToken.userId,
+      new Date(),
     );
 
     await this.devicesRepository.updateInfoRefreshTokenData(data);

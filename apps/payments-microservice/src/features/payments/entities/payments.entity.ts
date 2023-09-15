@@ -1,4 +1,9 @@
-import { PaymentStatus, PaymentType, Prisma } from '@prisma/client';
+import {
+  AccountType,
+  PaymentStatus,
+  PaymentType,
+  Prisma,
+} from '@prisma/client';
 
 export class PaymentsEntity {
   paymentsId: string;
@@ -8,7 +13,9 @@ export class PaymentsEntity {
   paymentStatus: PaymentStatus;
   createdAt: Date;
   allDataPayment: Prisma.JsonValue;
+  subscriptionType: AccountType;
   updatedAt?: Date;
+  endDateOfSubscription?: Date;
   allDataPaymentConfirm?: Prisma.JsonValue;
 
   constructor(
@@ -18,8 +25,10 @@ export class PaymentsEntity {
     paymentSystem: PaymentType,
     paymentStatus: PaymentStatus,
     createdAt: Date,
-    updatedAt: Date,
     allDataPayment: Prisma.JsonValue,
+    subscriptionType: AccountType,
+    updatedAt: Date,
+    endDateOfSubscription: Date,
     allDataPaymentConfirm: Prisma.JsonValue,
   ) {
     this.paymentsId = paymentsId;
@@ -28,8 +37,10 @@ export class PaymentsEntity {
     this.paymentSystem = paymentSystem;
     this.paymentStatus = paymentStatus;
     this.createdAt = createdAt;
-    this.updatedAt = updatedAt;
     this.allDataPayment = allDataPayment;
+    this.subscriptionType = subscriptionType;
+    this.updatedAt = updatedAt;
+    this.endDateOfSubscription = endDateOfSubscription;
     this.allDataPaymentConfirm = allDataPaymentConfirm;
   }
 }

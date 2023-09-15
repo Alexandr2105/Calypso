@@ -17,6 +17,10 @@ import { SavePaymentsDataUseCase } from './features/payments/aplication/use-case
 import { UpdatePaymentDataUseCase } from './features/payments/aplication/use-case/update.payment.data.use.case';
 import { GetAllSubscriptionsUseCase } from './features/payments/aplication/use-case/get.all.subscriptions.use.case';
 import { GetCurrentSubscriptionUseCase } from './features/payments/aplication/use-case/get.current.subscription.use.case';
+import { QueryRepository } from './features/query-repository/query.repository';
+import { QueryHelper } from '../../../libraries/helpers/query.helper';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CheckSubscriptionsService } from './features/payments/aplication/check.subscriptions.service';
 
 @Module({
   imports: [
@@ -33,11 +37,14 @@ import { GetCurrentSubscriptionUseCase } from './features/payments/aplication/us
           queueOptions: {
             durable: false,
           },
+          // noAck: false,
+          // prefetchCount: 1,
         },
       },
     ]),
     PrismaModule,
     CqrsModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [PaymentsMicroserviceController, PaymentsController],
   providers: [
@@ -50,6 +57,9 @@ import { GetCurrentSubscriptionUseCase } from './features/payments/aplication/us
     UpdatePaymentDataUseCase,
     GetAllSubscriptionsUseCase,
     GetCurrentSubscriptionUseCase,
+    QueryRepository,
+    QueryHelper,
+    CheckSubscriptionsService,
     {
       provide: 'PaypalAdapter',
       useClass: PaypalAdapter,

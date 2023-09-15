@@ -30,6 +30,7 @@ export class SavePaymentsDataUseCase
       paymentSystem: command.paymentSystem,
       allDataPayment: JSON.parse(JSON.stringify(command.data)),
       createdAt: new Date(),
+      subscriptionType: 'Business',
     };
     const subscription: SubscriptionsEntity = {
       userId: command.userId,

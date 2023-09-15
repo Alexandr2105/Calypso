@@ -23,4 +23,11 @@ export class UsersProfilesRepository {
   async deleteProfile(userId: string): Promise<void> {
     await this.prisma.userProfile.delete({ where: { userId: userId } });
   }
+
+  async deleteAvatar(userId: string): Promise<void> {
+    await this.prisma.userProfile.update({
+      where: { userId: userId },
+      data: { photo: '' },
+    });
+  }
 }

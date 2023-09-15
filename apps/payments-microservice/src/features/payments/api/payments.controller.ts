@@ -5,30 +5,30 @@ import {
 } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import {
   Body,
+  Query,
   Req,
 } from '@nestjs/common/decorators/http/route-params.decorator';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiExcludeEndpoint,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { ApiConfigService } from '../../../common/helper/api.config.service';
-import { HttpStatus, RawBodyRequest } from '@nestjs/common';
+import { RawBodyRequest } from '@nestjs/common';
 import { PaymentManager } from '../../../common/managers/payment.manager';
 import { PaymentsDto } from '../dto/payments.dto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CheckProductInDbCommand } from '../aplication/use-case/check.product.in.db.use.case';
 import { SavePaymentsDataCommand } from '../aplication/use-case/save.payments.data.use.case';
 import { DataPaymentsType } from '../../../common/types/data.payments.type';
-import { UrlForSwaggerType } from '../../../common/types/url.for.swagger.type';
-import { ErrorsMessageForSwaggerType } from '../../../common/types/errors.message.for.swagger.type';
 import { GetAllSubscriptionsCommand } from '../aplication/use-case/get.all.subscriptions.use.case';
-import { ProductsEntity } from '../entities/products.entity';
 import { GetCurrentSubscriptionCommand } from '../aplication/use-case/get.current.subscription.use.case';
-import { SubscriptionForSwaggerType } from '../../../common/types/subscription.for.swagger.type';
+import { QueryHelper } from '../../../../../../libraries/helpers/query.helper';
+import { QueryRepository } from '../../query-repository/query.repository';
+import { PaymentsQueryType } from '../../../common/query-types/payments.query.type';
+import {
+  SwaggerDecoratorByGetCurrentSubscriptions,
+  SwaggerDecoratorByGetPayments,
+  SwaggerDecoratorByGetSubscriptions,
+  SwaggerDecoratorByPostPaypal,
+  SwaggerDecoratorByPostStripe,
+} from '../swagger/swagger.payments.decorators';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -37,19 +37,11 @@ export class PaymentsController {
     private apiConfigService: ApiConfigService,
     private paymentManager: PaymentManager,
     private commandBus: CommandBus,
+    private queryRepository: QueryRepository,
+    private queryHelper: QueryHelper,
   ) {}
 
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Payment by stipe' })
-  @ApiBody({ type: [PaymentsDto] })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: UrlForSwaggerType,
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Products not found',
-  })
+  @SwaggerDecoratorByPostStripe()
   @Post('stripe')
   async createStripePayment(
     @Body('body') body: PaymentsDto[],
@@ -74,7 +66,7 @@ export class PaymentsController {
         data.subscriptionTimeHours,
       ),
     );
-    return data.url;
+    return { url: data.url };
   }
 
   @ApiExcludeEndpoint()
@@ -95,14 +87,7 @@ export class PaymentsController {
     await this.paymentManager.adapters.stripe.validatePayment(req);
   }
 
-  @ApiOperation({ summary: 'Payment by paypal' })
-  @ApiBearerAuth()
-  @ApiBody({ type: [PaymentsDto] })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: UrlForSwaggerType,
-  })
-  @ApiResponse({ type: ErrorsMessageForSwaggerType })
+  @SwaggerDecoratorByPostPaypal()
   @Post('paypal')
   async createPaypalPayment(
     @Body('body') body: PaymentsDto[],
@@ -127,7 +112,7 @@ export class PaymentsController {
         data.subscriptionTimeHours,
       ),
     );
-    return data.url;
+    return { url: data.url };
   }
 
   @ApiExcludeEndpoint()
@@ -136,23 +121,25 @@ export class PaymentsController {
     await this.paymentManager.adapters.paypal.validatePayment(body);
   }
 
-  @ApiOperation({ summary: 'All subscriptions' })
-  @ApiBearerAuth()
-  @ApiResponse({ status: HttpStatus.OK, type: [ProductsEntity] })
+  @SwaggerDecoratorByGetSubscriptions()
   @Get('subscriptions')
   async getSubscriptions() {
     return this.commandBus.execute(new GetAllSubscriptionsCommand());
   }
 
-  @ApiOperation({ summary: 'All subscriptions for current user' })
-  @ApiBearerAuth()
-  @ApiResponse({ status: HttpStatus.OK, type: SubscriptionForSwaggerType })
-  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Not Found' })
+  @SwaggerDecoratorByGetCurrentSubscriptions()
   @Get('current-subscription')
   async getCurrentUserSubscription(@Body('userId') userId: string) {
     return this.commandBus.execute(new GetCurrentSubscriptionCommand(userId));
   }
 
+  @SwaggerDecoratorByGetPayments()
   @Get('payments')
-  async getPaymentsCurrentUser(@Body('userId') userId: string) {}
+  async getPaymentsCurrentUser(
+    @Body('userId') userId: string,
+    @Query() query,
+  ): Promise<PaymentsQueryType> {
+    const queryParam = this.queryHelper.queryParamHelper(query);
+    return this.queryRepository.getPaymentsCurrentUser(userId, queryParam);
+  }
 }
