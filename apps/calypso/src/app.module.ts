@@ -132,17 +132,6 @@ const Repositories = [
           // port: 3001,
         },
       },
-      // {
-      //   name: 'FILES_SERVICE_RMQ',
-      //   transport: Transport.RMQ,
-      //   options: {
-      //     urls: [process.env.RABBIT_MQ],
-      //     queue: 'FILES_SERVICE_RMQ',
-      //     queueOptions: {
-      //       durable: false,
-      //     },
-      //   },
-      // },
     ]),
     PrismaModule,
     CqrsModule,
