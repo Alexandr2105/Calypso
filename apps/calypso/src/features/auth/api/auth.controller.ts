@@ -49,6 +49,7 @@ import {
   SwaggerDecoratorByRefreshToken,
   SwaggerDecoratorByRegistration,
 } from '../swagger/swagger.auth.decorators';
+import { RealIP } from 'nestjs-real-ip';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -97,7 +98,13 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @SwaggerDecoratorByLogin()
   @Post('login')
-  async loginUser(@Body() body: EmailDto, @Res() res, @Req() req, @Ip() ip) {
+  async loginUser(
+    @Body() body: EmailDto,
+    @Res() res,
+    @Req() req,
+    @Ip() ip,
+    @RealIP() realIp,
+  ) {
     console.log(req.ip);
     console.log(req);
     console.log('----------------------------');
@@ -106,6 +113,8 @@ export class AuthController {
     console.log(req.headers);
     console.log(req.headers['user-agent']);
     console.log(ip);
+    console.log('_+_+_+_+_+_+');
+    console.log(realIp);
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
         req.user.id,
