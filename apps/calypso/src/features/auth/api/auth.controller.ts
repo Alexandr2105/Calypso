@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Ip,
   Param,
   Post,
   Req,
@@ -96,7 +97,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @SwaggerDecoratorByLogin()
   @Post('login')
-  async loginUser(@Body() body: EmailDto, @Res() res, @Req() req) {
+  async loginUser(@Body() body: EmailDto, @Res() res, @Req() req, @Ip() ip) {
+    console.log(req.ip);
+    console.log(req);
+    console.log('----------------------------');
+    console.log(req.ip);
+    console.log('+++++++++++++++++++++++++++');
+    console.log(req.headers);
+    console.log(req.headers['user-agent']);
+    console.log(ip);
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
         req.user.id,
@@ -105,7 +114,6 @@ export class AuthController {
         req.headers['user-agent'],
       ),
     );
-
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
