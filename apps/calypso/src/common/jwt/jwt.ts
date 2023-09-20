@@ -6,10 +6,10 @@ import { settings } from '../../settings';
 export class Jwt {
   constructor(private jwt: JwtService, private refreshToken: JwtService) {}
 
-  creatJWT(id: string) {
+  creatJWT(id: string, deviceId: string) {
     return {
       accessToken: this.jwt.sign(
-        { userId: id },
+        { userId: id, deviceId: deviceId },
         { expiresIn: settings.TOKEN_LIFE, secret: settings.JWT_SECRET },
       ),
     };
