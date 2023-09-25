@@ -5,7 +5,13 @@ Backend for a User Dashboard Project.
 
 This project involves the development of a user dashboard. Below are the key highlights:
 
-Technologies: TypeScript, Git, Node.js, PostgreSQL, MongoDB, Prisma
+Technologies: 
+- TypeScript, 
+- Git, 
+- Node.js, 
+- PostgreSQL, 
+- MongoDB, 
+- Prisma
 
 Functionality:
 - Implemented CRUD operations with JWT-based authentication.
