@@ -1,7 +1,7 @@
 
 ## Description
 
-Backend for a User Dashboard Project.
+**Backend for a User Dashboard Project.**
 
 This project involves the development of a user dashboard. Below are the key highlights:
 
