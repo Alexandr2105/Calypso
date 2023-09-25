@@ -48,6 +48,7 @@ import {
   SwaggerDecoratorByRefreshToken,
   SwaggerDecoratorByRegistration,
 } from '../swagger/swagger.auth.decorators';
+import { DeviceInfoDto } from '../dto/device.Info.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -97,15 +98,15 @@ export class AuthController {
   @SwaggerDecoratorByLogin()
   @Post('login')
   async loginUser(@Body() body: EmailDto, @Res() res, @Req() req) {
+    const deviceName = body.deviceName + '/' + body.browserName;
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
         req.user.id,
         randomUUID(),
-        req.ip,
-        req.headers['user-agent'],
+        body.ip,
+        deviceName,
       ),
     );
-
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
@@ -152,13 +153,18 @@ export class AuthController {
   @UseGuards(RefreshAuthGuard)
   @SwaggerDecoratorByRefreshToken()
   @Post('refresh-token')
-  async updateRefreshToken(@Req() req, @Res() res) {
+  async updateRefreshToken(
+    @Req() req,
+    @Res() res,
+    @Body() body: DeviceInfoDto,
+  ) {
+    const deviceName = body.deviceName + '/' + body.browserName;
     const { accessToken, refreshToken, info } = await this.commandBus.execute(
       new CreateAccessAndRefreshTokensCommand(
         req.user.userId,
         req.user.deviceId,
-        req.ip,
-        req.headers['user-agent'],
+        body.ip,
+        deviceName,
       ),
     );
     res.cookie('refreshToken', refreshToken, {

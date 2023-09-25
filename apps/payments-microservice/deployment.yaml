@@ -57,6 +57,16 @@ spec:
                  secretKeyRef:
                    name: payments-microservice-config-secret
                    key: DATABASE_URL
+             - name: SUCCESS_URL
+               valueFrom:
+                 secretKeyRef:
+                   name: payments-microservice-config-secret
+                   key: SUCCESS_URL
+             - name: CANCEL_URL
+               valueFrom:
+                 secretKeyRef:
+                   name: payments-microservice-config-secret
+                   key: CANCEL_URL
              - name: STRIPE_SECRET_KEY
                valueFrom:
                  secretKeyRef:

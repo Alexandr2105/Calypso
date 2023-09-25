@@ -22,7 +22,10 @@ export class CreateAccessAndRefreshTokensUseCase
   ) {}
 
   async execute(command: CreateAccessAndRefreshTokensCommand): Promise<object> {
-    const accessToken = this.jwtService.creatJWT(command.userId);
+    const accessToken = this.jwtService.creatJWT(
+      command.userId,
+      command.deviceId,
+    );
     const refreshToken = this.jwtService.creatRefreshJWT(
       command.userId,
       command.deviceId,
