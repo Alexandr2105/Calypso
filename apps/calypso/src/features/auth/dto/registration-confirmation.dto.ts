@@ -8,6 +8,6 @@ export class RegistrationConformationDto {
   @ApiProperty({ type: 'string' })
   @Validate(CheckConfirmationCode)
   code: string;
-  @ApiProperty({ type: 'boolean' })
-  status: boolean;
+  // @ApiProperty({ type: 'boolean' })
+  // status: boolean;
 }
