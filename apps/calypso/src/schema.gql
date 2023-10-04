@@ -1,0 +1,68 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""User"""
+type UserModel {
+  id: String!
+  login: String!
+  email: String!
+  createdAt: DateTime!
+  accountType: String!
+  posts: [PostModel!]
+  images: [ImageModel!]
+  profiles: ProfileModel
+  payments: [PaymentModel!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""Information about image"""
+type ImageModel {
+  id: String!
+  url: String!
+  userId: String!
+  postId: String!
+  createdAt: DateTime!
+}
+
+"""Post"""
+type PostModel {
+  id: String!
+  userId: String!
+  description: String
+  createdAt: DateTime!
+}
+
+"""Profile"""
+type ProfileModel {
+  userId: String!
+  login: String!
+  firstName: String!
+  lastName: String!
+  dateOfBirthday: String!
+  city: String!
+  userInfo: String!
+  photo: String!
+}
+
+"""Payments"""
+type PaymentModel {
+  paymentsId: String!
+  userId: String!
+  price: Int!
+  paymentSystem: String!
+  paymentStatus: String!
+  createdAt: DateTime
+  subscriptionType: String!
+  updatedAt: DateTime
+  endDateOfSubscription: DateTime
+}
+
+type Query {
+  users(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): [UserModel!]!
+  user(id: String!): UserModel!
+}

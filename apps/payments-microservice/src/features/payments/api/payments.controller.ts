@@ -29,6 +29,7 @@ import {
   SwaggerDecoratorByPostPaypal,
   SwaggerDecoratorByPostStripe,
 } from '../swagger/swagger.payments.decorators';
+import { GetAllPaymentsForUsersCommand } from '../aplication/use-case/get.all.payments.for.users.use.case';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -141,5 +142,10 @@ export class PaymentsController {
   ): Promise<PaymentsQueryType> {
     const queryParam = this.queryHelper.queryParamHelper(query);
     return this.queryRepository.getPaymentsCurrentUser(userId, queryParam);
+  }
+
+  @Get('allPayments')
+  async getAllPayments(@Body() usersIds: string[]) {
+    return this.commandBus.execute(new GetAllPaymentsForUsersCommand(usersIds));
   }
 }

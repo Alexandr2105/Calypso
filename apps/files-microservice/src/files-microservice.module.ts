@@ -19,6 +19,7 @@ import { DeleteProfileUseCase } from './features/pictures/application/use-cases/
 import { DeleteAllUserProfileUseCase } from './features/pictures/application/use-cases/delete.all.user.profile.use.case';
 import { ApiConfigService } from './common/helpers/api.config.service';
 import { DeleteAvatarUseCase } from './features/pictures/application/use-cases/delete.avatar.use.case';
+import { GetAllPhotosForCurrentUserUseCase } from './features/pictures/application/use-cases/get.all.photos.for.current.user.use.case';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { DeleteAvatarUseCase } from './features/pictures/application/use-cases/d
     DeleteAllUserProfileUseCase,
     ApiConfigService,
     DeleteAvatarUseCase,
+    GetAllPhotosForCurrentUserUseCase,
   ],
 })
 export class FilesMicroserviceModule {}

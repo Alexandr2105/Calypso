@@ -26,4 +26,8 @@ export class ImagesRepository {
       postId: postId,
     });
   }
+
+  async getAllImagesForUser(userId: string[]) {
+    return this.postImages.find({ userId: { $in: userId } });
+  }
 }
