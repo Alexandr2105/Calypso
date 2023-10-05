@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { PaymentsRepository } from '../../infrastructure/payments.repository';
-import { PaymentsModel } from '../../../../../../calypso/src/super-admin/api/models/payments.model';
+import { PaymentsEntity } from '../../entities/payments.entity';
 
 export class GetAllPaymentsForUsersCommand {
   constructor(public users: string[]) {}
@@ -14,7 +14,7 @@ export class GetAllPaymentsForUsersUseCase
 
   async execute(
     command: GetAllPaymentsForUsersCommand,
-  ): Promise<PaymentsModel[]> {
+  ): Promise<PaymentsEntity[]> {
     return this.paymentsRepository.getAllPaymentForUsers(command.users);
   }
 }
