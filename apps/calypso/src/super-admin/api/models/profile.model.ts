@@ -6,16 +6,16 @@ export class ProfileModel {
   userId: string;
   @Field()
   login: string;
-  @Field()
+  @Field({ nullable: true })
   firstName: string;
-  @Field()
+  @Field({ nullable: true })
   lastName: string;
-  @Field()
+  @Field({ nullable: true })
   dateOfBirthday: string;
-  @Field()
+  @Field({ nullable: true })
   city: string;
-  @Field()
+  @Field({ nullable: true })
   userInfo: string;
-  @Field()
+  @Field({ nullable: true })
   photo: string;
 }

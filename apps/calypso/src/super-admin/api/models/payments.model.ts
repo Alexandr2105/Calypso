@@ -18,7 +18,7 @@ export class PaymentModel {
   @Field(() => String)
   subscriptionType: AccountType;
   @Field(() => Date, { nullable: true })
-  updatedAt?: Date;
+  updatedAt: Date;
   @Field(() => Date, { nullable: true })
-  endDateOfSubscription?: Date;
+  endDateOfSubscription: Date;
 }

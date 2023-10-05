@@ -41,12 +41,12 @@ type PostModel {
 type ProfileModel {
   userId: String!
   login: String!
-  firstName: String!
-  lastName: String!
-  dateOfBirthday: String!
-  city: String!
-  userInfo: String!
-  photo: String!
+  firstName: String
+  lastName: String
+  dateOfBirthday: String
+  city: String
+  userInfo: String
+  photo: String
 }
 
 """Payments"""
