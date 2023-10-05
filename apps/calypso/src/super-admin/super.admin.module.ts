@@ -39,6 +39,7 @@ import { GetUserUseCase } from './application/use-cases/get.user.use.case';
       driver: ApolloDriver,
       playground: true,
       autoSchemaFile: 'apps/calypso/src/schema.gql',
+      path: '/api/v1/graphql',
     }),
     HttpModule,
     CqrsModule,
