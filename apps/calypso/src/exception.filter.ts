@@ -24,7 +24,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         // };
         // return graphQLFormattedError;
       }
-      console.log(gqlHost);
       return exception;
     }
 
