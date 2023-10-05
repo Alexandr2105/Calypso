@@ -64,5 +64,9 @@ type PaymentModel {
 
 type Query {
   users(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): [UserModel!]!
-  user(id: String!): UserModel!
+  user(id: String!): UserModel
+}
+
+type Mutation {
+  deleteUser(userId: String!): Boolean!
 }

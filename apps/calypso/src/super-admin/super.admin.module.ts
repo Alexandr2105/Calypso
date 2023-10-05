@@ -18,6 +18,8 @@ import { UsersProfilesRepository } from '../features/users-profiles/infrastructu
 import { PaymentsLoaderForGraphql } from '../common/helpers/payments.loader.for.graphql';
 import { HttpModule } from '@nestjs/axios';
 import { ApiConfigService } from '../common/helpers/api.config.service';
+import { CqrsModule } from '@nestjs/cqrs';
+import { GetUserUseCase } from './application/use-cases/get.user.use.case';
 
 @Module({
   imports: [
@@ -26,10 +28,10 @@ import { ApiConfigService } from '../common/helpers/api.config.service';
         name: 'FILES_SERVICE_TCP',
         transport: Transport.TCP,
         options: {
-          // host: process.env.FILES_SERVICE_HOST || 'files-microservice-service',
-          // port: Number(process.env.FILES_SERVICE_PORT || '3043'),
-          host: '0.0.0.0',
-          port: 3001,
+          host: process.env.FILES_SERVICE_HOST || 'files-microservice-service',
+          port: Number(process.env.FILES_SERVICE_PORT || '3043'),
+          // host: '0.0.0.0',
+          // port: 3001,
         },
       },
     ]),
@@ -39,6 +41,7 @@ import { ApiConfigService } from '../common/helpers/api.config.service';
       autoSchemaFile: 'apps/calypso/src/schema.gql',
     }),
     HttpModule,
+    CqrsModule,
   ],
   providers: [
     SuperAdminResolver,
@@ -53,6 +56,7 @@ import { ApiConfigService } from '../common/helpers/api.config.service';
     UsersProfilesRepository,
     ApiConfigService,
     PostsRepository,
+    GetUserUseCase,
     {
       provide: APP_INTERCEPTOR,
       useClass: DataLoaderInterceptor,
