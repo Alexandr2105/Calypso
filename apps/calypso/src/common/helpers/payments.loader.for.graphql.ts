@@ -18,11 +18,11 @@ export class PaymentsLoaderForGraphql
   generateDataLoader(): DataLoader<string, PaymentModel | null> {
     return new DataLoader<string, PaymentModel | null>(
       async (usersIds: string[]) => {
-        // const url = `${
-        //   this.apiConfigService.paymentsMicroservice +
-        //   '/api/v1/payments/allPayments'
-        // }`;
-        const url = 'http://localhost:3002/api/v1/payments/allPayments';
+        const url = `${
+          this.apiConfigService.paymentsMicroservice +
+          '/api/v1/payments/allPayments'
+        }`;
+        // const url = 'http://localhost:3002/api/v1/payments/allPayments';
         const response = await firstValueFrom(
           this.httpService.request({
             url,
