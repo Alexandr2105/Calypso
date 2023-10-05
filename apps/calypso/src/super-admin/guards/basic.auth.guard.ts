@@ -13,7 +13,7 @@ export class BasicAuthGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const email = ctx.getContext().req.headers.email;
     const pass = ctx.getContext().req.headers.password;
-    if (email === adminPassword.username && pass === adminPassword.password) {
+    if (email === adminPassword.email && pass === adminPassword.password) {
       return true;
     } else {
       throw new UnauthorizedException();
