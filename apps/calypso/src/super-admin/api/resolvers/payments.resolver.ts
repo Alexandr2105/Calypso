@@ -10,7 +10,7 @@ import {
 } from '@nestjs/graphql';
 import { GetCountPaymentsCommand } from '../../application/use-cases/get.count.payments.use.case';
 import { PaymentModel } from '../models/payments.model';
-import { PaginationUserDto } from '../dto/pagination.user.dto';
+import { PaginationDto } from '../dto/pagination.dto';
 import { GetAllPaymentsCommand } from '../../application/use-cases/get.allPayments.use.case';
 import { CommandBus } from '@nestjs/cqrs';
 import { UserModel } from '../models/user.model';
@@ -25,14 +25,12 @@ export class PaymentsResolver {
   ) {}
 
   @Query(() => Int, { name: 'totalCountPayments' })
-  async getTotalCountPayments(
-    @Args() args: PaginationUserDto,
-  ): Promise<number> {
+  async getTotalCountPayments(@Args() args: PaginationDto): Promise<number> {
     return this.commandBus.execute(new GetCountPaymentsCommand(args));
   }
 
   @Query(() => [PaymentModel], { name: 'allPayments' })
-  async getAllPayments(@Args() args: PaginationUserDto): Promise<number> {
+  async getAllPayments(@Args() args: PaginationDto): Promise<number> {
     return this.commandBus.execute(new GetAllPaymentsCommand(args));
   }
 

@@ -73,4 +73,7 @@ type Query {
 
 type Mutation {
   deleteUser(userId: String!): Boolean!
+
+  """ban/unban"""
+  updateUserStatus(userId: String!, banStatus: Boolean!): Boolean!
 }

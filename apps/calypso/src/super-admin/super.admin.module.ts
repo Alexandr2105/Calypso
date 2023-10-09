@@ -23,6 +23,7 @@ import { GetUserUseCase } from './application/use-cases/get.user.use.case';
 import { GetCountPaymentsUseCase } from './application/use-cases/get.count.payments.use.case';
 import { GetAllPaymentsUseCase } from './application/use-cases/get.allPayments.use.case';
 import { PaymentsResolver } from './api/resolvers/payments.resolver';
+import { UpdateUserStatusUseCase } from './application/use-cases/update.user.status.use.case';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { PaymentsResolver } from './api/resolvers/payments.resolver';
     GetUserUseCase,
     GetCountPaymentsUseCase,
     GetAllPaymentsUseCase,
+    UpdateUserStatusUseCase,
     {
       provide: APP_INTERCEPTOR,
       useClass: DataLoaderInterceptor,

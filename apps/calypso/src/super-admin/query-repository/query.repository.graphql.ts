@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../common/prisma/prisma-service';
-import { PaginationUserDto } from '../api/dto/pagination.user.dto';
+import { PaginationDto } from '../api/dto/pagination.dto';
 import { QueryHelper } from '../../../../../libraries/helpers/query.helper';
 import { UserModel } from '../api/models/user.model';
 
@@ -11,7 +11,7 @@ export class QueryRepositoryGraphql {
     private queryHelper: QueryHelper,
   ) {}
 
-  async getUsers(data: PaginationUserDto): Promise<UserModel[]> {
+  async getUsers(data: PaginationDto): Promise<UserModel[]> {
     return this.prisma.user.findMany({
       where: {
         login: { mode: 'insensitive', contains: data.searchName },
@@ -22,7 +22,7 @@ export class QueryRepositoryGraphql {
     });
   }
 
-  async getTotalCountUsers(data: PaginationUserDto): Promise<number> {
+  async getTotalCountUsers(data: PaginationDto): Promise<number> {
     return this.prisma.user.count({
       where: {
         login: { mode: 'insensitive', contains: data.searchName },

@@ -2,10 +2,10 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '../../../common/helpers/api.config.service';
-import { PaginationUserDto } from '../../api/dto/pagination.user.dto';
+import { PaginationDto } from '../../api/dto/pagination.dto';
 
 export class GetCountPaymentsCommand {
-  constructor(public data: PaginationUserDto) {}
+  constructor(public data: PaginationDto) {}
 }
 
 @CommandHandler(GetCountPaymentsCommand)

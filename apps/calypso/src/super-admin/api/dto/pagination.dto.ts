@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 
 @ArgsType()
-export class PaginationUserDto {
+export class PaginationDto {
   @Field({ defaultValue: 'createdAt', nullable: true })
   sortBy: string;
   @Field({ defaultValue: 'desc', nullable: true })

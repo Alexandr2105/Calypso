@@ -1,12 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { PaginationUserDto } from '../../api/dto/pagination.user.dto';
+import { PaginationDto } from '../../api/dto/pagination.dto';
 import { PaymentModel } from '../../api/models/payments.model';
 import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '../../../common/helpers/api.config.service';
 import { firstValueFrom } from 'rxjs';
 
 export class GetAllPaymentsCommand {
-  constructor(public data: PaginationUserDto) {}
+  constructor(public data: PaginationDto) {}
 }
 
 @CommandHandler(GetAllPaymentsCommand)

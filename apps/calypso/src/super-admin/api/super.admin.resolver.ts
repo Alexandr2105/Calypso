@@ -10,7 +10,7 @@ import {
 import { UserModel } from './models/user.model';
 import { UsersRepositoryGraphql } from '../infrastructure/users.repository.graphql';
 import { QueryRepositoryGraphql } from '../query-repository/query.repository.graphql';
-import { PaginationUserDto } from './dto/pagination.user.dto';
+import { PaginationDto } from './dto/pagination.dto';
 import { PostsLoaderForGraphql } from '../../common/helpers/posts.loader.for.graphql';
 import { Loader } from 'nestjs-dataloader';
 import DataLoader from 'dataloader';
@@ -26,6 +26,8 @@ import { CommandBus } from '@nestjs/cqrs';
 import { GetUserCommand } from '../application/use-cases/get.user.use.case';
 import { UseGuards } from '@nestjs/common';
 import { BasicAuthGuardForGraphql } from '../guards/basic.auth.guard.for.graphql';
+import { UpdateUserStatusDto } from './dto/update.user.status.dto';
+import { UpdateUserStatusCommand } from '../application/use-cases/update.user.status.use.case';
 
 @UseGuards(BasicAuthGuardForGraphql)
 @Resolver(() => UserModel)
@@ -37,7 +39,7 @@ export class SuperAdminResolver {
   ) {}
 
   @Query(() => [UserModel], { name: 'users' })
-  async getUsers(@Args() args: PaginationUserDto): Promise<UserModel[]> {
+  async getUsers(@Args() args: PaginationDto): Promise<UserModel[]> {
     return this.queryRepository.getUsers(args);
   }
 
@@ -47,7 +49,7 @@ export class SuperAdminResolver {
   }
 
   @Query(() => Int, { name: 'totalCountUsers' })
-  async getTotalCountUsers(@Args() args: PaginationUserDto): Promise<number> {
+  async getTotalCountUsers(@Args() args: PaginationDto): Promise<number> {
     return this.queryRepository.getTotalCountUsers(args);
   }
 
@@ -95,5 +97,12 @@ export class SuperAdminResolver {
   async deleteUser(@Args('userId') userId: string) {
     await this.commandBus.execute(new GetUserCommand(userId));
     return await this.commandBus.execute(new DeleteUserCommand(userId));
+  }
+
+  @Mutation(() => Boolean, { description: 'ban/unban' })
+  async updateUserStatus(@Args() args: UpdateUserStatusDto) {
+    await this.commandBus.execute(new GetUserCommand(args.userId));
+    await this.commandBus.execute(new UpdateUserStatusCommand(args));
+    return true;
   }
 }

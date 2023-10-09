@@ -31,7 +31,7 @@ import {
 } from '../swagger/swagger.payments.decorators';
 import { GetAllPaymentsForUsersCommand } from '../aplication/use-case/get.all.payments.for.users.use.case';
 import { CountPaymentCommand } from '../aplication/use-case/count.payments.use.case';
-import { PaginationUserDto } from '../../../../../calypso/src/super-admin/api/dto/pagination.user.dto';
+import { PaginationDto } from '../../../../../calypso/src/super-admin/api/dto/pagination.dto';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -160,7 +160,7 @@ export class PaymentsController {
 
   @ApiExcludeEndpoint()
   @Get('allPayments')
-  async getAllPaginationPayments(@Body() body: PaginationUserDto) {
+  async getAllPaginationPayments(@Body() body: PaginationDto) {
     return this.queryRepository.getAllPayments(body);
   }
 }
