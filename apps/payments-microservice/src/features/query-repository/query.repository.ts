@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { QueryHelper } from '../../../../../libraries/helpers/query.helper';
 import { PaymentsQueryType } from '../../common/query-types/payments.query.type';
 import { PrismaService } from '../../common/prisma/prisma-service';
+import { PaginationUserDto } from '../../../../calypso/src/super-admin/api/dto/pagination.user.dto';
 
 @Injectable()
 export class QueryRepository {
@@ -46,7 +47,14 @@ export class QueryRepository {
     };
   }
 
-  getAllPayments() {
-    return this.prisma.payments.findMany();
+  getAllPayments(data: PaginationUserDto) {
+    return this.prisma.user.findMany({
+      where: {
+        login: { mode: 'insensitive', contains: data.searchName },
+      },
+      orderBy: { [data.sortBy]: data.sortDirection },
+      skip: this.queryHelper.skipHelper(data.pageNumber, data.pageSize),
+      take: data.pageSize,
+    });
   }
 }
