@@ -21,6 +21,10 @@ export class UserEntity {
 
   accountType: AccountType;
 
+  ban: boolean;
+
+  reasonBan?: string;
+
   constructor(
     id: string,
     login: string,
@@ -28,9 +32,11 @@ export class UserEntity {
     createdAt: Date,
     isDeleted: boolean,
     accountType: AccountType,
+    ban: boolean,
     passwordHash?: string,
     googleAuthId?: string,
     githubAuthId?: string,
+    reasonBan?: string,
   ) {
     this.id = id;
     this.login = login;
@@ -41,5 +47,7 @@ export class UserEntity {
     this.googleAuthId = googleAuthId;
     this.githubAuthId = githubAuthId;
     this.accountType = accountType;
+    this.ban = ban;
+    this.reasonBan = reasonBan;
   }
 }

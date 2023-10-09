@@ -8,7 +8,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { adminPassword } from '../../common/authUsers/usersPasswords';
 
 @Injectable()
-export class BasicAuthGuard implements CanActivate {
+export class BasicAuthGuardForGraphql implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
     const email = ctx.getContext().req.headers.email;
