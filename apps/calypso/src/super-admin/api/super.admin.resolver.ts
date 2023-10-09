@@ -24,8 +24,9 @@ import { DeleteUserCommand } from '../../features/users/application/use-case/del
 import { CommandBus } from '@nestjs/cqrs';
 import { GetUserCommand } from '../application/use-cases/get.user.use.case';
 import { UseGuards } from '@nestjs/common';
-import { BasicAuthGuard } from '../guards/basic.auth.guard';
+import { BasicAuthGuardForGraphql } from '../guards/basic.auth.guard.for.graphql';
 
+@UseGuards(BasicAuthGuardForGraphql)
 @Resolver(() => UserModel)
 export class SuperAdminResolver {
   constructor(
@@ -35,13 +36,11 @@ export class SuperAdminResolver {
   ) {}
 
   @Query(() => [UserModel], { name: 'users' })
-  @UseGuards(BasicAuthGuard)
   async getUsers(@Args() args: PaginationUserDto): Promise<UserModel[]> {
     return this.queryRepository.getUsers(args);
   }
 
   @Query(() => UserModel, { name: 'user', nullable: true })
-  @UseGuards(BasicAuthGuard)
   async getUser(@Args('id') id: string): Promise<UserModel> {
     return this.commandBus.execute(new GetUserCommand(id));
   }
@@ -87,9 +86,13 @@ export class SuperAdminResolver {
   }
 
   @Mutation(() => Boolean)
-  @UseGuards(BasicAuthGuard)
   async deleteUser(@Args('userId') userId: string) {
     await this.commandBus.execute(new GetUserCommand(userId));
     return await this.commandBus.execute(new DeleteUserCommand(userId));
   }
+  //
+  // @ResolveField(() => Number)
+  // async countPayments(@Parent() user: UserModel) {
+  //   return this.commandBus.execute(new GetPaymentsCommand());
+  // }
 }
