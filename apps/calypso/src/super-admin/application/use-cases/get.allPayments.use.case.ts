@@ -21,7 +21,7 @@ export class GetAllPaymentsUseCase
   async execute(command: GetAllPaymentsCommand): Promise<PaymentModel> {
     const url = `${
       this.apiConfigService.paymentsMicroservice +
-      '/api/v1/payments/paginationPayments'
+      '/api/v1/payments/allPayments'
     }`;
 
     // const url = 'http://localhost:3002/api/v1/payments/allPayments';
