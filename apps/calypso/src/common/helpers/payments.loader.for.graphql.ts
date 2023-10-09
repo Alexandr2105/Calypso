@@ -20,9 +20,9 @@ export class PaymentsLoaderForGraphql
       async (usersIds: string[]) => {
         const url = `${
           this.apiConfigService.paymentsMicroservice +
-          '/api/v1/payments/allPayments'
+          '/api/v1/payments/allPaymentsForUsers'
         }`;
-        // const url = 'http://localhost:3002/api/v1/payments/allPayments';
+        // const url = 'http://localhost:3002/api/v1/payments/allPaymentsForUsers';
         const response = await firstValueFrom(
           this.httpService.request({
             url,

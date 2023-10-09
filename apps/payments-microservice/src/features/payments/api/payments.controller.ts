@@ -30,6 +30,8 @@ import {
   SwaggerDecoratorByPostStripe,
 } from '../swagger/swagger.payments.decorators';
 import { GetAllPaymentsForUsersCommand } from '../aplication/use-case/get.all.payments.for.users.use.case';
+import { CountPaymentCommand } from '../aplication/use-case/count.payments.use.case';
+import { PaginationUserDto } from '../../../../../calypso/src/super-admin/api/dto/pagination.user.dto';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -144,8 +146,22 @@ export class PaymentsController {
     return this.queryRepository.getPaymentsCurrentUser(userId, queryParam);
   }
 
-  @Get('allPayments')
+  @ApiExcludeEndpoint()
+  @Get('allPaymentsForUsers')
   async getAllPayments(@Body() usersIds: string[]) {
+    console.log(usersIds);
     return this.commandBus.execute(new GetAllPaymentsForUsersCommand(usersIds));
+  }
+
+  @ApiExcludeEndpoint()
+  @Get('countPayments')
+  async getCountPayments() {
+    return this.commandBus.execute(new CountPaymentCommand());
+  }
+
+  @ApiExcludeEndpoint()
+  @Get('allPayments')
+  async getAllPaginationPayments(@Body() body: PaginationUserDto) {
+    return this.queryRepository.getAllPayments(body);
   }
 }

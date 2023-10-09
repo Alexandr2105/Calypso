@@ -60,11 +60,15 @@ type PaymentModel {
   subscriptionType: String!
   updatedAt: DateTime
   endDateOfSubscription: DateTime
+  user: UserModel
 }
 
 type Query {
   users(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): [UserModel!]!
   user(id: String!): UserModel
+  totalCountUsers(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): Int!
+  totalCountPayments: Int!
+  allPayments(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): [PaymentModel!]!
 }
 
 type Mutation {

@@ -45,4 +45,8 @@ export class QueryRepository {
       }),
     };
   }
+
+  getAllPayments() {
+    return this.prisma.payments.findMany();
+  }
 }

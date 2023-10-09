@@ -1,5 +1,6 @@
 import {
   Args,
+  Int,
   Mutation,
   Parent,
   Query,
@@ -43,6 +44,11 @@ export class SuperAdminResolver {
   @Query(() => UserModel, { name: 'user', nullable: true })
   async getUser(@Args('id') id: string): Promise<UserModel> {
     return this.commandBus.execute(new GetUserCommand(id));
+  }
+
+  @Query(() => Int, { name: 'totalCountUsers' })
+  async getTotalCountUsers(@Args() args: PaginationUserDto): Promise<number> {
+    return this.queryRepository.getTotalCountUsers(args);
   }
 
   @ResolveField(() => [PostModel], { nullable: true })
@@ -90,9 +96,4 @@ export class SuperAdminResolver {
     await this.commandBus.execute(new GetUserCommand(userId));
     return await this.commandBus.execute(new DeleteUserCommand(userId));
   }
-  //
-  // @ResolveField(() => Number)
-  // async countPayments(@Parent() user: UserModel) {
-  //   return this.commandBus.execute(new GetPaymentsCommand());
-  // }
 }

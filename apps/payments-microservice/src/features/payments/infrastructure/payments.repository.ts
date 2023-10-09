@@ -108,4 +108,8 @@ export class PaymentsRepository {
   async getAllPaymentForUsers(users: string[]) {
     return this.prisma.payments.findMany({ where: { userId: { in: users } } });
   }
+
+  async getAllPaymentsCount() {
+    return this.prisma.payments.count();
+  }
 }

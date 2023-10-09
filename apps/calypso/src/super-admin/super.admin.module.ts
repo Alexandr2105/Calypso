@@ -20,6 +20,9 @@ import { HttpModule } from '@nestjs/axios';
 import { ApiConfigService } from '../common/helpers/api.config.service';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GetUserUseCase } from './application/use-cases/get.user.use.case';
+import { GetCountPaymentsUseCase } from './application/use-cases/get.count.payments.use.case';
+import { GetAllPaymentsUseCase } from './application/use-cases/get.allPayments.use.case';
+import { PaymentsResolver } from './api/resolvers/payments.resolver';
 
 @Module({
   imports: [
@@ -46,6 +49,7 @@ import { GetUserUseCase } from './application/use-cases/get.user.use.case';
   ],
   providers: [
     SuperAdminResolver,
+    PaymentsResolver,
     PrismaService,
     UsersRepositoryGraphql,
     QueryRepositoryGraphql,
@@ -58,6 +62,8 @@ import { GetUserUseCase } from './application/use-cases/get.user.use.case';
     ApiConfigService,
     PostsRepository,
     GetUserUseCase,
+    GetCountPaymentsUseCase,
+    GetAllPaymentsUseCase,
     {
       provide: APP_INTERCEPTOR,
       useClass: DataLoaderInterceptor,

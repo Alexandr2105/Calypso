@@ -22,6 +22,7 @@ import { QueryHelper } from '../../../libraries/helpers/query.helper';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CheckSubscriptionsService } from './features/payments/aplication/check.subscriptions.service';
 import { GetAllPaymentsForUsersUseCase } from './features/payments/aplication/use-case/get.all.payments.for.users.use.case';
+import { CountPaymentsUseCase } from './features/payments/aplication/use-case/count.payments.use.case';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { GetAllPaymentsForUsersUseCase } from './features/payments/aplication/us
     QueryHelper,
     CheckSubscriptionsService,
     GetAllPaymentsForUsersUseCase,
+    CountPaymentsUseCase,
     {
       provide: 'PaypalAdapter',
       useClass: PaypalAdapter,
