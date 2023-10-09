@@ -67,7 +67,7 @@ type Query {
   users(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): [UserModel!]!
   user(id: String!): UserModel
   totalCountUsers(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): Int!
-  totalCountPayments: Int!
+  totalCountPayments(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): Int!
   allPayments(sortBy: String = "createdAt", sortDirection: String = "desc", pageNumber: Int = 1, pageSize: Int = 10, searchName: String = ""): [PaymentModel!]!
 }
 

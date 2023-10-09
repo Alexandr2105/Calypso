@@ -25,8 +25,10 @@ export class PaymentsResolver {
   ) {}
 
   @Query(() => Int, { name: 'totalCountPayments' })
-  async getTotalCountPayments(): Promise<number> {
-    return this.commandBus.execute(new GetCountPaymentsCommand());
+  async getTotalCountPayments(
+    @Args() args: PaginationUserDto,
+  ): Promise<number> {
+    return this.commandBus.execute(new GetCountPaymentsCommand(args));
   }
 
   @Query(() => [PaymentModel], { name: 'allPayments' })

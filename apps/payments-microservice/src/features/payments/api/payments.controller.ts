@@ -149,7 +149,6 @@ export class PaymentsController {
   @ApiExcludeEndpoint()
   @Get('allPaymentsForUsers')
   async getAllPayments(@Body() usersIds: string[]) {
-    console.log(usersIds);
     return this.commandBus.execute(new GetAllPaymentsForUsersCommand(usersIds));
   }
 
