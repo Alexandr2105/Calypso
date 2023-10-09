@@ -47,11 +47,8 @@ export class QueryRepository {
     };
   }
 
-  getAllPayments(data: PaginationUserDto) {
-    return this.prisma.user.findMany({
-      where: {
-        login: { mode: 'insensitive', contains: data.searchName },
-      },
+  async getAllPayments(data: PaginationUserDto) {
+    return this.prisma.payments.findMany({
       orderBy: { [data.sortBy]: data.sortDirection },
       skip: this.queryHelper.skipHelper(data.pageNumber, data.pageSize),
       take: data.pageSize,
