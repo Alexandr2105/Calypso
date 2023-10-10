@@ -9,6 +9,8 @@ type UserModel {
   email: String!
   createdAt: DateTime!
   accountType: String!
+  ban: Boolean!
+  reasonBan: String
   posts: [PostModel!]
   images: [ImageModel!]
   profiles: ProfileModel
