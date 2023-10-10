@@ -13,4 +13,8 @@ export class UserModel {
   createdAt: Date;
   @Field(() => String)
   accountType: AccountType;
+  @Field(() => Boolean)
+  ban: boolean;
+  @Field({ nullable: true })
+  reasonBan: string;
 }
