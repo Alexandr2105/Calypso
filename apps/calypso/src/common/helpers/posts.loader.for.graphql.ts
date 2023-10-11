@@ -14,7 +14,9 @@ export class PostsLoaderForGraphql
   generateDataLoader(): DataLoader<string, PostModel[] | null> {
     return new DataLoader<string, PostModel[] | null>(
       async (usersIds: string[]) => {
-        const data = await this.postsRepository.getAllPosts(usersIds);
+        const data = await this.postsRepository.getAllPostsForCurrentUsers(
+          usersIds,
+        );
         return usersIds.map((id) => {
           return data.filter((post) => post.userId === id) || null;
         });

@@ -41,6 +41,9 @@ import { UpdateUserStatusUseCase } from './application/use-cases/update.user.sta
     ]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      subscriptions: {
+        'graphql-ws': true,
+      },
       playground: true,
       autoSchemaFile: 'apps/calypso/src/schema.gql',
       path: '/api/v1/graphql',
