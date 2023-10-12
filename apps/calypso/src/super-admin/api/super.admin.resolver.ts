@@ -96,7 +96,8 @@ export class SuperAdminResolver {
   @Mutation(() => Boolean)
   async deleteUser(@Args('userId') userId: string) {
     await this.commandBus.execute(new GetUserCommand(userId));
-    return await this.commandBus.execute(new DeleteUserCommand(userId));
+    await this.commandBus.execute(new DeleteUserCommand(userId));
+    return true;
   }
 
   @Mutation(() => Boolean, { description: 'ban/unban' })
