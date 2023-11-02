@@ -13,12 +13,12 @@ export class PaymentModel {
   paymentSystem: PaymentType;
   @Field(() => String)
   paymentStatus: PaymentStatus;
-  @Field(() => Date, { nullable: true })
+  @Field(() => String, { nullable: true })
   createdAt: Date;
   @Field(() => String)
   subscriptionType: AccountType;
-  @Field(() => Date, { nullable: true })
+  @Field(() => String, { nullable: true })
   updatedAt: Date;
-  @Field(() => Date, { nullable: true })
+  @Field(() => String, { nullable: true })
   endDateOfSubscription: Date;
 }

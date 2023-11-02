@@ -30,7 +30,7 @@ export class PaymentsResolver {
   }
 
   @Query(() => [PaymentModel], { name: 'allPayments' })
-  async getAllPayments(@Args() args: PaginationDto): Promise<number> {
+  async getAllPayments(@Args() args: PaginationDto): Promise<PaymentModel[]> {
     return this.commandBus.execute(new GetAllPaymentsCommand(args));
   }
 

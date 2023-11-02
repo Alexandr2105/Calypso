@@ -58,10 +58,10 @@ type PaymentModel {
   price: Int!
   paymentSystem: String!
   paymentStatus: String!
-  createdAt: DateTime
+  createdAt: String
   subscriptionType: String!
-  updatedAt: DateTime
-  endDateOfSubscription: DateTime
+  updatedAt: String
+  endDateOfSubscription: String
   user: UserModel
 }
 
