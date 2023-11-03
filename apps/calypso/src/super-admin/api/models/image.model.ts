@@ -10,6 +10,6 @@ export class ImageModel {
   userId: string;
   @Field()
   postId: string;
-  @Field(() => Date)
+  @Field(() => String)
   createdAt: Date;
 }
