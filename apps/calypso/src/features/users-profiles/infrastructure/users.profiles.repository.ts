@@ -14,6 +14,13 @@ export class UsersProfilesRepository {
     });
   }
 
+  async updateUsersLogin(userId: string, login: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { login: login },
+    });
+  }
+
   async getProfile(userId: string): Promise<UsersProfilesEntity> | null {
     return this.prisma.userProfile.findUnique({
       where: { userId: userId },
@@ -28,6 +35,12 @@ export class UsersProfilesRepository {
     await this.prisma.userProfile.update({
       where: { userId: userId },
       data: { photo: '' },
+    });
+  }
+
+  async getAllProfiles(profiles: string[]) {
+    return this.prisma.userProfile.findMany({
+      where: { userId: { in: profiles } },
     });
   }
 }

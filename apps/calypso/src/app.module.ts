@@ -67,6 +67,7 @@ import { GetAllDevicesCurrentUserUseCase } from './features/devices/application/
 import { DeleteDeviceByIdUseCase } from './features/devices/application/delete.device.by.id.use.case';
 import { DeleteAllDevicesExceptTheCurrentDeviceUseCase } from './features/devices/application/use-cases/delete.all.devices.except.the.current.device.use.case';
 import { GetCurrentDeviceUseCase } from './features/devices/application/use-cases/get.current.device.use.case';
+import { SuperAdminModule } from './super-admin/super.admin.module';
 
 const Strategies = [LocalStrategy, RefreshStrategy, JwtStrategy, BasicStrategy];
 const Validators = [
@@ -138,6 +139,7 @@ const Repositories = [
     JwtModule.register({}),
     PassportModule,
     HttpModule,
+    SuperAdminModule,
   ],
   controllers: [
     AppController,

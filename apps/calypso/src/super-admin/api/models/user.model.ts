@@ -11,14 +11,10 @@ export class UserModel {
   email: string;
   @Field(() => Date)
   createdAt: Date;
-  @Field(() => Boolean)
-  isDeleted: boolean;
-  @Field(() => AccountType)
+  @Field(() => String)
   accountType: AccountType;
+  @Field(() => Boolean)
+  ban: boolean;
   @Field({ nullable: true })
-  passwordHash?: string;
-  @Field({ nullable: true })
-  googleAuthId?: string;
-  @Field({ nullable: true })
-  githubAuthId?: string;
+  reasonBan: string;
 }

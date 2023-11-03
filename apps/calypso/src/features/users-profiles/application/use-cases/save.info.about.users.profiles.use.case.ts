@@ -19,5 +19,9 @@ export class SaveInfoAboutUsersProfilesUseCase
       ...command.profileInfo,
     };
     await this.usersProfileRepository.saveUsersProfiles(profile);
+    await this.usersProfileRepository.updateUsersLogin(
+      profile.userId,
+      profile.login,
+    );
   }
 }

@@ -26,4 +26,8 @@ export class PostsRepository {
       where: { id: postId },
     });
   }
+
+  async getAllPostsForCurrentUsers(usersId: string[]) {
+    return this.prisma.post.findMany({ where: { userId: { in: usersId } } });
+  }
 }

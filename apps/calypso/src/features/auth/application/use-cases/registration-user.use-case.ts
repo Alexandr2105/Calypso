@@ -34,6 +34,7 @@ export class RegistrationUserUseCase
       createdAt,
       false,
       'Personal',
+      false,
       hash,
     );
 

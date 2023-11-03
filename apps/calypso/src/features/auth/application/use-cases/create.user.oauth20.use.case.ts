@@ -37,6 +37,7 @@ export class CreateUserOauth20UseCase
         createdAt,
         false,
         'Personal',
+        false,
         '',
         command.method === 'google' ? command.userInfo.userId : '',
         command.method === 'github' ? command.userInfo.userId : '',

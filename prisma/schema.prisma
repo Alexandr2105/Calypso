@@ -22,6 +22,8 @@ model User {
   userPost          Post[]
   refreshTokenData  RefreshTokenData[]
   userProfile       UserProfile?
+  ban               Boolean             @default(false)
+  reasonBan         String?
 }
 
 model EmailConfirmation {

@@ -11,6 +11,7 @@ import { DeleteProfileCommand } from '../application/use-cases/delete.profile.us
 import { DeleteAllUserProfileCommand } from '../application/use-cases/delete.all.user.profile.use.case';
 import { DelPostsDto } from '../dto/del.posts.dto';
 import { DeleteAvatarCommand } from '../application/use-cases/delete.avatar.use.case';
+import { GetAllPhotosForCurrentUserCommand } from '../application/use-cases/get.all.photos.for.current.user.use.case';
 
 @Controller('saveImages')
 export class PictureController {
@@ -51,5 +52,12 @@ export class PictureController {
   @EventPattern({ cmd: 'deleteAvatar' })
   async deleteAvatar(userId: string) {
     await this.commandBus.execute(new DeleteAvatarCommand(userId));
+  }
+
+  @MessagePattern({ cmd: 'getAllPhotos' })
+  async getAllPhotosForCurrentUser(usersId: string[]) {
+    return this.commandBus.execute(
+      new GetAllPhotosForCurrentUserCommand(usersId),
+    );
   }
 }

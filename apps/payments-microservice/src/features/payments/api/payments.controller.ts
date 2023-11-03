@@ -29,6 +29,9 @@ import {
   SwaggerDecoratorByPostPaypal,
   SwaggerDecoratorByPostStripe,
 } from '../swagger/swagger.payments.decorators';
+import { GetAllPaymentsForUsersCommand } from '../aplication/use-case/get.all.payments.for.users.use.case';
+import { CountPaymentCommand } from '../aplication/use-case/count.payments.use.case';
+import { PaginationDto } from '../../../../../calypso/src/super-admin/api/dto/pagination.dto';
 
 @ApiTags('Payments')
 @Controller('/payments')
@@ -141,5 +144,23 @@ export class PaymentsController {
   ): Promise<PaymentsQueryType> {
     const queryParam = this.queryHelper.queryParamHelper(query);
     return this.queryRepository.getPaymentsCurrentUser(userId, queryParam);
+  }
+
+  @ApiExcludeEndpoint()
+  @Get('allPaymentsForUsers')
+  async getAllPayments(@Body() usersIds: string[]) {
+    return this.commandBus.execute(new GetAllPaymentsForUsersCommand(usersIds));
+  }
+
+  @ApiExcludeEndpoint()
+  @Get('countPayments')
+  async getCountPayments() {
+    return this.commandBus.execute(new CountPaymentCommand());
+  }
+
+  @ApiExcludeEndpoint()
+  @Get('allPayments')
+  async getAllPaginationPayments(@Body() body: PaginationDto) {
+    return this.queryRepository.getAllPayments(body);
   }
 }
